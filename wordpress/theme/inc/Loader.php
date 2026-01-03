@@ -2,14 +2,14 @@
 /**
  * Loader class.
  *
- * @package ProjectTheme
- * @since 1.0.0
+ * @package ElevationTheme
+ * @since 0.1.0
  */
 
-namespace ProjectTheme\Inc;
+namespace ElevationTheme\Inc;
 
-use ProjectTheme\Inc\Features\RestFeature;
-use ProjectTheme\Inc\Features\GraphQLFeature;
+use ElevationTheme\Inc\Features\RestFeature;
+use ElevationTheme\Inc\Features\GraphQLFeature;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

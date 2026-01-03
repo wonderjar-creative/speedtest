@@ -1,6 +1,10 @@
-# CLAUDE.md - WordPress Theme
+# CLAUDE.md - Elevation Design Theme
 
-Headless WordPress block theme for the CMS backend. Provides content structure, blocks, and GraphQL schema for the frontend.
+FSE block theme for **Elevation Design Studio** demo. Part of the Denver Headless Speed Test POC.
+
+**Purpose:** Provides content structure, blocks, and GraphQL schema for both:
+- Traditional WP frontend (`slow.speedtest.denverheadless.com`)
+- Headless Next.js frontend (`fast.speedtest.denverheadless.com`)
 
 ## Commands
 
@@ -50,12 +54,25 @@ Colors and spacing in `theme.json` must match Tailwind config in frontend repo.
 
 - WPGraphQL
 - WPGraphQL JWT Authentication
-- WPGraphQL for Rank Math (optional)
-- Rank Math SEO (optional)
-- Gravity Forms + REST API (optional)
+- Yoast SEO (for traditional WP demo)
+- Contact Form 7 (for traditional WP demo)
+
+## Demo Content: Elevation Design Studio
+
+| Page | Content |
+|------|---------|
+| Homepage | Hero, Services Grid, Portfolio Preview, Testimonials, CTA |
+| About | Company Story, Team Members, Values |
+| Services | Residential, Commercial, Renovation, Consultation |
+| Portfolio | Project Grid (6-8 projects) |
+| Contact | Form, Office Info, Map |
+
+**Custom Post Type:** Projects (portfolio items)
 
 ## Deployment
 
 1. Run `npm run zip:theme` to create production zip
 2. Upload to WordPress via admin or SFTP
-3. Activate theme if not already active
+3. Activate theme
+4. Install required plugins
+5. Import demo content

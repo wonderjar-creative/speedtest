@@ -2,11 +2,11 @@
 /**
  * Main Theme class.
  *
- * @package ProjectTheme
- * @since 1.0.0
+ * @package ElevationTheme
+ * @since 0.1.0
  */
 
-namespace ProjectTheme\Inc;
+namespace ElevationTheme\Inc;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

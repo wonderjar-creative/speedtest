@@ -2,11 +2,11 @@
 /**
  * Theme functions and definitions.
  *
- * @package ProjectTheme
- * @since 1.0.0
+ * @package ElevationTheme
+ * @since 0.1.0
  */
 
-use ProjectTheme\Inc\Theme;
+use ElevationTheme\Inc\Theme;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define version constant.
  */
-define( 'PROJECT_THEME_VERSION', '1.0.0' );
+define( 'ELEVATION_THEME_VERSION', '0.1.0' );
 
 /**
  * Include Composer's autoloader.

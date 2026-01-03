@@ -2,11 +2,11 @@
 /**
  * REST API Feature.
  *
- * @package ProjectTheme
- * @since 1.0.0
+ * @package ElevationTheme
+ * @since 0.1.0
  */
 
-namespace ProjectTheme\Inc\Features;
+namespace ElevationTheme\Inc\Features;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
