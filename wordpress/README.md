@@ -19,8 +19,9 @@ This WordPress instance intentionally represents a **typical small business site
 3. **Install required plugins:**
    - WPGraphQL
    - WPGraphQL JWT Authentication
-   - Yoast SEO
-   - Contact Form 7
+   - WPGraphQL for Rank Math
+   - Rank Math SEO
+   - Gravity Forms
 
 4. **Activate theme** in Appearance → Themes
 
@@ -81,10 +82,11 @@ This WordPress instance intentionally represents a **typical small business site
 | Plugin | Purpose | Notes |
 |--------|---------|-------|
 | WPGraphQL | Headless API | Required for headless frontend |
-| Yoast SEO | SEO | Typical site plugin |
-| Contact Form 7 | Forms | Typical site plugin |
+| WPGraphQL JWT Auth | Preview/auth | Required for headless frontend |
+| WPGraphQL for Rank Math | SEO in GraphQL | Required for headless frontend |
+| Rank Math SEO | SEO | Standard setup |
+| Gravity Forms | Forms | Standard setup |
 | WP Super Cache | Caching | Basic caching only |
-| Smush | Images | Do NOT optimize - leave defaults |
 
 ### Content Types
 

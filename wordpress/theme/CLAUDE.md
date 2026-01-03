@@ -54,8 +54,9 @@ Colors and spacing in `theme.json` must match Tailwind config in frontend repo.
 
 - WPGraphQL
 - WPGraphQL JWT Authentication
-- Yoast SEO (for traditional WP demo)
-- Contact Form 7 (for traditional WP demo)
+- WPGraphQL for Rank Math
+- Rank Math SEO
+- Gravity Forms
 
 ## Demo Content: Elevation Design Studio
 
