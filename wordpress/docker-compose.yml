@@ -1,4 +1,13 @@
 services:
+  # Run composer install for theme dependencies
+  composer:
+    image: composer:2
+    container_name: speedtest-composer
+    volumes:
+      - ./theme:/app
+    command: install --no-dev --optimize-autoloader
+    working_dir: /app
+
   wordpress:
     image: wordpress:6.7-php8.2-apache
     container_name: speedtest-wp
@@ -16,6 +25,8 @@ services:
       # Persist uploads and other content
       - wordpress_data:/var/www/html
     depends_on:
+      composer:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
     restart: unless-stopped
