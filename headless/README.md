@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Frontend
 
-## Getting Started
+Next.js 15 frontend for a headless WordPress site using WPGraphQL.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **CMS**: WordPress with WPGraphQL
+- **Deployment**: Vercel
+
+## Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+- A running WordPress instance with WPGraphQL plugin
+
+**Important**: The frontend cannot build without a live WordPress instance. GraphQL CodeGen fetches the schema at build time.
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+2. **Configure environment:**
+   ```bash
+   cp .env.example .env.development.local
+   # Edit .env.development.local with your values
+   ```
+
+3. **Start development server:**
+   ```bash
+   pnpm dev
+   ```
+
+This will:
+- Fetch WordPress template structure
+- Generate TypeScript types from GraphQL schema
+- Start Next.js dev server at http://localhost:3000
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm dev           # Fetch templates -> codegen -> next dev
+pnpm build         # Production build (requires WordPress)
+pnpm codegen       # Regenerate GraphQL types
+pnpm fetch-wp-template-structure  # Update template/pattern cache
+pnpm lint          # ESLint
+pnpm clean         # Remove .next, data, node_modules, src/gql
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/                          # Next.js App Router
+│   ├── [[...slug]]/page.tsx      # Catch-all route handler
+│   ├── api/
+│   │   ├── preview/              # Draft mode handler
+│   │   └── revalidate/           # ISR webhook endpoint
+│   ├── layout.tsx                # Root layout
+│   └── globals.css               # Global styles
+│
+├── components/
+│   ├── Blocks/Core/              # WordPress block components
+│   ├── Globals/                  # Header, footer, etc.
+│   └── Templates/                # Page, Post templates
+│
+├── queries/                      # GraphQL query definitions
+├── utils/                        # Utility functions
+├── types/                        # TypeScript interfaces
+└── gql/                          # Auto-generated (gitignored)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Adding New Blocks
 
-## Learn More
+1. Create component: `src/components/Blocks/Core/[BlockName]/[BlockName].tsx`
+2. Add case in `getBlockComponents.tsx` switch statement
+3. Import attribute types from `@/gql/graphql`
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_WORDPRESS_API_URL` | WordPress URL (no trailing slash) |
+| `NEXT_PUBLIC_BASE_URL` | Frontend URL for canonical URLs |
+| `HEADLESS_SECRET` | ISR revalidation secret |
+| `WP_USER` | WordPress username for REST API |
+| `WP_APP_PASS` | WordPress application password |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+### Vercel (Recommended)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Connect your GitHub repo to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy! (auto-deploys on push to main)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Environment Setup
+
+- **Production**: Set `NEXT_PUBLIC_WORDPRESS_API_URL` to production WordPress
+- **Preview**: Vercel preview deployments use the same env vars
+- **Staging**: Create a separate Vercel project pointing to staging WordPress
+
+## Caching Strategy
+
+- **Pages**: 5-minute ISR (`revalidate = 300`)
+- **Template parts**: 1-hour cache in `data/*.json`
+- **On-demand**: `/api/revalidate` endpoint with secret key
+
+## Troubleshooting
+
+- **Build fails with GraphQL errors**: Check WordPress is accessible
+- **Preview not working**: Verify JWT credentials in WordPress
+- **Template parts missing**: Run `pnpm fetch-wp-template-structure`
+- **Styles missing**: Ensure `theme.json` matches Tailwind config

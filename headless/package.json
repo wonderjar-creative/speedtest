@@ -1,29 +1,47 @@
 {
   "name": "@speedtest/headless",
   "version": "0.1.0",
-  "description": "Optimized headless Next.js frontend for Elevation Design Studio",
+  "description": "Optimized headless Next.js frontend for Elevation Design Studio demo",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "predev": "npm run fetch-wp-template-structure",
+    "dev": "graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next dev",
+    "prebuild": "npm run fetch-wp-template-structure || true",
+    "build": "NODE_ENV=${NODE_ENV:-production} graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && NODE_ENV=${NODE_ENV:-production} next build",
+    "build:prod": "NODE_ENV=production npm run fetch-wp-template-structure && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "clean": "rm -rf .next data node_modules src/gql",
+    "codegen": "graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
+    "codegen:prod": "NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
+    "fetch-wp-template-structure": "node ./scripts/fetch-wp-template-structure.js"
   },
   "dependencies": {
-    "next": "16.1.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "@svgr/webpack": "^8.1.0",
+    "@tailwindcss/postcss": "^4.1.0",
+    "@vercel/analytics": "^1.6.0",
+    "@wordpress/block-serialization-default-parser": "^5.28.0",
+    "dotenv": "^17.2.1",
+    "framer-motion": "^12.23.24",
     "graphql": "^16.9.0",
-    "graphql-request": "^7.1.0"
+    "graphql-tag": "^2.12.6",
+    "html-react-parser": "^5.2.5",
+    "next": "^15.3.3",
+    "postcss": "^8.5.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-google-recaptcha-v3": "^1.11.0",
+    "tailwindcss": "^4.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.3.3",
+    "@graphql-codegen/schema-ast": "^4.1.0",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
-    "tailwindcss": "^4",
+    "eslint-config-next": "latest",
     "typescript": "^5"
   }
 }

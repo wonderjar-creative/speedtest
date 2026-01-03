@@ -1,0 +1,26 @@
+{
+  "name": "projectname-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A headless WordPress block theme",
+  "scripts": {
+    "composer:install": "composer install",
+    "composer:update": "composer update",
+    "composer:dump": "composer dump-autoload",
+    "composer:prod": "composer install --no-dev --optimize-autoloader",
+    "lint:php": "./vendor/bin/phpcs",
+    "lint:php:fix": "./vendor/bin/phpcbf",
+    "dev": "npm run composer:install && npm run composer:dump && npm run lint:php:fix",
+    "build": "npm run composer:install && npm run composer:dump && npm run lint:php",
+    "version:patch": "npm version patch --no-git-tag-version && npm run version:sync",
+    "version:minor": "npm version minor --no-git-tag-version && npm run version:sync",
+    "version:major": "npm version major --no-git-tag-version && npm run version:sync",
+    "version:sync": "node scripts/sync-theme-version.js",
+    "zip:theme": "npm run build && npm run composer:prod && rm -rf /tmp/project-theme && mkdir -p /tmp/project-theme && rsync -a --exclude='.git' --exclude='.vscode' --exclude='package*.json' --exclude='composer.*' --exclude='.phpcs.xml' --exclude='README.md' --exclude='CHANGELOG.md' --exclude='CLAUDE.md' --exclude='*.zip' --exclude='node_modules' --exclude='scripts' . /tmp/project-theme/ && cd /tmp && zip -r \"$OLDPWD/project-theme-$(node -p \"require('$OLDPWD/package.json').version\").zip\" project-theme && rm -rf /tmp/project-theme && cd - && npm run composer:install",
+    "deploy": "cd ../ops && npm run deploy",
+    "deploy:staging": "cd ../ops && npm run deploy:staging",
+    "deploy:production": "cd ../ops && npm run deploy:production"
+  },
+  "author": "Your Name",
+  "license": "GPL-2.0-or-later"
+}
