@@ -2,7 +2,34 @@
 
 This WordPress instance intentionally represents a **typical small business site** - not optimized, running on modest infrastructure.
 
-## Hosting: AWS Lightsail
+## Local Development (Docker)
+
+```bash
+cd wordpress
+
+# Start containers
+make up
+
+# First-time setup (installs WP, plugins, activates theme)
+make setup
+
+# View logs
+make logs
+
+# Stop
+make down
+```
+
+**URLs:**
+- WordPress: http://localhost:8080
+- Admin: http://localhost:8080/wp-admin
+- GraphQL: http://localhost:8080/graphql
+
+**Login:** `wjmatt` / `localdev123`
+
+---
+
+## Production: AWS Lightsail
 
 ### Instance Specification
 - **Plan:** Nano ($5/mo)
