@@ -54,8 +54,8 @@ Fake architecture & interior design firm for demo content.
 | Path | Purpose |
 |------|---------|
 | `comparison/` | Split-screen comparison app |
-| `headless/` | Optimized Next.js frontend |
-| `wordpress/` | WP config notes, content export |
+| `frontend/` | Optimized Next.js frontend |
+| `wordpress/` | WP config notes, theme |
 
 ## Commands
 
@@ -63,8 +63,8 @@ Fake architecture & interior design firm for demo content.
 # Comparison interface
 cd comparison && pnpm dev
 
-# Headless frontend
-cd headless && pnpm dev
+# Frontend
+cd frontend && pnpm dev
 ```
 
 ## Performance Targets

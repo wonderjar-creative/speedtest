@@ -20,8 +20,8 @@ speedtest/
 ├── PROJECT_BRIEF.md
 ├── CLAUDE.md
 ├── comparison/          # Split-screen comparison interface
-├── headless/            # Next.js headless frontend
-└── wordpress/           # WordPress setup notes & config
+├── frontend/            # Next.js headless frontend
+└── wordpress/           # WordPress setup & theme
 ```
 
 ## Quick Start
@@ -30,8 +30,8 @@ speedtest/
 # Comparison interface
 cd comparison && pnpm install && pnpm dev
 
-# Headless frontend
-cd headless && pnpm install && pnpm dev
+# Frontend
+cd frontend && pnpm install && pnpm dev
 ```
 
 ## Deployment
