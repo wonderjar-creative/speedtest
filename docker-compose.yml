@@ -1,0 +1,58 @@
+version: "3.8"
+
+# Docker Compose for Speed Test POC
+# Run: docker compose up -d
+# Stop: docker compose down
+
+services:
+  # MySQL Database for WordPress
+  db:
+    image: mysql:8.0
+    container_name: speedtest-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # WordPress (Traditional Site)
+  wordpress:
+    image: wordpress:latest
+    container_name: speedtest-wordpress
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      # Mount your custom theme
+      - ./wordpress/theme:/var/www/html/wp-content/themes/elevation-theme
+      # Persist WordPress files
+      - wp_data:/var/www/html
+    ports:
+      - "8080:80"
+
+  # phpMyAdmin (optional - for database management)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: speedtest-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8081:80"
+
+volumes:
+  db_data:
+  wp_data:
