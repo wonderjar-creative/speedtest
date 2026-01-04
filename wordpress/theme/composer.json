@@ -3,26 +3,26 @@
     "description": "Headless WordPress block theme for Elevation Design Studio demo",
     "type": "wordpress-theme",
     "license": "GPL-2.0-or-later",
-    "require": {
-        "php": ">=8.1"
-    },
     "require-dev": {
-        "php-stubs/wordpress-stubs": "^6.0",
-        "squizlabs/php_codesniffer": "^3.0",
-        "wp-coding-standards/wpcs": "^3.0"
+      "php-stubs/wordpress-stubs": "^6.8",
+      "php-stubs/wordpress-globals": "^0.2.0",
+      "axepress/wp-graphql-stubs": "^2.3",
+      "squizlabs/php_codesniffer": "^3.8",
+      "wp-coding-standards/wpcs": "^3.1",
+      "phpcompatibility/phpcompatibility-wp": "^2.1"
     },
     "autoload": {
-        "psr-4": {
-            "ElevationTheme\\": "inc/"
-        }
+      "psr-4": {
+        "ElevationTheme\\Inc\\": "inc/"
+      }
     },
     "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+      "allow-plugins": {
+        "dealerdirect/phpcodesniffer-composer-installer": true
+      }
     },
     "scripts": {
-        "lint": "phpcs",
-        "lint:fix": "phpcbf"
+      "lint": "phpcs",
+      "lint:fix": "phpcbf"
     }
 }
