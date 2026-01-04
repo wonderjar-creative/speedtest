@@ -24,14 +24,14 @@ class Theme {
 	 *
 	 * @var Theme|null
 	 */
-	private static ?Theme $instance = null;
+	private static $instance = null;
 
 	/**
 	 * The loader instance.
 	 *
 	 * @var Loader|null
 	 */
-	private ?Loader $loader = null;
+	private $loader = null;
 
 	/**
 	 * Get the singleton instance.
