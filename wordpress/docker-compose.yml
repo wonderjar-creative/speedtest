@@ -34,7 +34,7 @@ services:
       WORDPRESS_DB_NAME: wordpress
     volumes:
       # Mount your custom theme
-      - ./wordpress/theme:/var/www/html/wp-content/themes/elevation-theme
+      - ./theme:/var/www/html/wp-content/themes/elevation-theme
       # Persist WordPress files
       - wp_data:/var/www/html
     ports:

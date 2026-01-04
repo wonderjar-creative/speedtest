@@ -14,9 +14,10 @@ After installing, **open Docker Desktop** and wait until it says "Docker is runn
 
 ## Step 2: Start Everything
 
-Open your terminal/command prompt, navigate to this project folder, and run:
+Open your terminal/command prompt, navigate to the `wordpress` folder, and run:
 
 ```bash
+cd wordpress
 docker compose up -d
 ```
 
@@ -88,14 +89,14 @@ The Next.js apps run outside Docker (simpler for development):
 ```bash
 # Terminal 1: Comparison interface
 cd comparison
-pnpm install
-pnpm dev
+npm install
+npm run dev
 # → http://localhost:3000
 
 # Terminal 2: Headless frontend
 cd frontend
-pnpm install
-pnpm dev
+npm install
+npm run dev
 # → http://localhost:3001
 ```
 
@@ -145,7 +146,7 @@ The `docker-compose.yml` file defines:
 - **wordpress**: WordPress + Apache web server
 - **phpmyadmin**: Web interface for the database
 
-Your theme folder (`wordpress/theme`) is "mounted" into the WordPress container, so changes you make to theme files appear instantly.
+Your theme folder (`theme/`) is "mounted" into the WordPress container, so changes you make to theme files appear instantly.
 
 ---
 
