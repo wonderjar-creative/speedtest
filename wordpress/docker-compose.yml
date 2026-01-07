@@ -46,6 +46,7 @@ services:
   wpcli:
     image: wordpress:cli
     container_name: speedtest-wpcli
+    user: "33:33"  # Run as www-data (same as wordpress container)
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
