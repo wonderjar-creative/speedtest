@@ -11,15 +11,40 @@ This WordPress instance intentionally represents a **typical small business site
 
 ```bash
 cd wordpress
+
+# Start containers
 docker-compose up -d
+
+# Run setup script (installs WordPress, plugins, creates pages)
+docker-compose exec wpcli sh /scripts/setup.sh
 ```
 
 **WordPress:** http://localhost:8080
-**GraphQL endpoint:** http://localhost:8080/graphql
+**Admin:** http://localhost:8080/wp-admin
+**GraphQL:** http://localhost:8080/graphql
 
 ### Default Credentials
 - **Username:** admin
 - **Password:** admin123
+
+### Docker Commands
+
+```bash
+# Start containers
+docker-compose up -d
+
+# Stop containers (keeps data)
+docker-compose down
+
+# Stop and DELETE all data (fresh start)
+docker-compose down -v
+
+# View logs
+docker-compose logs -f
+
+# Run WP-CLI commands
+docker-compose exec wpcli wp <command>
+```
 
 ---
 

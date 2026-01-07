@@ -1,0 +1,87 @@
+#!/bin/bash
+# WordPress Setup Script
+# Run with: docker-compose exec wpcli sh /scripts/setup.sh
+
+set -e
+
+echo "========================================="
+echo "  WordPress Setup Script"
+echo "========================================="
+
+# Wait for WordPress to be ready
+echo ""
+echo "[1/6] Waiting for WordPress..."
+until wp core is-installed 2>/dev/null || wp core install --url="http://localhost:8080" --title="Elevation Design Studio" --admin_user="admin" --admin_password="admin123" --admin_email="admin@example.com" --skip-email 2>/dev/null; do
+  sleep 2
+done
+echo "✓ WordPress installed"
+
+# Configure site settings
+echo ""
+echo "[2/6] Configuring settings..."
+wp option update blogdescription "Architecture & Interior Design"
+wp rewrite structure '/%postname%/' --hard
+echo "✓ Settings configured"
+
+# Install and activate theme
+echo ""
+echo "[3/6] Activating theme..."
+wp theme activate elevation-theme || echo "Theme not found - activate manually"
+echo "✓ Theme step complete"
+
+# Install required plugins
+echo ""
+echo "[4/6] Installing plugins..."
+
+# WPGraphQL - Required for headless
+wp plugin install wp-graphql --activate
+echo "  ✓ WPGraphQL"
+
+# WPGraphQL JWT Authentication - Required for preview/auth
+wp plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/heads/master.zip --activate || echo "  ! JWT Auth - install manually from GitHub"
+echo "  ✓ WPGraphQL JWT Auth"
+
+# Rank Math SEO
+wp plugin install seo-by-rank-math --activate
+echo "  ✓ Rank Math SEO"
+
+# WP Super Cache - Basic caching
+wp plugin install wp-super-cache --activate
+echo "  ✓ WP Super Cache"
+
+# Contact Form 7 - Free alternative to Gravity Forms
+wp plugin install contact-form-7 --activate
+echo "  ✓ Contact Form 7"
+
+echo ""
+echo "[5/6] Installing WPGraphQL for Rank Math..."
+wp plugin install https://github.com/developer-developer/developer-developer-developer/archive/refs/heads/master.zip --activate 2>/dev/null || echo "  ! WPGraphQL for Rank Math - install manually"
+
+# Set up basic pages
+echo ""
+echo "[6/6] Creating pages..."
+wp post create --post_type=page --post_title="Home" --post_status=publish --post_name="home" || true
+wp post create --post_type=page --post_title="About" --post_status=publish --post_name="about" || true
+wp post create --post_type=page --post_title="Services" --post_status=publish --post_name="services" || true
+wp post create --post_type=page --post_title="Portfolio" --post_status=publish --post_name="portfolio" || true
+wp post create --post_type=page --post_title="Contact" --post_status=publish --post_name="contact" || true
+
+# Set homepage
+HOMEPAGE_ID=$(wp post list --post_type=page --name=home --field=ID)
+if [ -n "$HOMEPAGE_ID" ]; then
+  wp option update show_on_front page
+  wp option update page_on_front "$HOMEPAGE_ID"
+  echo "✓ Homepage set"
+fi
+
+echo ""
+echo "========================================="
+echo "  Setup Complete!"
+echo "========================================="
+echo ""
+echo "WordPress: http://localhost:8080"
+echo "Admin:     http://localhost:8080/wp-admin"
+echo "GraphQL:   http://localhost:8080/graphql"
+echo ""
+echo "Login: admin / admin123"
+echo ""
