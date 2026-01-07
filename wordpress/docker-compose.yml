@@ -1,0 +1,46 @@
+# Docker Compose for WordPress local development
+# Run with: docker-compose up -d
+
+services:
+  # WordPress + PHP + Apache (all-in-one)
+  wordpress:
+    image: wordpress:6.7-php8.2-apache
+    container_name: speedtest-wp
+    ports:
+      - "8080:80"    # Access at http://localhost:8080
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      # Mount your theme into WordPress
+      - ./theme:/var/www/html/wp-content/themes/elevation-theme
+      # Persist uploads between restarts
+      - wp_uploads:/var/www/html/wp-content/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: speedtest-db
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      # Persist database between restarts
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+# Named volumes (Docker manages these)
+volumes:
+  db_data:
+  wp_uploads:
