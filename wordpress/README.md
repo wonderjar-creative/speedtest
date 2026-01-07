@@ -2,34 +2,24 @@
 
 This WordPress instance intentionally represents a **typical small business site** - not optimized, running on modest infrastructure.
 
-## Local Development (LocalWP)
+## Local Development (Docker)
 
-1. **Create new site in LocalWP:**
-   - Site name: `speedtest`
-   - Domain: `speedtest.local`
-   - PHP 8.1+, MySQL 8
+### Prerequisites
+- Docker Desktop installed and running
 
-2. **Install theme:**
-   ```bash
-   # Symlink theme into LocalWP (macOS)
-   ln -s /path/to/speedtest/wordpress/theme \
-     ~/Local\ Sites/speedtest/app/public/wp-content/themes/elevation-theme
-   ```
+### Quick Start
 
-3. **Install required plugins:**
-   - WPGraphQL
-   - WPGraphQL JWT Authentication
-   - WPGraphQL for Rank Math
-   - Rank Math SEO
-   - Gravity Forms
+```bash
+cd wordpress
+docker-compose up -d
+```
 
-4. **Activate theme** in Appearance → Themes
+**WordPress:** http://localhost:8080
+**GraphQL endpoint:** http://localhost:8080/graphql
 
-5. **Expose for headless dev:**
-   - Use LocalWP's "Live Link" feature, or
-   - Use ngrok: `ngrok http 80`
-
-**GraphQL endpoint:** `http://speedtest.local/graphql`
+### Default Credentials
+- **Username:** admin
+- **Password:** admin123
 
 ---
 
