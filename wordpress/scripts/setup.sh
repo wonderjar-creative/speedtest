@@ -11,8 +11,9 @@ echo "========================================="
 # Wait for WordPress to be ready
 echo ""
 echo "[1/6] Waiting for WordPress..."
-until wp core is-installed 2>/dev/null || wp core install --url="http://localhost:8080" --title="Elevation Design Studio" --admin_user="admin" --admin_password="admin123" --admin_email="admin@example.com" --skip-email 2>/dev/null; do
-  sleep 2
+until wp core is-installed --url="http://localhost:8080" 2>/dev/null; do
+  # Try to install if not installed yet
+  wp core install --url="http://localhost:8080" --title="Elevation Design Studio" --admin_user="admin" --admin_password="admin123" --admin_email="admin@example.com" --skip-email 2>/dev/null || sleep 2
 done
 echo "✓ WordPress installed"
 
