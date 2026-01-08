@@ -61,14 +61,14 @@ echo ""
 echo "[5/6] Installing WPGraphQL for Rank Math..."
 wp plugin install https://github.com/developer-developer/developer-developer-developer/archive/refs/heads/master.zip --activate --url="$URL" 2>/dev/null || echo "  ! WPGraphQL for Rank Math - install manually"
 
-# Set up basic pages
+# Set up basic pages with pattern content
 echo ""
 echo "[6/6] Creating pages..."
-wp post create --post_type=page --post_title="Home" --post_status=publish --post_name="home" --url="$URL" || true
-wp post create --post_type=page --post_title="About" --post_status=publish --post_name="about" --url="$URL" || true
-wp post create --post_type=page --post_title="Services" --post_status=publish --post_name="services" --url="$URL" || true
-wp post create --post_type=page --post_title="Portfolio" --post_status=publish --post_name="portfolio" --url="$URL" || true
-wp post create --post_type=page --post_title="Contact" --post_status=publish --post_name="contact" --url="$URL" || true
+wp post create --post_type=page --post_title="Home" --post_status=publish --post_name="home" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-home"} /-->' --url="$URL" || true
+wp post create --post_type=page --post_title="About" --post_status=publish --post_name="about" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-about"} /-->' --url="$URL" || true
+wp post create --post_type=page --post_title="Services" --post_status=publish --post_name="services" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-services"} /-->' --url="$URL" || true
+wp post create --post_type=page --post_title="Portfolio" --post_status=publish --post_name="portfolio" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-portfolio"} /-->' --url="$URL" || true
+wp post create --post_type=page --post_title="Contact" --post_status=publish --post_name="contact" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-contact"} /-->' --url="$URL" || true
 
 # Set homepage
 HOMEPAGE_ID=$(wp post list --post_type=page --name=home --field=ID --url="$URL")
