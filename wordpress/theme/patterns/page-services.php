@@ -26,7 +26,7 @@
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img alt="Residential design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80" alt="Residential design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
             <!-- /wp:image -->
         </div>
         <!-- /wp:column -->
@@ -80,7 +80,7 @@
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img alt="Commercial design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Commercial design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
             <!-- /wp:image -->
         </div>
         <!-- /wp:column -->
@@ -92,7 +92,7 @@
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img alt="Design consultation" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&q=80" alt="Design consultation" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
             <!-- /wp:image -->
         </div>
         <!-- /wp:column -->

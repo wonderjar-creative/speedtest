@@ -6,9 +6,10 @@
  * Keywords: hero, banner, header
  */
 ?>
-<!-- wp:cover {"dimRatio":50,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":600,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<!-- wp:cover {"url":"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":600,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
 <div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);min-height:600px">
-    <span aria-hidden="true" class="wp-block-cover__background has-gray-900-background-color has-background-dim"></span>
+    <span aria-hidden="true" class="wp-block-cover__background has-gray-900-background-color has-background-dim-60 has-background-dim"></span>
+    <img class="wp-block-cover__image-background" alt="Modern architecture interior" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80" data-object-fit="cover"/>
     <div class="wp-block-cover__inner-container">
         <!-- wp:group {"layout":{"type":"constrained"}} -->
         <div class="wp-block-group">

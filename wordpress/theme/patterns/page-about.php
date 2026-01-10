@@ -42,7 +42,7 @@
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img alt="Elevation Design Studio team" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="Elevation Design Studio team" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
             <!-- /wp:image -->
         </div>
         <!-- /wp:column -->

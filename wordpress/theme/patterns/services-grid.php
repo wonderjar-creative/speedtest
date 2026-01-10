@@ -16,8 +16,8 @@
     <p class="has-text-align-center has-gray-600-color has-text-color">Comprehensive design solutions for every space</p>
     <!-- /wp:paragraph -->
 
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns" style="margin-top:var(--wp--preset--spacing--50)">
+    <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|50"}}}} -->
+    <div class="wp-block-columns alignwide" style="margin-top:var(--wp--preset--spacing--50)">
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"white","layout":{"type":"constrained"}} -->

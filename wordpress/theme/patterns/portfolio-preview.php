@@ -16,14 +16,14 @@
     <p class="has-text-align-center has-gray-600-color has-text-color">A selection of our recent work</p>
     <!-- /wp:paragraph -->
 
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|30"},"margin":{"top":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns" style="margin-top:var(--wp--preset--spacing--50)">
+    <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|30"},"margin":{"top":"var:preset|spacing|50"}}}} -->
+    <div class="wp-block-columns alignwide" style="margin-top:var(--wp--preset--spacing--50)">
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:group {"style":{"border":{"radius":"8px"},"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"backgroundColor":"gray-100","layout":{"type":"constrained"}} -->
             <div class="wp-block-group has-gray-100-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
                 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":{"topLeft":"8px","topRight":"8px"}}}} -->
-                <figure class="wp-block-image"><img alt="Modern Loft Renovation" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+                <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Modern Loft Renovation" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
                 <!-- /wp:image -->
 
                 <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"layout":{"type":"constrained"}} -->
@@ -47,7 +47,7 @@
             <!-- wp:group {"style":{"border":{"radius":"8px"},"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"backgroundColor":"gray-100","layout":{"type":"constrained"}} -->
             <div class="wp-block-group has-gray-100-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
                 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":{"topLeft":"8px","topRight":"8px"}}}} -->
-                <figure class="wp-block-image"><img alt="Corporate Office Redesign" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+                <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Corporate Office Redesign" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
                 <!-- /wp:image -->
 
                 <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"layout":{"type":"constrained"}} -->
@@ -71,7 +71,7 @@
             <!-- wp:group {"style":{"border":{"radius":"8px"},"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"backgroundColor":"gray-100","layout":{"type":"constrained"}} -->
             <div class="wp-block-group has-gray-100-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
                 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":{"topLeft":"8px","topRight":"8px"}}}} -->
-                <figure class="wp-block-image"><img alt="Mountain Retreat" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+                <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Mountain Retreat" style="border-top-left-radius:8px;border-top-right-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
                 <!-- /wp:image -->
 
                 <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"layout":{"type":"constrained"}} -->
