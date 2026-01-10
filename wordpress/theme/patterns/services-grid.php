@@ -6,8 +6,8 @@
  * Keywords: services, grid, features
  */
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"backgroundColor":"gray-50","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull has-gray-50-background-color has-background" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}},"backgroundColor":"gray-100","layout":{"type":"default"}} -->
+<div class="wp-block-group alignfull has-gray-100-background-color has-background" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50)">
     <!-- wp:heading {"textAlign":"center"} -->
     <h2 class="wp-block-heading has-text-align-center">Our Services</h2>
     <!-- /wp:heading -->
@@ -16,8 +16,8 @@
     <p class="has-text-align-center has-gray-600-color has-text-color">Comprehensive design solutions for every space</p>
     <!-- /wp:paragraph -->
 
-    <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns alignwide" style="margin-top:var(--wp--preset--spacing--50)">
+    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|50"}}}} -->
+    <div class="wp-block-columns" style="margin-top:var(--wp--preset--spacing--50);max-width:1400px;margin-left:auto;margin-right:auto">
         <!-- wp:column -->
         <div class="wp-block-column">
             <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"white","layout":{"type":"constrained"}} -->
