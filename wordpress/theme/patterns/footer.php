@@ -7,10 +7,10 @@
  * Block Types: core/template-part/footer
  */
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}},"backgroundColor":"gray-900","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull has-gray-900-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
-    <!-- wp:columns -->
-    <div class="wp-block-columns">
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"margin":{"top":"0","bottom":"0"}}},"backgroundColor":"gray-900","layout":{"type":"default"}} -->
+<div class="wp-block-group alignfull has-gray-900-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50)">
+    <!-- wp:columns {"style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
+    <div class="wp-block-columns" style="margin-top:0;margin-bottom:0;max-width:1400px;margin-left:auto;margin-right:auto">
         <!-- wp:column {"width":"50%"} -->
         <div class="wp-block-column" style="flex-basis:50%">
             <!-- wp:heading {"level":3,"textColor":"white","fontSize":"lg"} -->
@@ -37,8 +37,8 @@
             <h4 class="wp-block-heading has-white-color has-text-color has-md-font-size">Quick Links</h4>
             <!-- /wp:heading -->
 
-            <!-- wp:list {"textColor":"gray-400","style":{"typography":{"lineHeight":"2"}}} -->
-            <ul class="has-gray-400-color has-text-color" style="line-height:2">
+            <!-- wp:list {"textColor":"gray-400","style":{"typography":{"lineHeight":"2"},"spacing":{"padding":{"left":"0"}}}} -->
+            <ul class="has-gray-400-color has-text-color" style="line-height:2;padding-left:0">
                 <li><a href="/about">About Us</a></li>
                 <li><a href="/services">Services</a></li>
                 <li><a href="/portfolio">Portfolio</a></li>
@@ -67,11 +67,11 @@
     <!-- /wp:columns -->
 
     <!-- wp:separator {"style":{"spacing":{"margin":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|40"}}},"backgroundColor":"gray-700"} -->
-    <hr class="wp-block-separator has-text-color has-gray-700-color has-alpha-channel-opacity has-gray-700-background-color has-background" style="margin-top:var(--wp--preset--spacing--50);margin-bottom:var(--wp--preset--spacing--40)"/>
+    <hr class="wp-block-separator has-text-color has-gray-700-color has-alpha-channel-opacity has-gray-700-background-color has-background" style="margin-top:var(--wp--preset--spacing--50);margin-bottom:var(--wp--preset--spacing--40);max-width:1400px;margin-left:auto;margin-right:auto"/>
     <!-- /wp:separator -->
 
-    <!-- wp:paragraph {"align":"center","textColor":"gray-500","fontSize":"sm"} -->
-    <p class="has-text-align-center has-gray-500-color has-text-color has-sm-font-size">&copy; 2024 Elevation Design Studio. All rights reserved.</p>
+    <!-- wp:paragraph {"align":"center","textColor":"gray-500","fontSize":"sm","style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
+    <p class="has-text-align-center has-gray-500-color has-text-color has-sm-font-size" style="margin-top:0;margin-bottom:0">&copy; 2024 Elevation Design Studio. All rights reserved.</p>
     <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
