@@ -1,0 +1,301 @@
+/**
+ * Elevation Theme - Custom Styles
+ *
+ * Additional styles for enhanced visual polish and interactions.
+ *
+ * @package ElevationTheme
+ * @since 0.1.0
+ */
+
+/* ==========================================================================
+   Base Resets & Fixes
+   ========================================================================== */
+
+/**
+ * Fix WordPress default header margin
+ * The blockGap in theme.json handles most cases, but this is a fallback
+ */
+.wp-site-blocks > .wp-block-template-part:first-child,
+.wp-site-blocks > header:first-child {
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   Button Enhancements
+   ========================================================================== */
+
+.wp-element-button,
+.wp-block-button__link {
+    transition: all 0.2s ease-in-out;
+}
+
+.wp-element-button:hover,
+.wp-block-button__link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.wp-element-button:active,
+.wp-block-button__link:active {
+    transform: translateY(0);
+}
+
+/* Outline button styles */
+.is-style-outline .wp-block-button__link {
+    border-width: 2px;
+}
+
+.is-style-outline .wp-block-button__link:hover {
+    background-color: var(--wp--preset--color--primary);
+    color: var(--wp--preset--color--white);
+}
+
+/* ==========================================================================
+   Post Card Styles
+   ========================================================================== */
+
+.post-card {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.post-card img {
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover img {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Navigation Enhancements
+   ========================================================================== */
+
+.wp-block-navigation-item__content {
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.wp-block-navigation-item__content::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--wp--preset--color--primary);
+    transition: width 0.2s ease;
+}
+
+.wp-block-navigation-item__content:hover::after,
+.current-menu-item .wp-block-navigation-item__content::after {
+    width: 100%;
+}
+
+/* ==========================================================================
+   Form Styles
+   ========================================================================== */
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--wp--preset--color--primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Search block styling */
+.wp-block-search__inside-wrapper {
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.wp-block-search__input {
+    border-right: none;
+}
+
+/* ==========================================================================
+   Image Enhancements
+   ========================================================================== */
+
+.wp-block-image img {
+    border-radius: 8px;
+}
+
+.wp-block-image.alignfull img {
+    border-radius: 0;
+}
+
+/* ==========================================================================
+   Cover Block Enhancements
+   ========================================================================== */
+
+.wp-block-cover {
+    overflow: hidden;
+}
+
+.wp-block-cover__image-background {
+    transition: transform 8s ease;
+}
+
+.wp-block-cover:hover .wp-block-cover__image-background {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Quote Block Styling
+   ========================================================================== */
+
+.wp-block-quote {
+    border-left: 4px solid var(--wp--preset--color--primary);
+    padding-left: 1.5rem;
+    font-style: italic;
+}
+
+.wp-block-quote cite {
+    font-style: normal;
+    font-size: 0.875rem;
+    color: var(--wp--preset--color--gray-500);
+}
+
+/* ==========================================================================
+   Separator Styling
+   ========================================================================== */
+
+.wp-block-separator {
+    border-color: var(--wp--preset--color--gray-100);
+    opacity: 1;
+}
+
+.wp-block-separator.is-style-dots::before {
+    color: var(--wp--preset--color--gray-500);
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Focus visible for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.wp-element-button:focus-visible {
+    outline: 2px solid var(--wp--preset--color--primary);
+    outline-offset: 2px;
+}
+
+/* Skip link styling */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--wp--preset--color--primary);
+    color: var(--wp--preset--color--white);
+    padding: 0.75rem 1.5rem;
+    z-index: 9999;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    header,
+    footer,
+    .wp-block-navigation,
+    .wp-block-search,
+    .wp-block-button {
+        display: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    .wp-block-cover {
+        background: none !important;
+        color: black !important;
+    }
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 781px) {
+    /* Adjust grid to 2 columns on tablet */
+    .wp-block-query .wp-block-post-template.is-layout-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    /* Single column on mobile */
+    .wp-block-query .wp-block-post-template.is-layout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Reduce padding on mobile */
+    .wp-block-group[style*="padding"] {
+        padding-left: var(--wp--preset--spacing--30) !important;
+        padding-right: var(--wp--preset--spacing--30) !important;
+    }
+}

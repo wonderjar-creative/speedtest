@@ -57,10 +57,27 @@ class Loader {
 		// Theme setup.
 		add_action( 'after_setup_theme', [ $this, 'theme_setup' ] );
 
+		// Enqueue styles.
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+
 		// Run feature hooks.
 		foreach ( $this->features as $feature ) {
 			$feature->register();
 		}
+	}
+
+	/**
+	 * Enqueue theme styles.
+	 *
+	 * @return void
+	 */
+	public function enqueue_styles(): void {
+		wp_enqueue_style(
+			'elevation-theme-styles',
+			get_theme_file_uri( 'assets/css/theme.css' ),
+			[],
+			wp_get_theme()->get( 'Version' )
+		);
 	}
 
 	/**
