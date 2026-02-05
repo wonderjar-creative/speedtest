@@ -128,6 +128,9 @@
     "useRootPaddingAwareAlignments": true
   },
   "styles": {
+    "spacing": {
+      "blockGap": "0"
+    },
     "color": {
       "background": "var(--wp--preset--color--white)",
       "text": "var(--wp--preset--color--gray-900)"
