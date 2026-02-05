@@ -16,17 +16,17 @@ help:
 	@echo "  install-headless    Install headless dependencies"
 
 # Docker commands
-up:
-	docker-compose up -d
+wp-up:
+	cd wordpress/ && docker-compose up -d
 
-down:
-	docker-compose down
+wp-down:
+	cd wordpress/ && docker-compose down
 
-build:
-	docker-compose build
+wp-build:
+	cd wordpress/ && docker-compose build
 
-logs:
-	docker-compose logs -f
+wp-logs:
+	cd wordpress/ && docker-compose logs -f
 
 # Local development (outside docker)
 dev-comparison:
