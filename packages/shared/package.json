@@ -1,0 +1,16 @@
+{
+  "name": "@speedtest/shared",
+  "version": "0.1.0",
+  "description": "Shared types and GraphQL queries for Speed Test POC",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./queries": "./src/queries.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}
