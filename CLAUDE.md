@@ -80,26 +80,44 @@ Fictional Denver consulting firm (typical $10-25k project client).
 | WordPress | WP 6.4+, WPGraphQL, ACF + WPGraphQL for ACF |
 | Deployment | Docker (standalone output), Coolify, Cloudflare CDN |
 
-## Key Files
+## Monorepo Structure
+
+npm workspaces monorepo with shared types between apps.
 
 | Path | Purpose |
 |------|---------|
-| `comparison/` | Split-screen comparison app |
-| `headless/` | Optimized Next.js frontend |
+| `apps/comparison/` | Split-screen comparison app (speedtest.denverheadless.com) |
+| `apps/headless/` | Optimized Next.js frontend (fast.denverheadless.com) |
+| `packages/shared/` | Shared TypeScript types and GraphQL queries |
 | `wordpress/` | WP setup notes, headless theme, content seeds |
-| `traditional/` | Theme/plugin notes for slow WP site |
+| `traditional/` | Documentation for slow WP site (not deployed from repo) |
 
 ## Commands
 
 ```bash
+# Install all dependencies (from root)
+npm install
+
 # Comparison interface
-cd comparison && pnpm dev
+npm run dev:comparison
 
 # Headless frontend
-cd headless && pnpm dev
+npm run dev:headless
+
+# Or run directly in app directory
+cd apps/comparison && npm run dev
+cd apps/headless && npm run dev
 
 # Local WordPress
 docker-compose up
+```
+
+## Using Shared Types
+
+Import shared types in either app:
+```typescript
+import { WPPost, WPPage } from '@speedtest/shared';
+import { GET_POSTS, POST_FIELDS } from '@speedtest/shared/queries';
 ```
 
 ## Performance Targets
