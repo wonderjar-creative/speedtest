@@ -57,6 +57,9 @@ class Loader {
 		// Theme setup.
 		add_action( 'after_setup_theme', [ $this, 'theme_setup' ] );
 
+		// Enqueue styles.
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+
 		// Run feature hooks.
 		foreach ( $this->features as $feature ) {
 			$feature->register();
@@ -78,5 +81,19 @@ class Loader {
 		add_theme_support( 'wp-block-styles' );
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'responsive-embeds' );
+	}
+
+	/**
+	 * Enqueue theme styles.
+	 *
+	 * @return void
+	 */
+	public function enqueue_styles(): void {
+		wp_enqueue_style(
+			'elevation-theme-styles',
+			get_template_directory_uri() . '/assets/css/theme.css',
+			[],
+			filemtime( get_template_directory() . '/assets/css/theme.css' )
+		);
 	}
 }
