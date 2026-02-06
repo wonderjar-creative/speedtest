@@ -120,7 +120,7 @@ Architecture & interior design firm based in Denver.
 **Traditional WordPress:**
 - WordPress 6.4+
 - Theme: Astra or GeneratePress
-- Plugins: Yoast, Contact Form 7, WP Super Cache, WPGraphQL
+- Plugins: Rank Math, Contact Form 7, Smart Slider 3, WP Super Cache, WPGraphQL
 - Hosting: AWS Lightsail nano ($5/mo)
 - NOT optimized - intentionally typical
 
@@ -234,7 +234,7 @@ All content can be AI-generated:
 - [ ] Provision Lightsail nano instance
 - [ ] Install WordPress
 - [ ] Install theme (Astra)
-- [ ] Install plugins (Yoast, CF7, WPGraphQL, cache)
+- [ ] Install plugins (Rank Math, CF7, Smart Slider 3, WP Super Cache, WPGraphQL)
 - [ ] Create pages and content
 - [ ] Add images
 - [ ] Configure menus

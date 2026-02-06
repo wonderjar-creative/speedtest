@@ -39,7 +39,7 @@ Three separate deployments sharing content from one WordPress backend:
 2. **Traditional WordPress** (slow.speedtest.denverheadless.com)
    - WordPress on cheap shared hosting (intentionally slow)
    - Standard theme (Astra, GeneratePress, or Kadence)
-   - Typical plugins (Yoast, Contact Form 7, caching, slider)
+   - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WP Super Cache)
    - NOT optimized - represents typical small business site
 
 3. **Headless Frontend** (fast.speedtest.denverheadless.com)

@@ -53,9 +53,13 @@ echo "  ✓ Rank Math SEO"
 wp plugin install wp-super-cache --activate --url="$URL"
 echo "  ✓ WP Super Cache"
 
-# Contact Form 7 - Free alternative to Gravity Forms
+# Contact Form 7
 wp plugin install contact-form-7 --activate --url="$URL"
 echo "  ✓ Contact Form 7"
+
+# Smart Slider 3 (free version)
+wp plugin install smart-slider-3 --activate --url="$URL"
+echo "  ✓ Smart Slider 3"
 
 echo ""
 echo "[5/6] Installing WPGraphQL for Rank Math..."

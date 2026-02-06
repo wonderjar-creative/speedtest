@@ -99,8 +99,9 @@ docker-compose exec wpcli wp <command>
 | WPGraphQL | Headless API | Required for headless frontend |
 | WPGraphQL JWT Auth | Preview/auth | Required for headless frontend |
 | WPGraphQL for Rank Math | SEO in GraphQL | Required for headless frontend |
-| Rank Math SEO | SEO | Standard setup |
-| Gravity Forms | Forms | Standard setup |
+| Rank Math SEO | SEO | Free tier |
+| Contact Form 7 | Forms | Free |
+| Smart Slider 3 | Sliders | Free version |
 | WP Super Cache | Caching | Basic caching only |
 
 ### Content Types

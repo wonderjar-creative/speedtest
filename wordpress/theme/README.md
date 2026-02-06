@@ -15,8 +15,9 @@ Install and activate these plugins:
 - **WPGraphQL** - GraphQL API for WordPress
 - **WPGraphQL JWT Authentication** - JWT auth for preview mode
 - **WPGraphQL for Rank Math** - SEO data in GraphQL (optional)
-- **Rank Math SEO** - SEO management (optional)
-- **Gravity Forms** - Forms (optional)
+- **Rank Math SEO** - SEO management (free tier)
+- **Contact Form 7** - Forms (free)
+- **Smart Slider 3** - Sliders (free version)
 
 ## Setup
 

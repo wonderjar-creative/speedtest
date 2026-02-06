@@ -20,13 +20,11 @@ Using a popular free theme, NOT optimized:
 
 ## Plugins
 
-Typical small business plugin stack:
-- Yoast SEO
+Typical small business plugin stack (all free, no paid licenses):
+- Rank Math SEO (free tier)
 - Contact Form 7
-- Slider Revolution or Smart Slider 3
+- Smart Slider 3 (free version)
 - WP Super Cache (basic caching, not aggressive)
-- Akismet
-- Classic Editor (optional)
 
 ## Content
 
