@@ -33,6 +33,10 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
+<p class="has-gray-500-color has-text-color has-sm-font-size">A complete transformation of a 1920s industrial loft into a contemporary living space with exposed brick and custom millwork.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
 <p class="has-gray-500-color has-text-color has-sm-font-size">Denver, CO</p>
 <!-- /wp:paragraph -->
 </div>
@@ -57,6 +61,10 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
+<p class="has-gray-500-color has-text-color has-sm-font-size">Open-plan workspace for 200+ employees featuring collaboration zones, quiet rooms, and biophilic design elements.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
 <p class="has-gray-500-color has-text-color has-sm-font-size">Boulder, CO</p>
 <!-- /wp:paragraph -->
 </div>
@@ -79,6 +87,10 @@
 <!-- wp:heading {"level":3,"fontSize":"base"} -->
 <h3 class="wp-block-heading has-base-font-size">Mountain Retreat</h3>
 <!-- /wp:heading -->
+
+<!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
+<p class="has-gray-500-color has-text-color has-sm-font-size">Luxury mountain home with floor-to-ceiling windows, natural stone, and seamless indoor-outdoor living spaces.</p>
+<!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"textColor":"gray-500","fontSize":"sm"} -->
 <p class="has-gray-500-color has-text-color has-sm-font-size">Vail, CO</p>

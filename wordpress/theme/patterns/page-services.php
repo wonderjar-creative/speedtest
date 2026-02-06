@@ -87,8 +87,8 @@
 </div>
 <!-- /wp:columns -->
 
-<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"}}}} -->
-<div class="wp-block-columns">
+<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
 <!-- wp:column -->
 <div class="wp-block-column">
 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
@@ -119,7 +119,42 @@
 <!-- /wp:column -->
 </div>
 <!-- /wp:columns -->
+
+<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-columns">
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading">Renovation &amp; Remodeling</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"textColor":"gray-500"} -->
+<p class="has-gray-500-color has-text-color">Breathe new life into existing spaces. Whether it's a historic restoration or a modern update, we bring expertise and vision to every renovation project.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"textColor":"gray-500"} -->
+<ul class="has-gray-500-color has-text-color">
+<li>Historic preservation</li>
+<li>Modern updates</li>
+<li>Structural modifications</li>
+<li>Energy efficiency upgrades</li>
+</ul>
+<!-- /wp:list -->
+</div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
+<figure class="wp-block-image has-custom-border"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&amp;q=80" alt="Renovation project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+<!-- /wp:image -->
+</div>
+<!-- /wp:column -->
+</div>
+<!-- /wp:columns -->
 </div>
 <!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"elevation-theme/process-steps"} /-->
 
 <!-- wp:pattern {"slug":"elevation-theme/cta"} /-->
