@@ -9,116 +9,116 @@
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
-    <!-- wp:heading {"textAlign":"center","level":1} -->
-    <h1 class="wp-block-heading has-text-align-center">Our Services</h1>
-    <!-- /wp:heading -->
+<!-- wp:heading {"textAlign":"center","level":1} -->
+<h1 class="wp-block-heading has-text-align-center">Our Services</h1>
+<!-- /wp:heading -->
 
-    <!-- wp:paragraph {"align":"center","textColor":"gray-600","fontSize":"lg"} -->
-    <p class="has-text-align-center has-gray-600-color has-text-color has-lg-font-size">Comprehensive design solutions tailored to your needs</p>
-    <!-- /wp:paragraph -->
+<!-- wp:paragraph {"align":"center","textColor":"gray-500","fontSize":"lg"} -->
+<p class="has-text-align-center has-gray-500-color has-text-color has-lg-font-size">Comprehensive design solutions tailored to your needs</p>
+<!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
 
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"0","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--60)">
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80" alt="Residential design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
-            <!-- /wp:image -->
-        </div>
-        <!-- /wp:column -->
+<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
+<figure class="wp-block-image has-custom-border"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&amp;q=80" alt="Residential design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+<!-- /wp:image -->
+</div>
+<!-- /wp:column -->
 
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:heading {"level":2} -->
-            <h2 class="wp-block-heading">Residential Design</h2>
-            <!-- /wp:heading -->
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading">Residential Design</h2>
+<!-- /wp:heading -->
 
-            <!-- wp:paragraph {"textColor":"gray-700"} -->
-            <p class="has-gray-700-color has-text-color">Transform your home into a personalized sanctuary. From single-room makeovers to complete home renovations, we create spaces that reflect your lifestyle and aesthetic.</p>
-            <!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"gray-500"} -->
+<p class="has-gray-500-color has-text-color">Transform your home into a personalized sanctuary. From single-room makeovers to complete home renovations, we create spaces that reflect your lifestyle and aesthetic.</p>
+<!-- /wp:paragraph -->
 
-            <!-- wp:list {"textColor":"gray-600"} -->
-            <ul class="has-gray-600-color has-text-color">
-                <li>Full home design</li>
-                <li>Kitchen &amp; bath remodels</li>
-                <li>Space planning</li>
-                <li>Custom furniture selection</li>
-            </ul>
-            <!-- /wp:list -->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
+<!-- wp:list {"textColor":"gray-500"} -->
+<ul class="has-gray-500-color has-text-color">
+<li>Full home design</li>
+<li>Kitchen &amp; bath remodels</li>
+<li>Space planning</li>
+<li>Custom furniture selection</li>
+</ul>
+<!-- /wp:list -->
+</div>
+<!-- /wp:column -->
+</div>
+<!-- /wp:columns -->
 
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:heading {"level":2} -->
-            <h2 class="wp-block-heading">Commercial Spaces</h2>
-            <!-- /wp:heading -->
+<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading">Commercial Spaces</h2>
+<!-- /wp:heading -->
 
-            <!-- wp:paragraph {"textColor":"gray-700"} -->
-            <p class="has-gray-700-color has-text-color">Create inspiring workplaces that boost productivity and reflect your brand. We design offices, retail spaces, and hospitality venues that make an impression.</p>
-            <!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"gray-500"} -->
+<p class="has-gray-500-color has-text-color">Create inspiring workplaces that boost productivity and reflect your brand. We design offices, retail spaces, and hospitality venues that make an impression.</p>
+<!-- /wp:paragraph -->
 
-            <!-- wp:list {"textColor":"gray-600"} -->
-            <ul class="has-gray-600-color has-text-color">
-                <li>Office design</li>
-                <li>Retail environments</li>
-                <li>Restaurant &amp; hospitality</li>
-                <li>Brand integration</li>
-            </ul>
-            <!-- /wp:list -->
-        </div>
-        <!-- /wp:column -->
+<!-- wp:list {"textColor":"gray-500"} -->
+<ul class="has-gray-500-color has-text-color">
+<li>Office design</li>
+<li>Retail environments</li>
+<li>Restaurant &amp; hospitality</li>
+<li>Brand integration</li>
+</ul>
+<!-- /wp:list -->
+</div>
+<!-- /wp:column -->
 
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Commercial design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
-            <!-- /wp:image -->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
+<figure class="wp-block-image has-custom-border"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&amp;q=80" alt="Commercial design project" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+<!-- /wp:image -->
+</div>
+<!-- /wp:column -->
+</div>
+<!-- /wp:columns -->
 
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"}}}} -->
-    <div class="wp-block-columns">
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
-            <figure class="wp-block-image"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&q=80" alt="Design consultation" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
-            <!-- /wp:image -->
-        </div>
-        <!-- /wp:column -->
+<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-columns">
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:image {"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"8px"}}} -->
+<figure class="wp-block-image has-custom-border"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&amp;q=80" alt="Design consultation" style="border-radius:8px;aspect-ratio:4/3;object-fit:cover"/></figure>
+<!-- /wp:image -->
+</div>
+<!-- /wp:column -->
 
-        <!-- wp:column -->
-        <div class="wp-block-column">
-            <!-- wp:heading {"level":2} -->
-            <h2 class="wp-block-heading">Design Consultation</h2>
-            <!-- /wp:heading -->
+<!-- wp:column -->
+<div class="wp-block-column">
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading">Design Consultation</h2>
+<!-- /wp:heading -->
 
-            <!-- wp:paragraph {"textColor":"gray-700"} -->
-            <p class="has-gray-700-color has-text-color">Not ready for a full project? Our consultation services provide expert guidance to help you make informed decisions about your space.</p>
-            <!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"gray-500"} -->
+<p class="has-gray-500-color has-text-color">Not ready for a full project? Our consultation services provide expert guidance to help you make informed decisions about your space.</p>
+<!-- /wp:paragraph -->
 
-            <!-- wp:list {"textColor":"gray-600"} -->
-            <ul class="has-gray-600-color has-text-color">
-                <li>Color consultation</li>
-                <li>Furniture layout</li>
-                <li>Material selection</li>
-                <li>Project planning</li>
-            </ul>
-            <!-- /wp:list -->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
+<!-- wp:list {"textColor":"gray-500"} -->
+<ul class="has-gray-500-color has-text-color">
+<li>Color consultation</li>
+<li>Furniture layout</li>
+<li>Material selection</li>
+<li>Project planning</li>
+</ul>
+<!-- /wp:list -->
+</div>
+<!-- /wp:column -->
+</div>
+<!-- /wp:columns -->
 </div>
 <!-- /wp:group -->
 
