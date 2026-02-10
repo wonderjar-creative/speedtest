@@ -287,6 +287,257 @@ select:focus {
 }
 
 /* ==========================================================================
+   Back to Top Button
+   ========================================================================== */
+
+.elevation-back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background-color: var(--wp--preset--color--primary);
+  color: var(--wp--preset--color--white);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.elevation-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.elevation-back-to-top:hover {
+  background-color: var(--wp--preset--color--gray-900);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Image Lightbox
+   ========================================================================== */
+
+.elevation-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.elevation-lightbox.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.elevation-lightbox__img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 4px;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.elevation-lightbox.is-active .elevation-lightbox__img {
+  transform: scale(1);
+}
+
+.elevation-lightbox__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.elevation-lightbox__close:hover {
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   Dropdown Menu Styles
+   ========================================================================== */
+
+.wp-block-navigation-item.has-child {
+  position: relative;
+}
+
+.wp-block-navigation__submenu-container {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: var(--wp--preset--color--white);
+  border: 1px solid var(--wp--preset--color--gray-100);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem 0;
+  z-index: 1000;
+}
+
+.wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+  display: block;
+  padding: 0.6rem 1.25rem;
+  color: var(--wp--preset--color--gray-900);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.wp-block-navigation__submenu-container .wp-block-navigation-item__content:hover {
+  background-color: var(--wp--preset--color--gray-100);
+  color: var(--wp--preset--color--primary);
+}
+
+.wp-block-navigation__submenu-container .wp-block-navigation-item__content::after {
+  display: none;
+}
+
+/* Dropdown arrow indicator */
+.wp-block-navigation-item.has-child > .wp-block-navigation-item__content::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  position: static;
+  background: none;
+  transition: transform 0.2s ease;
+}
+
+.wp-block-navigation-item.has-child.is-dropdown-open > .wp-block-navigation-item__content::after {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   Mobile Menu Toggle
+   ========================================================================== */
+
+.elevation-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 101;
+}
+
+.elevation-menu-toggle__bar {
+  width: 24px;
+  height: 2px;
+  background-color: var(--wp--preset--color--gray-900);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .elevation-menu-toggle {
+    display: flex;
+  }
+
+  .wp-block-navigation {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--wp--preset--color--white);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .wp-block-navigation.is-menu-open {
+    display: flex;
+  }
+
+  .wp-block-navigation .wp-block-navigation-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--wp--preset--color--gray-100);
+  }
+
+  .wp-block-navigation__submenu-container {
+    position: static;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding-left: 1rem;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* ==========================================================================
+   Testimonial Pulse Animation
+   ========================================================================== */
+
+@keyframes testimonialPulse {
+  0%, 100% {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.12);
+  }
+}
+
+/* ==========================================================================
+   Counter Animation Styles
+   ========================================================================== */
+
+.elevation-counter {
+  display: inline;
+}
+
+/* ==========================================================================
    Responsive Grid Adjustments
    ========================================================================== */
 

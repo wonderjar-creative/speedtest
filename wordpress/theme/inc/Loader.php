@@ -59,8 +59,9 @@ class Loader {
 		// Theme setup.
 		add_action( 'after_setup_theme', [ $this, 'theme_setup' ] );
 
-		// Enqueue styles.
+		// Enqueue styles and scripts.
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
 		// Run feature hooks.
 		foreach ( $this->features as $feature ) {
@@ -91,11 +92,40 @@ class Loader {
 	 * @return void
 	 */
 	public function enqueue_styles(): void {
+		// Google Fonts — loaded render-blocking (typical slow WP site).
+		wp_enqueue_style(
+			'elevation-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap',
+			[],
+			null
+		);
+
 		wp_enqueue_style(
 			'elevation-theme-styles',
 			get_template_directory_uri() . '/assets/css/theme.css',
-			[],
+			[ 'elevation-google-fonts' ],
 			filemtime( get_template_directory() . '/assets/css/theme.css' )
+		);
+	}
+
+	/**
+	 * Enqueue theme scripts.
+	 *
+	 * Loads jQuery (render-blocking) + custom theme JS.
+	 *
+	 * @return void
+	 */
+	public function enqueue_scripts(): void {
+		// Ensure jQuery is loaded (WP includes it, render-blocking in <head>).
+		wp_enqueue_script( 'jquery' );
+
+		// Theme JS — depends on jQuery, loaded in footer.
+		wp_enqueue_script(
+			'elevation-theme-scripts',
+			get_template_directory_uri() . '/assets/js/elevation-theme.js',
+			[ 'jquery' ],
+			filemtime( get_template_directory() . '/assets/js/elevation-theme.js' ),
+			true
 		);
 	}
 }

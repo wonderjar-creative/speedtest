@@ -623,16 +623,43 @@ echo ""
 echo "[11/11] Creating navigation menu..."
 
 wp menu create "Primary" --url="$URL" || true
+
+# Home (top-level)
 wp menu item add-post "Primary" "$(wp post list --post_type=page --name=home --field=ID --url="$URL")" --title="Home" --url="$URL" || true
-wp menu item add-post "Primary" "$(wp post list --post_type=page --name=about --field=ID --url="$URL")" --title="About" --url="$URL" || true
-wp menu item add-post "Primary" "$(wp post list --post_type=page --name=services --field=ID --url="$URL")" --title="Services" --url="$URL" || true
-wp menu item add-custom "Primary" "Projects" "/projects/" --url="$URL" || true
-wp menu item add-custom "Primary" "Team" "/team/" --url="$URL" || true
+
+# About (with submenus)
+ABOUT_ID=$(wp menu item add-post "Primary" "$(wp post list --post_type=page --name=about --field=ID --url="$URL")" --title="About" --porcelain --url="$URL") || true
+if [ -n "$ABOUT_ID" ]; then
+  wp menu item add-custom "Primary" "Our Story" "/about/" --parent-id="$ABOUT_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Our Team" "/team/" --parent-id="$ABOUT_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Awards & Recognition" "/about/#awards" --parent-id="$ABOUT_ID" --url="$URL" || true
+fi
+
+# Services (with submenus)
+SERVICES_ID=$(wp menu item add-post "Primary" "$(wp post list --post_type=page --name=services --field=ID --url="$URL")" --title="Services" --porcelain --url="$URL") || true
+if [ -n "$SERVICES_ID" ]; then
+  wp menu item add-custom "Primary" "Residential Design" "/services/#residential" --parent-id="$SERVICES_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Commercial Interiors" "/services/#commercial" --parent-id="$SERVICES_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Renovation & Remodeling" "/services/#renovation" --parent-id="$SERVICES_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Consultation" "/services/#consultation" --parent-id="$SERVICES_ID" --url="$URL" || true
+fi
+
+# Portfolio (with submenus)
+PORTFOLIO_ID=$(wp menu item add-custom "Primary" "Portfolio" "/projects/" --porcelain --url="$URL") || true
+if [ -n "$PORTFOLIO_ID" ]; then
+  wp menu item add-custom "Primary" "All Projects" "/projects/" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Residential" "/projects/?type=residential" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Commercial" "/projects/?type=commercial" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Hospitality" "/projects/?type=hospitality" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+fi
+
+# Testimonials, Blog, Contact (top-level)
 wp menu item add-custom "Primary" "Testimonials" "/testimonials/" --url="$URL" || true
 wp menu item add-post "Primary" "$(wp post list --post_type=page --name=blog --field=ID --url="$URL")" --title="Blog" --url="$URL" || true
 wp menu item add-post "Primary" "$(wp post list --post_type=page --name=contact --field=ID --url="$URL")" --title="Contact" --url="$URL" || true
+
 wp menu location assign "Primary" primary --url="$URL" 2>/dev/null || true
-echo "✓ Navigation menu created"
+echo "✓ Navigation menu with submenus created"
 
 # Flush rewrite rules for new CPTs
 wp rewrite flush --url="$URL" || true

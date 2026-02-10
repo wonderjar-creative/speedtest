@@ -13,7 +13,7 @@
 <!-- wp:column -->
 <div class="wp-block-column">
 <!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3.5rem","fontWeight":"700"}},"textColor":"white"} -->
-<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700">200+</h2>
+<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700"><span class="elevation-counter" data-target="200" data-suffix="+">0</span></h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","textColor":"gray-300","fontSize":"sm"} -->
@@ -25,7 +25,7 @@
 <!-- wp:column -->
 <div class="wp-block-column">
 <!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3.5rem","fontWeight":"700"}},"textColor":"white"} -->
-<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700">15</h2>
+<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700"><span class="elevation-counter" data-target="15">0</span></h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","textColor":"gray-300","fontSize":"sm"} -->
@@ -37,7 +37,7 @@
 <!-- wp:column -->
 <div class="wp-block-column">
 <!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3.5rem","fontWeight":"700"}},"textColor":"white"} -->
-<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700">50+</h2>
+<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700"><span class="elevation-counter" data-target="50" data-suffix="+">0</span></h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","textColor":"gray-300","fontSize":"sm"} -->
@@ -49,7 +49,7 @@
 <!-- wp:column -->
 <div class="wp-block-column">
 <!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3.5rem","fontWeight":"700"}},"textColor":"white"} -->
-<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700">98%</h2>
+<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:3.5rem;font-weight:700"><span class="elevation-counter" data-target="98" data-suffix="%">0</span></h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","textColor":"gray-300","fontSize":"sm"} -->
