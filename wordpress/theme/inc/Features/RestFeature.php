@@ -72,7 +72,7 @@ class RestFeature {
 		if ( is_dir( $parts_dir ) ) {
 			$files = glob( $parts_dir . '/*.html' );
 			foreach ( $files as $file ) {
-				$slug    = basename( $file, '.html' );
+				$slug = basename( $file, '.html' );
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local file read.
 				$content = file_get_contents( $file );
 
