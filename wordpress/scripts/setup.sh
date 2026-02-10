@@ -13,7 +13,7 @@ echo "========================================="
 
 # Wait for WordPress to be ready
 echo ""
-echo "[1/9] Waiting for WordPress..."
+echo "[1/11] Waiting for WordPress..."
 until wp core is-installed --url="$URL" 2>/dev/null; do
   # Try to install if not installed yet
   wp core install --url="$URL" --title="Elevation Design Studio" --admin_user="admin" --admin_password="admin123" --admin_email="admin@example.com" --skip-email 2>/dev/null || sleep 2
@@ -22,20 +22,20 @@ echo "✓ WordPress installed"
 
 # Configure site settings
 echo ""
-echo "[2/9] Configuring settings..."
+echo "[2/11] Configuring settings..."
 wp option update blogdescription "Architecture & Interior Design" --url="$URL"
 wp rewrite structure '/%postname%/' --hard --url="$URL"
 echo "✓ Settings configured"
 
 # Install and activate theme
 echo ""
-echo "[3/9] Activating theme..."
+echo "[3/11] Activating theme..."
 wp theme activate elevation-theme --url="$URL" || echo "Theme not found - activate manually"
 echo "✓ Theme step complete"
 
 # Install required plugins
 echo ""
-echo "[4/9] Installing plugins..."
+echo "[4/11] Installing plugins..."
 
 # WPGraphQL - Required for headless
 wp plugin install wp-graphql --activate --url="$URL"
@@ -62,12 +62,12 @@ wp plugin install smart-slider-3 --activate --url="$URL"
 echo "  ✓ Smart Slider 3"
 
 echo ""
-echo "[5/9] Installing WPGraphQL for Rank Math..."
+echo "[5/11] Installing WPGraphQL for Rank Math..."
 wp plugin install https://github.com/developer-developer/developer-developer-developer/archive/refs/heads/master.zip --activate --url="$URL" 2>/dev/null || echo "  ! WPGraphQL for Rank Math - install manually"
 
 # Set up basic pages with pattern content
 echo ""
-echo "[6/9] Creating pages..."
+echo "[6/11] Creating pages..."
 wp post create --post_type=page --post_title="Home" --post_status=publish --post_name="home" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-home"} /-->' --url="$URL" || true
 wp post create --post_type=page --post_title="About" --post_status=publish --post_name="about" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-about"} /-->' --url="$URL" || true
 wp post create --post_type=page --post_title="Services" --post_status=publish --post_name="services" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-services"} /-->' --url="$URL" || true
@@ -90,7 +90,7 @@ fi
 
 # Create blog posts
 echo ""
-echo "[7/9] Creating blog posts..."
+echo "[7/11] Creating blog posts..."
 
 wp post create --post_type=post --post_title="5 Design Trends Shaping Denver Homes in 2024" \
   --post_status=publish \
@@ -312,7 +312,7 @@ echo "  ✓ Post: Consultation Process"
 
 # Create team members
 echo ""
-echo "[8/9] Creating team members..."
+echo "[8/11] Creating team members..."
 
 wp post create --post_type=team_member --post_title="David Chen" \
   --post_status=publish \
@@ -356,7 +356,7 @@ echo "  ✓ Marcus Thompson"
 
 # Create testimonials
 echo ""
-echo "[9/9] Creating testimonials..."
+echo "[9/11] Creating testimonials..."
 
 wp post create --post_type=testimonial --post_title="Sarah Mitchell" \
   --post_status=publish \
@@ -398,6 +398,245 @@ wp post create --post_type=testimonial --post_title="Tom and Lisa Brennan" \
   --url="$URL" || true
 echo "  ✓ Tom and Lisa Brennan"
 
+# Create projects
+echo ""
+echo "[10/11] Creating projects..."
+
+wp post create --post_type=project --post_title="Modern Loft Renovation" \
+  --post_status=publish \
+  --post_name="modern-loft-renovation" \
+  --post_excerpt="Complete transformation of a 1920s industrial loft into a contemporary living space with exposed brick and custom millwork." \
+  --post_content='<!-- wp:paragraph -->
+<p>This 2,400 square foot LoDo loft had been untouched since its conversion from warehouse space in the early 1990s. The owners wanted a modern, open living environment that preserved the industrial character — the original brick walls, timber beams, and cast iron columns — while adding warmth and livability.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Design Approach</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We opened up the floor plan by removing non-structural partition walls, creating a single flowing space from the entry through the living area to the kitchen. Custom walnut millwork defines zones without blocking sightlines — a floating media wall separates living from dining, while a built-in bookcase frames the home office nook.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The kitchen features a 12-foot waterfall island in honed Calacatta marble, contrasting with blackened steel shelving and matte black fixtures. Underfoot, the original maple flooring was sanded, repaired, and refinished in a natural matte.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Results</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The renovation took five months. The result is a space that honors its industrial past while feeling distinctly contemporary — open, warm, and built for how the owners actually live.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Denver, CO","project_type":"Residential","square_footage":"2400","year_completed":"2023","photo_url":"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Modern Loft Renovation"
+
+wp post create --post_type=project --post_title="Tech Startup HQ" \
+  --post_status=publish \
+  --post_name="tech-startup-hq" \
+  --post_excerpt="Open-plan workspace for 200+ employees featuring collaboration zones, quiet rooms, and biophilic design elements." \
+  --post_content='<!-- wp:paragraph -->
+<p>A fast-growing Boulder tech company needed a headquarters that could scale with them — flexible enough for 200+ employees today with room to grow, while reflecting a culture built on collaboration, transparency, and innovation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Space Planning</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The 18,000 square foot space is organized around a central commons — a double-height atrium with a living green wall, cafe seating, and a presentation stage. Neighborhoods of 20-30 desks radiate outward, each with dedicated focus rooms, phone booths, and informal meeting areas. No employee is more than 60 seconds from a quiet space.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Biophilic Elements</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Over 400 plants are integrated throughout the space, from desk-level succulents to ceiling-hung trailing pothos. The living wall in the commons filters air and creates a visual anchor. Natural materials — oak, felt, cork — appear at every touchpoint. Studies show biophilic design reduces stress and increases productivity by up to 15%.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Boulder, CO","project_type":"Commercial","square_footage":"18000","year_completed":"2023","photo_url":"https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Tech Startup HQ"
+
+wp post create --post_type=project --post_title="Mountain Retreat" \
+  --post_status=publish \
+  --post_name="mountain-retreat" \
+  --post_excerpt="Luxury mountain home with floor-to-ceiling windows, natural stone, and seamless indoor-outdoor living spaces." \
+  --post_content='<!-- wp:paragraph -->
+<p>Perched on a south-facing lot at 8,200 feet in Vail, this 4,800 square foot home was designed to disappear into the landscape while commanding panoramic views of the Gore Range. The clients wanted a mountain home that felt modern and light — not the dark timber lodges that dominate the area.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Architecture</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The home is organized as three stacked volumes — a stone-clad base anchoring it to the hillside, a glass-and-steel living level that opens completely to the south, and a cantilevered upper floor with private bedrooms. Floor-to-ceiling triple-glazed windows frame the mountain views while maintaining energy efficiency at altitude.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Materials</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Local Colorado moss rock forms the base and fireplace surround. Interior walls are finished in lime plaster. Wide-plank white oak floors run throughout. The kitchen island is a single slab of leathered quartzite. Every material was chosen for its connection to the mountain environment.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Vail, CO","project_type":"Residential","square_footage":"4800","year_completed":"2022","photo_url":"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Mountain Retreat"
+
+wp post create --post_type=project --post_title="Boutique Hotel Lobby" \
+  --post_status=publish \
+  --post_name="boutique-hotel-lobby" \
+  --post_excerpt="Sophisticated lobby design blending mountain lodge warmth with contemporary luxury for a 45-room boutique hotel." \
+  --post_content='<!-- wp:paragraph -->
+<p>The Alpenglow Hotel in Aspen needed a lobby that would set the tone for a 45-room boutique experience — warm and inviting enough for apres-ski, sophisticated enough for a summer gala. The existing space was a dated 1980s ski lodge interior with low ceilings and dark paneling.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Transformation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We opened the ceiling to expose the original timber trusses, adding 6 feet of vertical space. A double-sided fireplace anchors the room, separating the reception area from a lounge with mountain views. Custom furniture mixes leather, sheepskin, and brass with clean contemporary lines.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The check-in desk is a sculptural piece in blackened steel and live-edge walnut. Behind it, a backlit wall of locally quarried marble creates a warm glow. The floor transitions from heated stone at the entry to wide-plank reclaimed oak in the lounge areas.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Aspen, CO","project_type":"Hospitality","square_footage":"3200","year_completed":"2023","photo_url":"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Boutique Hotel Lobby"
+
+wp post create --post_type=project --post_title="Urban Townhouse" \
+  --post_status=publish \
+  --post_name="urban-townhouse" \
+  --post_excerpt="Three-story townhouse redesign maximizing vertical space with an open staircase, rooftop terrace, and smart home integration." \
+  --post_content='<!-- wp:paragraph -->
+<p>This 2,100 square foot Highlands townhouse had a common problem — tall and narrow with each floor feeling disconnected. The owners wanted the home to feel more open and connected while adding a usable rooftop space and modern smart home features throughout.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Vertical Connection</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The key move was replacing the enclosed staircase with an open steel-and-glass structure that runs the full three stories. A skylight at the top floods all levels with natural light. Each floor now has visual and acoustic connection to the others, transforming the home from three stacked apartments into one cohesive space.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Smart Integration</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Every system is controlled through a unified smart home platform — lighting, climate, shades, security, audio. Motorized blackout shades, zoned HVAC, and circadian-rhythm lighting adjust automatically based on time of day and occupancy. The rooftop terrace includes a built-in grill, heated seating, and weatherproof speakers with views of downtown Denver.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Denver, CO","project_type":"Residential","square_footage":"2100","year_completed":"2024","photo_url":"https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Urban Townhouse"
+
+wp post create --post_type=project --post_title="Creative Agency Office" \
+  --post_status=publish \
+  --post_name="creative-agency-office" \
+  --post_excerpt="Vibrant workspace for a 50-person creative agency with writable walls, flexible meeting pods, and a rooftop lounge." \
+  --post_content='<!-- wp:paragraph -->
+<p>A Denver-based advertising agency was outgrowing their WeWork space and needed a permanent home that reflected their creative energy. The brief was clear: no beige, no cubicles, and the space itself should be a portfolio piece that impresses clients on arrival.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Creative Zones</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The 8,500 square foot space is divided into neighborhoods rather than departments. Writable walls and mobile whiteboards allow any surface to become a brainstorming canvas. Four meeting pods — each themed and soundproofed — can be booked for focused sessions. A material library and model shop give the design team hands-on workspace.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Culture Spaces</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The entry opens into a gallery wall showcasing the agency'"'"'s best work, rotated quarterly. A full kitchen and bar area anchors the social zone, doubling as event space for client presentations and team celebrations. The rooftop lounge with artificial turf, string lights, and mountain views has become the agency'"'"'s signature recruiting tool.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Denver, CO","project_type":"Commercial","square_footage":"8500","year_completed":"2024","photo_url":"https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Creative Agency Office"
+
+wp post create --post_type=project --post_title="Lakeside Villa" \
+  --post_status=publish \
+  --post_name="lakeside-villa" \
+  --post_excerpt="Custom lakefront home with panoramic views, an infinity pool, and sustainable materials throughout." \
+  --post_content='<!-- wp:paragraph -->
+<p>Set on a one-acre lakefront lot in Grand Lake, this 5,200 square foot home was designed from the ground up as a year-round family retreat. The clients — a couple with three teenage children — wanted a home that could host large gatherings while still feeling intimate for everyday living.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Lake Living</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The home is oriented to maximize lake views from every major room. A wraparound covered deck extends the living space outdoors, with an infinity-edge pool that visually merges with the lake beyond. The lower level walks out directly to a private dock and fire pit area.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Sustainability</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Despite its size, the home is net-zero ready. A 15kW solar array on the south-facing garage roof, geothermal heating and cooling, and a super-insulated envelope keep energy costs minimal. Rainwater collection feeds the landscape irrigation. All wood is FSC-certified, sourced from Colorado mills where possible.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Grand Lake, CO","project_type":"Residential","square_footage":"5200","year_completed":"2022","photo_url":"https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Lakeside Villa"
+
+wp post create --post_type=project --post_title="Farm-to-Table Restaurant" \
+  --post_status=publish \
+  --post_name="farm-to-table-restaurant" \
+  --post_excerpt="Rustic-modern dining space with reclaimed wood, open kitchen concept, and an intimate 80-seat layout." \
+  --post_content='<!-- wp:paragraph -->
+<p>Root & Bloom is a farm-to-table restaurant in Old Town Fort Collins that needed a space as thoughtful as its menu. The chef-owner wanted diners to feel connected to the food'"'"'s origins — the farms, the seasons, the craft — through the architecture and design of the restaurant itself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Design Concept</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The 2,800 square foot space is organized around an open kitchen as the visual centerpiece. A 16-foot reclaimed barn wood communal table runs parallel to the kitchen pass, giving diners a front-row seat to the cooking. The remaining 60 seats are arranged in intimate groupings — banquettes along the brick walls, four-tops by the windows, a private dining alcove for 8.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Materials Story</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Every material has provenance. The communal table is from a 100-year-old barn in Loveland. Light fixtures are hand-blown by a Fort Collins glass artist. Ceramic tiles behind the bar were made by a local potter using Colorado clay. The concrete floors are polished and sealed, warm underfoot from radiant heating — durable enough for restaurant traffic while feeling refined.</p>
+<!-- /wp:paragraph -->' \
+  --meta_input='{"location":"Fort Collins, CO","project_type":"Hospitality","square_footage":"2800","year_completed":"2024","photo_url":"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80"}' \
+  --url="$URL" || true
+echo "  ✓ Farm-to-Table Restaurant"
+
+# Create navigation menu
+echo ""
+echo "[11/11] Creating navigation menu..."
+
+wp menu create "Primary" --url="$URL" || true
+wp menu item add-post "Primary" "$(wp post list --post_type=page --name=home --field=ID --url="$URL")" --title="Home" --url="$URL" || true
+wp menu item add-post "Primary" "$(wp post list --post_type=page --name=about --field=ID --url="$URL")" --title="About" --url="$URL" || true
+wp menu item add-post "Primary" "$(wp post list --post_type=page --name=services --field=ID --url="$URL")" --title="Services" --url="$URL" || true
+wp menu item add-custom "Primary" "Projects" "/projects/" --url="$URL" || true
+wp menu item add-custom "Primary" "Team" "/team/" --url="$URL" || true
+wp menu item add-custom "Primary" "Testimonials" "/testimonials/" --url="$URL" || true
+wp menu item add-post "Primary" "$(wp post list --post_type=page --name=blog --field=ID --url="$URL")" --title="Blog" --url="$URL" || true
+wp menu item add-post "Primary" "$(wp post list --post_type=page --name=contact --field=ID --url="$URL")" --title="Contact" --url="$URL" || true
+wp menu location assign "Primary" primary --url="$URL" 2>/dev/null || true
+echo "✓ Navigation menu created"
+
+# Flush rewrite rules for new CPTs
+wp rewrite flush --url="$URL" || true
+
 echo ""
 echo "========================================="
 echo "  Setup Complete!"
@@ -410,8 +649,10 @@ echo ""
 echo "Login: admin / admin123"
 echo ""
 echo "Content created:"
-echo "  - 5 Pages (Home, About, Services, Portfolio, Contact, Blog)"
+echo "  - 6 Pages (Home, About, Services, Portfolio, Contact, Blog)"
 echo "  - 5 Blog Posts"
+echo "  - 8 Projects"
 echo "  - 5 Team Members"
 echo "  - 5 Testimonials"
+echo "  - Primary navigation menu"
 echo ""

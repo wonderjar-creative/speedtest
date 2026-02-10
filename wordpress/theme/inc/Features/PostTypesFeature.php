@@ -2,7 +2,7 @@
 /**
  * Custom Post Types Feature.
  *
- * Registers team_member and testimonial CPTs with meta fields.
+ * Registers project, team_member, and testimonial CPTs with meta fields.
  *
  * @package ElevationTheme
  * @since 0.1.0
@@ -35,6 +35,32 @@ class PostTypesFeature {
 	 * @return void
 	 */
 	public function register_post_types(): void {
+		// Project CPT.
+		register_post_type(
+			'project',
+			[
+				'labels'              => [
+					'name'               => 'Projects',
+					'singular_name'      => 'Project',
+					'add_new_item'       => 'Add New Project',
+					'edit_item'          => 'Edit Project',
+					'all_items'          => 'All Projects',
+					'search_items'       => 'Search Projects',
+					'not_found'          => 'No projects found.',
+					'not_found_in_trash' => 'No projects found in Trash.',
+				],
+				'public'              => true,
+				'has_archive'         => true,
+				'show_in_rest'        => true,
+				'show_in_graphql'     => true,
+				'graphql_single_name' => 'project',
+				'graphql_plural_name' => 'projects',
+				'supports'            => [ 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ],
+				'menu_icon'           => 'dashicons-portfolio',
+				'rewrite'             => [ 'slug' => 'projects' ],
+			]
+		);
+
 		// Team Member CPT.
 		register_post_type(
 			'team_member',
@@ -50,7 +76,7 @@ class PostTypesFeature {
 					'not_found_in_trash' => 'No team members found in Trash.',
 				],
 				'public'              => true,
-				'has_archive'         => false,
+				'has_archive'         => true,
 				'show_in_rest'        => true,
 				'show_in_graphql'     => true,
 				'graphql_single_name' => 'teamMember',
@@ -76,7 +102,7 @@ class PostTypesFeature {
 					'not_found_in_trash' => 'No testimonials found in Trash.',
 				],
 				'public'              => true,
-				'has_archive'         => false,
+				'has_archive'         => true,
 				'show_in_rest'        => true,
 				'show_in_graphql'     => true,
 				'graphql_single_name' => 'testimonial',
@@ -94,6 +120,45 @@ class PostTypesFeature {
 	 * @return void
 	 */
 	public function register_meta_fields(): void {
+		// Project meta.
+		$project_meta = [
+			'location'       => [
+				'description' => 'Project location (e.g., Denver, CO)',
+				'type'        => 'string',
+			],
+			'project_type'   => [
+				'description' => 'Project type (Residential, Commercial, Hospitality)',
+				'type'        => 'string',
+			],
+			'square_footage' => [
+				'description' => 'Square footage of the project',
+				'type'        => 'integer',
+			],
+			'year_completed' => [
+				'description' => 'Year the project was completed',
+				'type'        => 'integer',
+			],
+			'photo_url'      => [
+				'description' => 'External photo URL (fallback when no featured image)',
+				'type'        => 'string',
+			],
+		];
+
+		foreach ( $project_meta as $key => $args ) {
+			register_post_meta(
+				'project',
+				$key,
+				[
+					'type'              => $args['type'],
+					'description'       => $args['description'],
+					'single'            => true,
+					'show_in_rest'      => true,
+					'show_in_graphql'   => true,
+					'sanitize_callback' => 'integer' === $args['type'] ? 'absint' : 'sanitize_text_field',
+				]
+			);
+		}
+
 		// Team Member meta.
 		$team_meta = [
 			'position'  => [
