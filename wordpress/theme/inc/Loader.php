@@ -10,6 +10,7 @@ namespace ElevationTheme\Inc;
 
 use ElevationTheme\Inc\Features\RestFeature;
 use ElevationTheme\Inc\Features\GraphQLFeature;
+use ElevationTheme\Inc\Features\PostTypesFeature;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,6 +44,7 @@ class Loader {
 	 */
 	private function load_features(): void {
 		$this->features = [
+			new PostTypesFeature(),
 			new RestFeature(),
 			new GraphQLFeature(),
 		];
