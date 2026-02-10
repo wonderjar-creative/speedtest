@@ -5,7 +5,10 @@
  * Categories: pages
  * Keywords: home, homepage, landing
  * Post Types: page
+ *
+ * @package ElevationTheme
  */
+
 ?>
 <!-- wp:pattern {"slug":"elevation-theme/hero"} /-->
 <!-- wp:pattern {"slug":"elevation-theme/client-logos"} /-->

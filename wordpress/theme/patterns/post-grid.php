@@ -5,7 +5,10 @@
  * Categories: posts, query
  * Keywords: posts, grid, blog, archive
  * Block Types: core/query
+ *
+ * @package ElevationTheme
  */
+
 ?>
 <!-- wp:query {"queryId":1,"query":{"perPage":9,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide","layout":{"type":"default"}} -->
 <div class="wp-block-query alignwide">

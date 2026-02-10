@@ -48,6 +48,7 @@ class GraphQLFeature {
 				'description' => 'Whether this page is set as the posts page.',
 				'resolve'     => function ( $post ) {
 					$posts_page_id = get_option( 'page_for_posts' );
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
 					return $post->databaseId === (int) $posts_page_id;
 				},
 			)
@@ -62,6 +63,7 @@ class GraphQLFeature {
 				'description' => 'Whether this page is set as the front page.',
 				'resolve'     => function ( $post ) {
 					$front_page_id = get_option( 'page_on_front' );
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
 					return $post->databaseId === (int) $front_page_id;
 				},
 			)
@@ -75,6 +77,7 @@ class GraphQLFeature {
 				'type'        => 'String',
 				'description' => 'JSON-encoded block data for the content.',
 				'resolve'     => function ( $post ) {
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
 					$blocks = parse_blocks( $post->contentRaw ?? '' );
 					return wp_json_encode( $blocks );
 				},
