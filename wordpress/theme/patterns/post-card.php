@@ -5,7 +5,10 @@
  * Categories: posts
  * Keywords: post, card, blog
  * Block Types: core/post-template
+ *
+ * @package ElevationTheme
  */
+
 ?>
 <!-- wp:group {"className":"post-card","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"border":{"radius":"8px"}},"backgroundColor":"white","layout":{"type":"default"}} -->
 <div class="wp-block-group post-card has-white-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">

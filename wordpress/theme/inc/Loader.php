@@ -28,7 +28,7 @@ class Loader {
 	 *
 	 * @var array
 	 */
-	private array $features = [];
+	private $features = [];
 
 	/**
 	 * Constructor.
@@ -97,7 +97,7 @@ class Loader {
 			'elevation-google-fonts',
 			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap',
 			[],
-			null
+			'1.0.0'
 		);
 
 		wp_enqueue_style(

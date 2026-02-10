@@ -5,7 +5,10 @@
  * Categories: footer
  * Keywords: footer, copyright, social
  * Block Types: core/template-part/footer
+ *
+ * @package ElevationTheme
  */
+
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"margin":{"top":"0","bottom":"0"}}},"backgroundColor":"gray-900","layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull has-gray-900-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50)">
