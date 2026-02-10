@@ -441,6 +441,10 @@ select:focus {
   transform: rotate(180deg);
 }
 
+.wp-block-navigation .wp-block-navigation__submenu-icon {
+  display: none;
+}
+
 /* ==========================================================================
    Mobile Menu Toggle
    ========================================================================== */
@@ -496,6 +500,10 @@ select:focus {
 
   .wp-block-navigation.is-menu-open {
     display: flex;
+  }
+
+  .wp-block-navigation .wp-block-navigation__submenu-icon {
+    display: inline-block;
   }
 
   .wp-block-navigation .wp-block-navigation-item {
