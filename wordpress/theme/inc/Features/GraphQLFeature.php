@@ -30,7 +30,7 @@ class GraphQLFeature {
 			return;
 		}
 
-		add_action( 'graphql_register_types', [ $this, 'register_types' ] );
+		add_action( 'graphql_register_types', array( $this, 'register_types' ) );
 	}
 
 	/**
@@ -43,42 +43,42 @@ class GraphQLFeature {
 		register_graphql_field(
 			'Page',
 			'isPostsPage',
-			[
+			array(
 				'type'        => 'Boolean',
 				'description' => 'Whether this page is set as the posts page.',
 				'resolve'     => function ( $post ) {
 					$posts_page_id = get_option( 'page_for_posts' );
 					return $post->databaseId === (int) $posts_page_id;
 				},
-			]
+			)
 		);
 
 		// Add isFrontPage field to Page type.
 		register_graphql_field(
 			'Page',
 			'isFrontPage',
-			[
+			array(
 				'type'        => 'Boolean',
 				'description' => 'Whether this page is set as the front page.',
 				'resolve'     => function ( $post ) {
 					$front_page_id = get_option( 'page_on_front' );
 					return $post->databaseId === (int) $front_page_id;
 				},
-			]
+			)
 		);
 
 		// Add block data field to ContentNode.
 		register_graphql_field(
 			'ContentNode',
 			'blocksData',
-			[
+			array(
 				'type'        => 'String',
 				'description' => 'JSON-encoded block data for the content.',
 				'resolve'     => function ( $post ) {
 					$blocks = parse_blocks( $post->contentRaw ?? '' );
 					return wp_json_encode( $blocks );
 				},
-			]
+			)
 		);
 	}
 }

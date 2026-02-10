@@ -28,7 +28,7 @@ class Loader {
 	 *
 	 * @var array
 	 */
-	private array $features = [];
+	private array $features = array();
 
 	/**
 	 * Constructor.
@@ -43,11 +43,11 @@ class Loader {
 	 * @return void
 	 */
 	private function load_features(): void {
-		$this->features = [
+		$this->features = array(
 			new PostTypesFeature(),
 			new RestFeature(),
 			new GraphQLFeature(),
-		];
+		);
 	}
 
 	/**
@@ -57,11 +57,11 @@ class Loader {
 	 */
 	public function run(): void {
 		// Theme setup.
-		add_action( 'after_setup_theme', [ $this, 'theme_setup' ] );
+		add_action( 'after_setup_theme', array( $this, 'theme_setup' ) );
 
 		// Enqueue styles and scripts.
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		// Run feature hooks.
 		foreach ( $this->features as $feature ) {
@@ -78,7 +78,7 @@ class Loader {
 		// Add theme support.
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'title-tag' );
-		add_theme_support( 'html5', [ 'search-form', 'gallery', 'caption', 'style', 'script' ] );
+		add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
 
 		// Block editor support.
 		add_theme_support( 'wp-block-styles' );
@@ -96,14 +96,14 @@ class Loader {
 		wp_enqueue_style(
 			'elevation-google-fonts',
 			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap',
-			[],
+			array(),
 			null
 		);
 
 		wp_enqueue_style(
 			'elevation-theme-styles',
 			get_template_directory_uri() . '/assets/css/theme.css',
-			[ 'elevation-google-fonts' ],
+			array( 'elevation-google-fonts' ),
 			filemtime( get_template_directory() . '/assets/css/theme.css' )
 		);
 	}
@@ -123,7 +123,7 @@ class Loader {
 		wp_enqueue_script(
 			'elevation-theme-scripts',
 			get_template_directory_uri() . '/assets/js/elevation-theme.js',
-			[ 'jquery' ],
+			array( 'jquery' ),
 			filemtime( get_template_directory() . '/assets/js/elevation-theme.js' ),
 			true
 		);

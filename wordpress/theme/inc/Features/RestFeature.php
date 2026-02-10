@@ -25,7 +25,7 @@ class RestFeature {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
+		add_action( 'rest_api_init', array( $this, 'register_endpoints' ) );
 	}
 
 	/**
@@ -37,11 +37,11 @@ class RestFeature {
 		register_rest_route(
 			'template-structure/v1',
 			'/full',
-			[
+			array(
 				'methods'             => 'GET',
-				'callback'            => [ $this, 'get_template_structure' ],
+				'callback'            => array( $this, 'get_template_structure' ),
 				'permission_callback' => '__return_true',
-			]
+			)
 		);
 	}
 
@@ -51,11 +51,11 @@ class RestFeature {
 	 * @return \WP_REST_Response
 	 */
 	public function get_template_structure(): \WP_REST_Response {
-		$data = [
+		$data = array(
 			'templateParts' => $this->get_template_parts(),
 			'patterns'      => $this->get_patterns(),
 			'navigation'    => $this->get_navigation_menus(),
-		];
+		);
 
 		return new \WP_REST_Response( $data, 200 );
 	}
@@ -66,7 +66,7 @@ class RestFeature {
 	 * @return array
 	 */
 	private function get_template_parts(): array {
-		$template_parts = [];
+		$template_parts = array();
 
 		$parts_dir = get_template_directory() . '/parts';
 		if ( is_dir( $parts_dir ) ) {
@@ -75,10 +75,10 @@ class RestFeature {
 				$slug    = basename( $file, '.html' );
 				$content = file_get_contents( $file );
 
-				$template_parts[] = [
+				$template_parts[] = array(
 					'slug'    => $slug,
 					'content' => $content,
-				];
+				);
 			}
 		}
 
@@ -91,7 +91,7 @@ class RestFeature {
 	 * @return array
 	 */
 	private function get_patterns(): array {
-		$patterns = [];
+		$patterns = array();
 
 		$patterns_dir = get_template_directory() . '/patterns';
 		if ( is_dir( $patterns_dir ) ) {
@@ -104,10 +104,10 @@ class RestFeature {
 				include $file;
 				$content = ob_get_clean();
 
-				$patterns[] = [
+				$patterns[] = array(
 					'slug'    => $slug,
 					'content' => $content,
-				];
+				);
 			}
 		}
 
@@ -120,18 +120,18 @@ class RestFeature {
 	 * @return array
 	 */
 	private function get_navigation_menus(): array {
-		$menus = [];
+		$menus = array();
 
 		$nav_menus = wp_get_nav_menus();
 		foreach ( $nav_menus as $menu ) {
 			$items = wp_get_nav_menu_items( $menu->term_id );
 
-			$menus[] = [
+			$menus[] = array(
 				'id'    => $menu->term_id,
 				'name'  => $menu->name,
 				'slug'  => $menu->slug,
-				'items' => $items ? $this->format_menu_items( $items ) : [],
-			];
+				'items' => $items ? $this->format_menu_items( $items ) : array(),
+			);
 		}
 
 		return $menus;
@@ -146,14 +146,14 @@ class RestFeature {
 	private function format_menu_items( array $items ): array {
 		return array_map(
 			function ( $item ) {
-				return [
-					'id'       => $item->ID,
-					'title'    => $item->title,
-					'url'      => $item->url,
-					'target'   => $item->target,
-					'parent'   => (int) $item->menu_item_parent,
-					'classes'  => implode( ' ', $item->classes ),
-				];
+				return array(
+					'id'      => $item->ID,
+					'title'   => $item->title,
+					'url'     => $item->url,
+					'target'  => $item->target,
+					'parent'  => (int) $item->menu_item_parent,
+					'classes' => implode( ' ', $item->classes ),
+				);
 			},
 			$items
 		);
