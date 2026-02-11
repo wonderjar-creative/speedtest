@@ -34,7 +34,7 @@
 <!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
 <div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--40)">
 <!-- wp:button {"backgroundColor":"primary","textColor":"white"} -->
-<div class="wp-block-button"><a class="wp-block-button__link has-white-color has-primary-background-color has-text-color has-background wp-element-button">Learn More About Us</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link has-white-color has-primary-background-color has-text-color has-background wp-element-button" href="/about/">Learn More About Us</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

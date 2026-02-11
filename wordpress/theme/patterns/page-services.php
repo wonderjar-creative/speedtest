@@ -10,20 +10,26 @@
  */
 
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
-<!-- wp:heading {"textAlign":"center","level":1} -->
-<h1 class="wp-block-heading has-text-align-center">Our Services</h1>
+<!-- wp:cover {"url":"https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":400,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);min-height:400px"><span aria-hidden="true" class="wp-block-cover__background has-gray-900-background-color has-background-dim-60 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Design services" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&amp;q=80" data-object-fit="cover"/>
+<div class="wp-block-cover__inner-container">
+<!-- wp:group {"layout":{"type":"constrained"}} -->
+<div class="wp-block-group">
+<!-- wp:heading {"textAlign":"center","level":1,"textColor":"white"} -->
+<h1 class="wp-block-heading has-text-align-center has-white-color has-text-color">Our Services</h1>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph {"align":"center","textColor":"gray-500","fontSize":"lg"} -->
-<p class="has-text-align-center has-gray-500-color has-text-color has-lg-font-size">Comprehensive design solutions tailored to your needs</p>
+<!-- wp:paragraph {"align":"center","textColor":"gray-300","fontSize":"lg"} -->
+<p class="has-text-align-center has-gray-300-color has-text-color has-lg-font-size">Comprehensive design solutions tailored to your needs</p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
+</div>
+</div>
+<!-- /wp:cover -->
 
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"0","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
 <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"},"margin":{"bottom":"var:preset|spacing|50"}}}} -->
 <div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--50)">
 <!-- wp:column -->

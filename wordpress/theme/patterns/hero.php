@@ -29,11 +29,11 @@
 <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
 <div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--40)">
 <!-- wp:button {"backgroundColor":"primary","textColor":"white"} -->
-<div class="wp-block-button"><a class="wp-block-button__link has-white-color has-primary-background-color has-text-color has-background wp-element-button">View Our Work</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link has-white-color has-primary-background-color has-text-color has-background wp-element-button" href="/projects/">View Our Work</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button {"className":"is-style-outline"} -->
-<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button">Contact Us</a></div>
+<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="/contact/">Contact Us</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

@@ -16,7 +16,7 @@
 <div class="wp-block-group" style="margin-top:0;margin-bottom:0">
 <!-- wp:site-title {"style":{"typography":{"fontWeight":"700"},"spacing":{"margin":{"top":"0","bottom":"0"}}},"textColor":"gray-900"} /-->
 
-<!-- wp:navigation {"textColor":"gray-900","style":{"spacing":{"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","justifyContent":"right"}} -->
+<!-- wp:navigation {"textColor":"gray-900","overlayMenu":"mobile","style":{"spacing":{"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","justifyContent":"right"}} -->
 <!-- wp:navigation-link {"label":"Home","url":"/","kind":"custom","isTopLevelLink":true} /-->
 
 <!-- wp:navigation-submenu {"label":"About","url":"/about","kind":"custom"} -->
@@ -34,9 +34,9 @@
 
 <!-- wp:navigation-submenu {"label":"Portfolio","url":"/projects/","kind":"custom"} -->
 <!-- wp:navigation-link {"label":"All Projects","url":"/projects/","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Residential","url":"/projects/?type=residential","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Commercial","url":"/projects/?type=commercial","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Hospitality","url":"/projects/?type=hospitality","kind":"custom"} /-->
+<!-- wp:navigation-link {"label":"Residential","url":"/project-type/residential/","kind":"custom"} /-->
+<!-- wp:navigation-link {"label":"Commercial","url":"/project-type/commercial/","kind":"custom"} /-->
+<!-- wp:navigation-link {"label":"Hospitality","url":"/project-type/hospitality/","kind":"custom"} /-->
 <!-- /wp:navigation-submenu -->
 
 <!-- wp:navigation-link {"label":"Testimonials","url":"/testimonials/","kind":"custom","isTopLevelLink":true} /-->
