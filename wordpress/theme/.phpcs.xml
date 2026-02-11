@@ -26,5 +26,6 @@
 
     <!-- Allow modern PHP -->
     <config name="minimum_supported_wp_version" value="6.0"/>
+    <config name="testVersion" value="8.1-"/>
     <rule ref="PHPCompatibilityWP"/>
 </ruleset>

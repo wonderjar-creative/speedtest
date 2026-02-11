@@ -39,6 +39,11 @@
           "color": "#f3f4f6"
         },
         {
+          "slug": "gray-300",
+          "name": "Gray 300",
+          "color": "#d1d5db"
+        },
+        {
           "slug": "gray-500",
           "name": "Gray 500",
           "color": "#6b7280"
@@ -111,6 +116,18 @@
       "writingMode": true,
       "defaultFontSizes": false,
       "fluid": true,
+      "fontFamilies": [
+        {
+          "slug": "body",
+          "name": "Body (Inter)",
+          "fontFamily": "'Inter', system-ui, -apple-system, sans-serif"
+        },
+        {
+          "slug": "heading",
+          "name": "Heading (Playfair Display)",
+          "fontFamily": "'Playfair Display', Georgia, serif"
+        }
+      ],
       "fontSizes": [
         { "slug": "xs", "size": "0.75rem", "name": "XS" },
         { "slug": "sm", "size": "0.875rem", "name": "SM" },
@@ -128,12 +145,19 @@
     "useRootPaddingAwareAlignments": true
   },
   "styles": {
+    "spacing": {
+      "blockGap": "1.2rem",
+      "padding": {
+        "left": "var:preset|spacing|50",
+        "right": "var:preset|spacing|50"
+      }
+    },
     "color": {
       "background": "var(--wp--preset--color--white)",
       "text": "var(--wp--preset--color--gray-900)"
     },
     "typography": {
-      "fontFamily": "system-ui, -apple-system, sans-serif",
+      "fontFamily": "var(--wp--preset--font-family--body)",
       "fontSize": "1rem",
       "lineHeight": "1.5"
     },
@@ -154,7 +178,10 @@
       },
       "heading": {
         "color": { "text": "var(--wp--preset--color--gray-900)" },
-        "typography": { "fontWeight": "700" }
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--heading)",
+          "fontWeight": "700"
+        }
       }
     }
   },

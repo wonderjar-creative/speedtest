@@ -63,6 +63,9 @@ class Loader {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
+		// Google Analytics — typical third-party tracking script (render-blocking).
+		add_action( 'wp_head', array( $this, 'output_google_analytics' ), 1 );
+
 		// Run feature hooks.
 		foreach ( $this->features as $feature ) {
 			$feature->register();
@@ -84,6 +87,28 @@ class Loader {
 		add_theme_support( 'wp-block-styles' );
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'responsive-embeds' );
+	}
+
+	/**
+	 * Output Google Analytics tracking code.
+	 *
+	 * Uses a placeholder measurement ID. The gtag.js script (~90kb) still
+	 * loads from Google's CDN, adding realistic third-party bloat.
+	 *
+	 * @return void
+	 */
+	public function output_google_analytics(): void {
+		$ga_id = 'G-XXXXXXXXXX';
+		?>
+		<!-- Google Analytics — typical small business site tracking -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $ga_id ); ?>"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', '<?php echo esc_js( $ga_id ); ?>');
+		</script>
+		<?php
 	}
 
 	/**

@@ -19,8 +19,8 @@ console.log(`Updated style.css to version ${version}`);
 const functionsPath = path.join(__dirname, '..', 'functions.php');
 let functionsContent = fs.readFileSync(functionsPath, 'utf8');
 functionsContent = functionsContent.replace(
-  /define\(\s*'PROJECT_THEME_VERSION',\s*'.+'\s*\)/,
-  `define( 'PROJECT_THEME_VERSION', '${version}' )`
+  /define\(\s*'ELEVATION_THEME_VERSION',\s*'.+'\s*\)/,
+  `define( 'ELEVATION_THEME_VERSION', '${version}' )`
 );
 fs.writeFileSync(functionsPath, functionsContent);
 console.log(`Updated functions.php to version ${version}`);

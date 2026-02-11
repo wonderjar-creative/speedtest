@@ -1,8 +1,8 @@
 {
-  "name": "projectname-theme",
-  "version": "1.0.0",
+  "name": "elevation-theme",
+  "version": "0.1.0",
   "private": true,
-  "description": "A headless WordPress block theme",
+  "description": "WordPress block theme for Elevation Design Studio demo",
   "scripts": {
     "composer:install": "composer install",
     "composer:update": "composer update",
@@ -16,11 +16,8 @@
     "version:minor": "npm version minor --no-git-tag-version && npm run version:sync",
     "version:major": "npm version major --no-git-tag-version && npm run version:sync",
     "version:sync": "node scripts/sync-theme-version.js",
-    "zip:theme": "npm run build && npm run composer:prod && rm -rf /tmp/project-theme && mkdir -p /tmp/project-theme && rsync -a --exclude='.git' --exclude='.vscode' --exclude='package*.json' --exclude='composer.*' --exclude='.phpcs.xml' --exclude='README.md' --exclude='CHANGELOG.md' --exclude='CLAUDE.md' --exclude='*.zip' --exclude='node_modules' --exclude='scripts' . /tmp/project-theme/ && cd /tmp && zip -r \"$OLDPWD/project-theme-$(node -p \"require('$OLDPWD/package.json').version\").zip\" project-theme && rm -rf /tmp/project-theme && cd - && npm run composer:install",
-    "deploy": "cd ../ops && npm run deploy",
-    "deploy:staging": "cd ../ops && npm run deploy:staging",
-    "deploy:production": "cd ../ops && npm run deploy:production"
+    "zip:theme": "npm run build && npm run composer:prod && rm -rf /tmp/elevation-theme && mkdir -p /tmp/elevation-theme && rsync -a --exclude='.git' --exclude='.vscode' --exclude='package*.json' --exclude='composer.*' --exclude='.phpcs.xml' --exclude='README.md' --exclude='CHANGELOG.md' --exclude='CLAUDE.md' --exclude='*.zip' --exclude='node_modules' --exclude='scripts' . /tmp/elevation-theme/ && cd /tmp && zip -r \"$OLDPWD/elevation-theme-$(node -p \"require('$OLDPWD/package.json').version\").zip\" elevation-theme && rm -rf /tmp/elevation-theme && cd - && npm run composer:install"
   },
-  "author": "Your Name",
+  "author": "Denver Headless",
   "license": "GPL-2.0-or-later"
 }

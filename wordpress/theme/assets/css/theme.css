@@ -19,8 +19,20 @@
   margin-block-start: 0;
 }
 
+/* Ensure breathing room before footer */
+main.wp-block-group,
+main.wp-block-group:has(> .entry-content) {
+  padding-block-end: var(--wp--preset--spacing--60);
+}
+
+main.wp-block-group:has(> .entry-content),
+main.wp-block-group:has(> :last-child[style*="padding-bottom"]),
+main.wp-block-group:has(> .entry-content) > .entry-content:has(:last-child[style*="padding-bottom"]) {
+  padding-block-end: 0;
+}
+
 /* Remove gaps between stacked full-width sections */
-.wp-block-group[class*="alignfull"] + .wp-block-group[class*="alignfull"] {
+.alignfull + .alignfull {
   margin-block-start: 0;
 }
 
@@ -446,82 +458,58 @@ select:focus {
 }
 
 /* ==========================================================================
-   Mobile Menu Toggle
+   WP Navigation Mobile Overlay
    ========================================================================== */
 
-.elevation-menu-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
+.wp-block-navigation__responsive-container-open {
   border: none;
+  background: none;
   cursor: pointer;
-  padding: 8px;
-  z-index: 101;
+  padding: 4px;
+  color: var(--wp--preset--color--gray-900);
 }
 
-.elevation-menu-toggle__bar {
+.wp-block-navigation__responsive-container-open svg {
   width: 24px;
-  height: 2px;
-  background-color: var(--wp--preset--color--gray-900);
-  transition: all 0.3s ease;
+  height: 24px;
+}
+
+.wp-block-navigation__responsive-container.is-menu-open {
+  background: var(--wp--preset--color--white);
+  padding: 1.5rem;
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-close {
+  color: var(--wp--preset--color--gray-900);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+  color: var(--wp--preset--color--gray-900);
+  padding: 0.5rem 0;
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content::after {
+  display: none;
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container {
+  position: static;
   display: block;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  padding: 0 0 0 1rem;
+  min-width: 0;
 }
 
-.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
 }
 
-.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(2) {
-  opacity: 0;
-}
-
-.elevation-menu-toggle.is-active .elevation-menu-toggle__bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-@media (max-width: 768px) {
-  .elevation-menu-toggle {
-    display: flex;
-  }
-
-  .wp-block-navigation {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--wp--preset--color--white);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    padding: 1.5rem;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .wp-block-navigation.is-menu-open {
-    display: flex;
-  }
-
-  .wp-block-navigation .wp-block-navigation__submenu-icon {
-    display: inline-block;
-  }
-
-  .wp-block-navigation .wp-block-navigation-item {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--wp--preset--color--gray-100);
-  }
-
-  .wp-block-navigation__submenu-container {
-    position: static;
-    box-shadow: none;
-    border: none;
-    border-radius: 0;
-    padding-left: 1rem;
-  }
-
-  body.menu-open {
-    overflow: hidden;
-  }
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container .wp-block-navigation-item__content:hover {
+  background: none;
+  color: var(--wp--preset--color--primary);
 }
 
 /* ==========================================================================
@@ -543,6 +531,46 @@ select:focus {
 
 .elevation-counter {
   display: inline;
+}
+
+/* ==========================================================================
+   Client Logos
+   ========================================================================== */
+
+.client-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem 3rem;
+  margin-top: var(--wp--preset--spacing--40);
+}
+
+.client-logos__item {
+  flex: 0 0 auto;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.client-logos__item:hover {
+  opacity: 1;
+}
+
+.client-logos__item svg {
+  width: 160px;
+  height: 50px;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .client-logos {
+    gap: 1.5rem 2rem;
+  }
+
+  .client-logos__item svg {
+    width: 130px;
+    height: 42px;
+  }
 }
 
 /* ==========================================================================
