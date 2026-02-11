@@ -5,57 +5,59 @@ export async function fetchGraphQL<T = any>(
   variables?: { [key: string]: any },
   headers?: { [key: string]: string },
 ): Promise<T> {
-  const { isEnabled: preview } = await draftMode();
+  let preview = false;
+  let authHeader = "";
 
   try {
-    let authHeader = "";
+    const { isEnabled } = await draftMode();
+    preview = isEnabled;
+
     if (preview) {
       const auth = (await cookies()).get("wp_jwt")?.value;
       if (auth) {
         authHeader = `Bearer ${auth}`;
       }
     }
-
-    const body = JSON.stringify({
-      query,
-      variables: {
-        preview,
-        ...variables,
-      },
-    });
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(authHeader && { Authorization: authHeader }),
-          ...headers,
-        },
-        body,
-        cache: preview ? "no-cache" : "default",
-        next: {
-          tags: ["wordpress"],
-        },
-      },
-    );
-
-    if (!response.ok) {
-      console.error("Response Status:", response);
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-
-    if (data.errors) {
-      console.error("GraphQL Errors:", data.errors);
-      throw new Error("Error executing GraphQL query");
-    }
-
-    return data.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch {
+    // draftMode() throws outside of request scope (e.g. generateStaticParams)
   }
+
+  const body = JSON.stringify({
+    query,
+    variables: {
+      preview,
+      ...variables,
+    },
+  });
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(authHeader && { Authorization: authHeader }),
+        ...headers,
+      },
+      body,
+      cache: preview ? "no-cache" : "default",
+      next: {
+        tags: ["wordpress"],
+      },
+    },
+  );
+
+  if (!response.ok) {
+    console.error("Response Status:", response.status, response.statusText);
+    throw new Error(response.statusText);
+  }
+
+  const data = await response.json();
+
+  if (data.errors) {
+    console.error("GraphQL Errors:", data.errors);
+    throw new Error("Error executing GraphQL query");
+  }
+
+  return data.data;
 }
