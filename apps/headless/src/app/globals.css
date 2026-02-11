@@ -1,20 +1,37 @@
 @import "tailwindcss";
 
-/*
- * Tailwind CSS v4 configuration
- * Sync these values with your WordPress theme.json
- */
-
 @theme {
-  /* Colors - sync with WordPress theme.json */
+  /* Colors - synced with WordPress theme.json */
   --color-primary: #0ea5e9;
   --color-secondary: #64748b;
   --color-accent: #f97316;
+  --color-gray-100: #f3f4f6;
+  --color-gray-300: #d1d5db;
+  --color-gray-500: #6b7280;
+  --color-gray-900: #111827;
 
-  /* Add your project colors here */
+  /* Fonts - CSS vars set by next/font */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+
+  /* Spacing - synced with WordPress theme.json preset slugs */
+  --spacing-20: 10px;
+  --spacing-30: 20px;
+  --spacing-40: 30px;
+  --spacing-50: clamp(30px, 4vw, 50px);
+  --spacing-60: clamp(30px, 5vw, 70px);
+  --spacing-70: clamp(50px, 7vw, 90px);
+  --spacing-80: clamp(70px, 10vw, 140px);
 }
 
-/* Base styles */
 body {
-  @apply antialiased;
+  @apply antialiased text-gray-900 font-sans;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-serif font-bold text-gray-900;
+}
+
+a {
+  @apply text-primary hover:text-accent transition-colors;
 }

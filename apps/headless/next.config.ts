@@ -1,13 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  poweredByHeader: false,
   images: {
-    // Add your WordPress domains here
-    domains: [
-      'projectname.local',           // Local development
-      'cms.example.com',             // Production WordPress
-      'staging.cms.example.com',     // Staging WordPress
-    ]
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.speedtest.denverheadless.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
   },
   webpack(config) {
     config.module.rules.push({
