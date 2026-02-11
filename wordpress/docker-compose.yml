@@ -62,6 +62,17 @@ services:
     # Keep container available for commands
     entrypoint: ["tail", "-f", "/dev/null"]
 
+  # One-shot container to fix upload directory permissions
+  fix-permissions:
+    image: wordpress:cli
+    container_name: speedtest-fix-perms
+    user: "0:0"
+    volumes:
+      - wp_uploads:/var/www/html/wp-content/uploads
+    entrypoint: ["sh", "-c", "chown -R 33:33 /var/www/html/wp-content/uploads"]
+    depends_on:
+      - wordpress
+
 # Named volumes (Docker manages these)
 volumes:
   db_data:

@@ -13,7 +13,7 @@ echo "========================================="
 
 # Wait for WordPress to be ready
 echo ""
-echo "[1/11] Waiting for WordPress..."
+echo "[1/13] Waiting for WordPress..."
 until wp core is-installed --url="$URL" 2>/dev/null; do
   # Try to install if not installed yet
   wp core install --url="$URL" --title="Elevation Design Studio" --admin_user="admin" --admin_password="admin123" --admin_email="admin@example.com" --skip-email 2>/dev/null || sleep 2
@@ -22,20 +22,20 @@ echo "✓ WordPress installed"
 
 # Configure site settings
 echo ""
-echo "[2/11] Configuring settings..."
+echo "[2/13] Configuring settings..."
 wp option update blogdescription "Architecture & Interior Design" --url="$URL"
 wp rewrite structure '/%postname%/' --hard --url="$URL"
 echo "✓ Settings configured"
 
 # Install and activate theme
 echo ""
-echo "[3/11] Activating theme..."
+echo "[3/13] Activating theme..."
 wp theme activate elevation-theme --url="$URL" || echo "Theme not found - activate manually"
 echo "✓ Theme step complete"
 
 # Install required plugins
 echo ""
-echo "[4/11] Installing plugins..."
+echo "[4/13] Installing plugins..."
 
 # WPGraphQL - Required for headless
 wp plugin install wp-graphql --activate --url="$URL"
@@ -55,19 +55,21 @@ echo "  ✓ WP Super Cache"
 
 # Contact Form 7
 wp plugin install contact-form-7 --activate --url="$URL"
+# Rename the default CF7 form and set demo mode
+CF7_ID=$(wp post list --post_type=wpcf7_contact_form --posts_per_page=1 --field=ID --url="$URL" 2>/dev/null)
+if [ -n "$CF7_ID" ]; then
+  wp post update "$CF7_ID" --post_title="Contact Form" --url="$URL" 2>/dev/null
+  wp post meta update "$CF7_ID" _additional_settings "demo_mode: on" --url="$URL" 2>/dev/null
+fi
 echo "  ✓ Contact Form 7"
 
-# Smart Slider 3 (free version)
-wp plugin install smart-slider-3 --activate --url="$URL"
-echo "  ✓ Smart Slider 3"
-
 echo ""
-echo "[5/11] Installing WPGraphQL for Rank Math..."
+echo "[5/13] Installing WPGraphQL for Rank Math..."
 wp plugin install https://github.com/developer-developer/developer-developer-developer/archive/refs/heads/master.zip --activate --url="$URL" 2>/dev/null || echo "  ! WPGraphQL for Rank Math - install manually"
 
 # Set up basic pages with pattern content
 echo ""
-echo "[6/11] Creating pages..."
+echo "[6/13] Creating pages..."
 wp post create --post_type=page --post_title="Home" --post_status=publish --post_name="home" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-home"} /-->' --url="$URL" || true
 wp post create --post_type=page --post_title="About" --post_status=publish --post_name="about" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-about"} /-->' --url="$URL" || true
 wp post create --post_type=page --post_title="Services" --post_status=publish --post_name="services" --post_content='<!-- wp:pattern {"slug":"elevation-theme/page-services"} /-->' --url="$URL" || true
@@ -90,7 +92,7 @@ fi
 
 # Create blog posts
 echo ""
-echo "[7/11] Creating blog posts..."
+echo "[7/13] Creating blog posts..."
 
 wp post create --post_type=post --post_title="5 Design Trends Shaping Denver Homes in 2024" \
   --post_status=publish \
@@ -312,7 +314,7 @@ echo "  ✓ Post: Consultation Process"
 
 # Create team members
 echo ""
-echo "[8/11] Creating team members..."
+echo "[8/13] Creating team members..."
 
 wp post create --post_type=team_member --post_title="David Chen" \
   --post_status=publish \
@@ -356,7 +358,7 @@ echo "  ✓ Marcus Thompson"
 
 # Create testimonials
 echo ""
-echo "[9/11] Creating testimonials..."
+echo "[9/13] Creating testimonials..."
 
 wp post create --post_type=testimonial --post_title="Sarah Mitchell" \
   --post_status=publish \
@@ -400,7 +402,7 @@ echo "  ✓ Tom and Lisa Brennan"
 
 # Create projects
 echo ""
-echo "[10/11] Creating projects..."
+echo "[10/13] Creating projects..."
 
 wp post create --post_type=project --post_title="Modern Loft Renovation" \
   --post_status=publish \
@@ -618,9 +620,37 @@ wp post create --post_type=project --post_title="Farm-to-Table Restaurant" \
   --url="$URL" || true
 echo "  ✓ Farm-to-Table Restaurant"
 
+# Create project type taxonomy terms and assign to projects
+echo ""
+echo "[11/13] Assigning project types..."
+
+# Create terms
+wp term create project_type "Residential" --url="$URL" 2>/dev/null || true
+wp term create project_type "Commercial" --url="$URL" 2>/dev/null || true
+wp term create project_type "Hospitality" --url="$URL" 2>/dev/null || true
+
+# Assign terms based on the project_type meta already set
+PROJECTS='modern-loft-renovation|Residential
+tech-startup-hq|Commercial
+mountain-retreat|Residential
+boutique-hotel-lobby|Hospitality
+urban-townhouse|Residential
+creative-agency-office|Commercial
+lakeside-villa|Residential
+farm-to-table-restaurant|Hospitality'
+
+echo "$PROJECTS" | while IFS='|' read -r SLUG TERM; do
+  PID=$(wp post list --post_type=project --name="$SLUG" --field=ID --url="$URL" 2>/dev/null)
+  if [ -n "$PID" ]; then
+    wp post term set "$PID" project_type "$TERM" --url="$URL" 2>/dev/null
+    echo "  ✓ $SLUG → $TERM"
+  fi
+done
+echo "✓ Project types assigned"
+
 # Create navigation menu
 echo ""
-echo "[11/11] Creating navigation menu..."
+echo "[12/13] Creating navigation menu..."
 
 wp menu create "Primary" --url="$URL" || true
 
@@ -648,9 +678,9 @@ fi
 PORTFOLIO_ID=$(wp menu item add-custom "Primary" "Portfolio" "/projects/" --porcelain --url="$URL") || true
 if [ -n "$PORTFOLIO_ID" ]; then
   wp menu item add-custom "Primary" "All Projects" "/projects/" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
-  wp menu item add-custom "Primary" "Residential" "/projects/?type=residential" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
-  wp menu item add-custom "Primary" "Commercial" "/projects/?type=commercial" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
-  wp menu item add-custom "Primary" "Hospitality" "/projects/?type=hospitality" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Residential" "/project-type/residential/" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Commercial" "/project-type/commercial/" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
+  wp menu item add-custom "Primary" "Hospitality" "/project-type/hospitality/" --parent-id="$PORTFOLIO_ID" --url="$URL" || true
 fi
 
 # Testimonials, Blog, Contact (top-level)
@@ -663,6 +693,66 @@ echo "✓ Navigation menu with submenus created"
 
 # Flush rewrite rules for new CPTs
 wp rewrite flush --url="$URL" || true
+
+# Import featured images
+echo ""
+echo "[13/13] Importing featured images..."
+
+# Upload dir permissions are handled by the fix-permissions service in docker-compose
+
+# Helper: download image, import to media library, set as featured image
+set_featured_image() {
+  local POST_ID="$1"
+  local IMAGE_URL="$2"
+  local POST_TITLE="$3"
+
+  if [ -z "$POST_ID" ] || [ -z "$IMAGE_URL" ]; then
+    return
+  fi
+
+  # Sanitize title to filename
+  local FILENAME
+  FILENAME=$(echo "$POST_TITLE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+  FILENAME="${FILENAME}.jpg"
+
+  # Download with proper extension, then import
+  if wget -q -O "/tmp/$FILENAME" "$IMAGE_URL" 2>/dev/null; then
+    ATTACH_ID=$(wp media import "/tmp/$FILENAME" --title="$POST_TITLE" --porcelain --url="$URL" 2>/dev/null)
+    rm -f "/tmp/$FILENAME"
+    if [ -n "$ATTACH_ID" ]; then
+      wp post meta update "$POST_ID" _thumbnail_id "$ATTACH_ID" --url="$URL" 2>/dev/null
+      echo "  ✓ $POST_TITLE"
+    else
+      echo "  ! Import failed: $POST_TITLE"
+    fi
+  else
+    echo "  ! Download failed: $POST_TITLE"
+  fi
+}
+
+# Blog post featured images (not stored in meta, assign here)
+BLOG_IMAGES='design-trends-denver-2024|https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80
+restoring-1920s-bungalow-wash-park|https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80
+commercial-vs-residential-design|https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80
+sustainable-building-practices|https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800&q=80
+consultation-process-what-to-expect|https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80'
+
+echo "$BLOG_IMAGES" | while IFS='|' read -r SLUG IMG_URL; do
+  PID=$(wp post list --post_type=post --name="$SLUG" --field=ID --url="$URL" 2>/dev/null)
+  TITLE=$(wp post list --post_type=post --name="$SLUG" --field=post_title --url="$URL" 2>/dev/null)
+  set_featured_image "$PID" "$IMG_URL" "$TITLE"
+done
+
+# Import featured images for CPTs that store photo_url in meta
+for POST_TYPE in project team_member testimonial; do
+  wp post list --post_type="$POST_TYPE" --field=ID --url="$URL" 2>/dev/null | while read -r PID; do
+    PHOTO_URL=$(wp post meta get "$PID" photo_url --url="$URL" 2>/dev/null)
+    TITLE=$(wp post get "$PID" --field=post_title --url="$URL" 2>/dev/null)
+    set_featured_image "$PID" "$PHOTO_URL" "$TITLE"
+  done
+done
+
+echo "✓ Featured images imported"
 
 echo ""
 echo "========================================="
@@ -677,9 +767,9 @@ echo "Login: admin / admin123"
 echo ""
 echo "Content created:"
 echo "  - 6 Pages (Home, About, Services, Portfolio, Contact, Blog)"
-echo "  - 5 Blog Posts"
-echo "  - 8 Projects"
-echo "  - 5 Team Members"
-echo "  - 5 Testimonials"
+echo "  - 5 Blog Posts (with featured images)"
+echo "  - 8 Projects (with featured images)"
+echo "  - 5 Team Members (with featured images)"
+echo "  - 5 Testimonials (with featured images)"
 echo "  - Primary navigation menu"
 echo ""

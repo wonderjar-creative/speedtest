@@ -26,6 +26,7 @@ class PostTypesFeature {
 	 */
 	public function register(): void {
 		add_action( 'init', array( $this, 'register_post_types' ) );
+		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_meta_fields' ) );
 	}
 
@@ -110,6 +111,38 @@ class PostTypesFeature {
 				'supports'            => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
 				'menu_icon'           => 'dashicons-format-quote',
 				'rewrite'             => array( 'slug' => 'testimonials' ),
+			)
+		);
+	}
+
+	/**
+	 * Register custom taxonomies.
+	 *
+	 * @return void
+	 */
+	public function register_taxonomies(): void {
+		register_taxonomy(
+			'project_type',
+			'project',
+			array(
+				'labels'              => array(
+					'name'          => 'Project Types',
+					'singular_name' => 'Project Type',
+					'search_items'  => 'Search Project Types',
+					'all_items'     => 'All Project Types',
+					'edit_item'     => 'Edit Project Type',
+					'update_item'   => 'Update Project Type',
+					'add_new_item'  => 'Add New Project Type',
+					'new_item_name' => 'New Project Type Name',
+					'menu_name'     => 'Project Types',
+				),
+				'hierarchical'        => true,
+				'public'              => true,
+				'show_in_rest'        => true,
+				'show_in_graphql'     => true,
+				'graphql_single_name' => 'projectType',
+				'graphql_plural_name' => 'projectTypes',
+				'rewrite'             => array( 'slug' => 'project-type' ),
 			)
 		);
 	}
