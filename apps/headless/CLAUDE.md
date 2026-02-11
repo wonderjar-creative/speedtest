@@ -4,61 +4,42 @@ Optimized Next.js frontend for **Elevation Design Studio** demo. Part of the Den
 
 **Purpose:** The "fast" side of the speed comparison demonstrating headless architecture benefits.
 - **Target:** Lighthouse 95-100, LCP < 1s
-- **Deploy:** Vercel at `fast.speedtest.denverheadless.com`
+- **Deploy:** Coolify on Hetzner at `fast.speedtest.denverheadless.com`
+
+## Architecture
+
+Uses **explicit routes with page-specific components** (not a block renderer). Each page is a server component that fetches its own data and renders hardcoded section components. Only 2 client components: `StatsCounter` (IntersectionObserver animation) and `ContactForm` (form state).
 
 ## Commands
 
 ```bash
-pnpm dev              # Fetch templates -> codegen -> next dev
-pnpm build            # Production build (requires WordPress)
-pnpm codegen          # Regenerate GraphQL types
-pnpm fetch-wp-template-structure  # Update template/pattern cache
-pnpm lint             # ESLint
-pnpm clean            # Remove .next, data, node_modules, src/gql
+npm run dev       # Next.js dev server
+npm run build     # Production build (standalone output)
+npm run start     # Start production server
+npm run lint      # ESLint
 ```
 
 ## Key Files
 
 | Path | Purpose |
 |------|---------|
-| `src/app/[[...slug]]/page.tsx` | Catch-all route handler |
-| `src/utils/getBlockComponents.tsx` | Block-to-component mapper |
-| `src/utils/blockStyles.ts` | WordPress attrs -> Tailwind classes |
-| `src/utils/blockMedia.ts` | Media enrichment via REST API |
-| `src/utils/fetchGraphQL.ts` | GraphQL client with auth |
-| `src/components/Blocks/Core/` | Block component implementations |
-| `src/components/Templates/` | Page/Post templates |
-| `src/queries/` | GraphQL query definitions |
-| `middleware.ts` | Redirect handling |
-| `data/*.json` | Cached template parts/patterns |
-
-## Architecture
-
-### Block System
-WordPress blocks -> React components:
-- Each receives `{ name, attributes, saveContent, innerBlocks }`
-- `core/template-part` and `core/pattern` resolve dynamically
-- `blockMedia.ts` batch-fetches media details
-
-### Adding New Blocks
-1. Create component: `src/components/Blocks/Core/[BlockName]/[BlockName].tsx`
-2. Add case in `getBlockComponents.tsx` switch statement with `dynamic()` import
-3. Import attribute types from `@/gql/graphql`
-4. Use `getBlockClasses()` and `getBlockBaseClass()` from `blockStyles.ts`
-
-### Component Conventions
-- **Use arrow functions**: All components use `const Component: React.FC<Props> = () => {}` syntax
-- **No index.ts files**: Import components directly
-- **Strip outer tags**: Use `stripOuterTag()` when WordPress saveContent includes wrapper tags
-- **Type interfaces**: Define component-specific interfaces inline
-
-### GraphQL
-- Types generated in `src/gql/` (gitignored)
-- Run `npm run codegen` after schema changes
-- Queries in `src/queries/`
-
-### Preview/Draft Mode
-- WordPress preview -> `/api/preview` -> JWT auth -> Next.js `draftMode()`
+| `src/app/page.tsx` | Homepage |
+| `src/app/about/page.tsx` | About page |
+| `src/app/services/page.tsx` | Services page |
+| `src/app/portfolio/page.tsx` | Portfolio listing |
+| `src/app/portfolio/[slug]/page.tsx` | Single project |
+| `src/app/blog/page.tsx` | Blog listing |
+| `src/app/blog/[slug]/page.tsx` | Single post |
+| `src/app/contact/page.tsx` | Contact page |
+| `src/components/sections/` | 22 section components |
+| `src/components/ui/` | Button, SectionWrapper |
+| `src/components/layout/` | Header, Footer |
+| `src/lib/queries/` | GraphQL queries |
+| `src/lib/types.ts` | TypeScript types |
+| `src/lib/fonts.ts` | Self-hosted fonts (Inter, Playfair Display) |
+| `src/utils/fetchGraphQL.ts` | GraphQL client with draft mode |
+| `src/app/api/preview/route.ts` | WordPress preview handler |
+| `src/app/api/revalidate/route.ts` | ISR revalidation webhook |
 
 ## Environment Variables
 
@@ -66,24 +47,11 @@ Required in `.env.development.local`:
 ```bash
 NEXT_PUBLIC_WORDPRESS_API_URL=https://slow.speedtest.denverheadless.com
 HEADLESS_SECRET=xxx                  # ISR revalidation
-WP_USER=username                     # WordPress app password user
-WP_APP_PASS=xxxx xxxx xxxx xxxx      # WordPress app password
 ```
 
-## Demo Pages: Elevation Design Studio
+## Design Tokens
 
-| Page | Path | Key Blocks |
-|------|------|------------|
-| Homepage | `/` | Hero, Services Grid, Portfolio Preview, Testimonials |
-| About | `/about` | Company Story, Team Grid, Values |
-| Services | `/services` | Service Cards (4) |
-| Portfolio | `/portfolio` | Project Grid with filtering |
-| Project Detail | `/portfolio/[slug]` | Gallery, Project Info |
-| Contact | `/contact` | Form, Map, Office Info |
-
-## Troubleshooting
-
-- **Build fails with GraphQL errors**: Check WordPress is accessible
-- **Preview not working**: Verify JWT credentials
-- **Template parts missing**: Run `pnpm fetch-wp-template-structure`
-- **Styles missing**: Ensure `theme.json` matches Tailwind config
+Colors, fonts, and spacing are synced from WordPress `theme.json` into `globals.css`:
+- Primary: `#0ea5e9` (sky blue)
+- Accent: `#f97316` (orange)
+- Fonts: Inter (body), Playfair Display (headings)
