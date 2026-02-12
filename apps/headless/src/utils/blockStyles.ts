@@ -1,0 +1,344 @@
+/**
+ * Block style utilities.
+ *
+ * Converts WordPress block attributes to CSS classes and inline styles.
+ * Ported from wonderjar-frontend blockStyles.ts.
+ */
+
+export const getBlockBaseClass = (blockName: string): string => {
+  return `wp-block-${blockName.replace("core/", "").replace(/\//g, "-")}`;
+};
+
+export const getBlockClasses = (
+  attributes: Record<string, any>,
+  baseClass: string = ""
+): string => {
+  const {
+    align,
+    backgroundColor,
+    borderColor,
+    className,
+    dimRatio,
+    direction,
+    dropCap,
+    fontFamily,
+    fontSize,
+    gradient,
+    id,
+    isStackedOnMobile,
+    layout,
+    sizeSlug,
+    textAlign,
+    textColor,
+    style,
+  } = attributes;
+
+  const classes = [
+    baseClass,
+    align ? `align${align}` : "",
+    backgroundColor
+      ? `has-${backgroundColor}-background-color has-background`
+      : "",
+    borderColor ? `has-${borderColor}-border-color` : "",
+    className || "",
+    dimRatio ? `opacity-${dimRatio || "50"}` : "",
+    direction ? `text-direction-${direction}` : "",
+    dropCap ? "has-drop-cap" : "",
+    fontFamily ? `has-${fontFamily}-font-family` : "",
+    fontSize ? `has-${fontSize}-font-size` : "",
+    gradient
+      ? `has-${gradient}-gradient-background has-background`
+      : "",
+    id ? `wp-image-${id}` : "",
+    isStackedOnMobile ? "is-stacked-on-mobile" : "",
+    sizeSlug ? `size-${sizeSlug}` : "",
+    textAlign ? `has-text-align-${textAlign}` : "",
+    textColor ? `has-${textColor}-color has-text-color` : "",
+  ];
+
+  const { type, flexWrap, justifyContent, orientation, verticalAlignment } =
+    layout || {};
+
+  if (type) {
+    classes.push(type);
+
+    if (type === "flex") {
+      const isVertical = orientation === "vertical";
+      classes.push(isVertical ? "flex-col" : "flex-row");
+
+      if (isVertical) {
+        classes.push(`items-${justifyContent || "start"}`);
+        classes.push(`justify-${verticalAlignment || "center"}`);
+      } else {
+        classes.push(
+          `justify-${justifyContent?.replace("space-", "") || "start"}`
+        );
+        classes.push(`items-${verticalAlignment || "center"}`);
+      }
+
+      classes.push(flexWrap ? `flex-${flexWrap}` : "flex-wrap");
+    }
+
+    if (type === "constrained") {
+      classes.push("has-global-padding");
+    }
+  }
+
+  if (isStackedOnMobile !== undefined) {
+    if (isStackedOnMobile) {
+      classes.push("flex-col", "sm:flex-row");
+    } else {
+      classes.push("flex-row");
+    }
+  }
+
+  if (style) {
+    if (style?.color?.background || style?.color?.gradient) {
+      classes.push("has-background");
+    }
+  }
+
+  return classes.filter(Boolean).join(" ");
+};
+
+const convertPreset = (value: string): string => {
+  if (typeof value === "string" && value.startsWith("var:preset|")) {
+    value =
+      "var(--" +
+      value.replace(/var:preset\|/g, "").replace(/\|/g, "-") +
+      ")";
+  }
+  return value;
+};
+
+export const getBlockStyleAttr = (
+  styleObj: Record<string, any> | undefined | null
+): React.CSSProperties => {
+  const result: React.CSSProperties = {};
+
+  if (!styleObj || typeof styleObj !== "object") return result;
+
+  // Spacing (padding, margin)
+  if (styleObj.spacing) {
+    const { margin, padding, blockGap } = styleObj.spacing;
+    if (margin) {
+      if (margin.top) result.marginTop = convertPreset(margin.top);
+      if (margin.right) result.marginRight = convertPreset(margin.right);
+      if (margin.bottom) result.marginBottom = convertPreset(margin.bottom);
+      if (margin.left) result.marginLeft = convertPreset(margin.left);
+    }
+    if (padding) {
+      if (padding.top) result.paddingTop = convertPreset(padding.top);
+      if (padding.right) result.paddingRight = convertPreset(padding.right);
+      if (padding.bottom) result.paddingBottom = convertPreset(padding.bottom);
+      if (padding.left) result.paddingLeft = convertPreset(padding.left);
+    }
+    if (blockGap) {
+      if (typeof blockGap === "string") {
+        result.gap = convertPreset(blockGap);
+      } else if (typeof blockGap === "object") {
+        Object.entries(blockGap).forEach(([key, value]: [string, any]) => {
+          if ("top" === key) result.rowGap = convertPreset(value);
+          else if ("left" === key) result.columnGap = convertPreset(value);
+        });
+      }
+    }
+  }
+
+  // Border
+  if (styleObj.border) {
+    if (styleObj.border.width) result.borderWidth = styleObj.border.width;
+    if (styleObj.border.color)
+      result.borderColor = styleObj.border.color.includes("var:")
+        ? convertPreset(styleObj.border.color)
+        : styleObj.border.color;
+    if (styleObj.border.style) result.borderStyle = styleObj.border.style;
+
+    if (styleObj.border.radius) {
+      const r = styleObj.border.radius;
+      if (typeof r === "string") {
+        result.borderRadius = r;
+      } else if (typeof r === "object") {
+        if (r.topLeft) result.borderTopLeftRadius = r.topLeft;
+        if (r.topRight) result.borderTopRightRadius = r.topRight;
+        if (r.bottomRight) result.borderBottomRightRadius = r.bottomRight;
+        if (r.bottomLeft) result.borderBottomLeftRadius = r.bottomLeft;
+      }
+    }
+
+    const sides = ["top", "right", "bottom", "left"] as const;
+    sides.forEach((side) => {
+      const borderSide = styleObj.border[side];
+      if (
+        borderSide &&
+        typeof borderSide === "object" &&
+        Object.keys(borderSide).length > 0
+      ) {
+        const cap = side.charAt(0).toUpperCase() + side.slice(1);
+        if (borderSide.width)
+          (result as any)[`border${cap}Width`] = borderSide.width;
+        if (borderSide.color)
+          (result as any)[`border${cap}Color`] = borderSide.color.includes(
+            "var:"
+          )
+            ? convertPreset(borderSide.color)
+            : borderSide.color;
+        if (borderSide.style)
+          (result as any)[`border${cap}Style`] = borderSide.style;
+      }
+    });
+  }
+
+  // Color
+  if (styleObj.color) {
+    if (styleObj.color.background)
+      result.background = styleObj.color.background.includes("var:")
+        ? convertPreset(styleObj.color.background)
+        : styleObj.color.background;
+    if (styleObj.color.gradient)
+      result.background = styleObj.color.gradient.includes("var:")
+        ? convertPreset(styleObj.color.gradient)
+        : styleObj.color.gradient;
+    if (styleObj.color.text)
+      result.color = styleObj.color.text.includes("var:")
+        ? convertPreset(styleObj.color.text)
+        : styleObj.color.text;
+  }
+
+  // Typography
+  if (styleObj.typography) {
+    const t = styleObj.typography;
+    if (t.fontSize)
+      result.fontSize =
+        typeof t.fontSize === "number"
+          ? `${t.fontSize}px`
+          : convertPreset(t.fontSize);
+    if (t.fontStyle) result.fontStyle = t.fontStyle;
+    if (t.fontWeight) result.fontWeight = t.fontWeight;
+    if (t.lineHeight) result.lineHeight = t.lineHeight;
+    if (t.letterSpacing) result.letterSpacing = t.letterSpacing;
+    if (t.textDecoration) result.textDecoration = t.textDecoration;
+    if (t.textTransform) result.textTransform = t.textTransform;
+  }
+
+  // Dimensions
+  if (styleObj.minHeight) {
+    const unit = styleObj.minHeightUnit || "px";
+    result.minHeight = `${styleObj.minHeight}${unit}`;
+  }
+  if (styleObj.height) {
+    const unit = styleObj.heightUnit || "px";
+    result.height = `${styleObj.height}${unit}`;
+  }
+  if (styleObj.width) {
+    const unit = styleObj.widthUnit || "px";
+    result.width = `${styleObj.width}${unit}`;
+  }
+
+  return result;
+};
+
+const processStyleProperties = (
+  properties: Record<string, any>,
+  indent: string = "  "
+): string => {
+  let css = "";
+  Object.entries(properties).forEach(([property, value]) => {
+    if (typeof value === "object" && value !== null) {
+      Object.entries(value as Record<string, any>).forEach(
+        ([subProp, subValue]) => {
+          let cssPropName: string;
+          if (property === "color") {
+            if (subProp === "text") cssPropName = "color";
+            else if (subProp === "background") cssPropName = "background-color";
+            else if (subProp === "gradient") cssPropName = "background";
+            else
+              cssPropName = `${property}-${subProp}`.replace(
+                /[A-Z]/g,
+                (m) => "-" + m.toLowerCase()
+              );
+          } else {
+            cssPropName = `${property}-${subProp}`.replace(
+              /[A-Z]/g,
+              (m) => "-" + m.toLowerCase()
+            );
+          }
+          const cssValue =
+            typeof subValue === "string" && subValue.startsWith("var:")
+              ? convertPreset(subValue)
+              : subValue;
+          css += `${indent}${cssPropName}: ${cssValue};\n`;
+        }
+      );
+    }
+  });
+  return css;
+};
+
+export const styleElementsToCSS = (
+  blockId: string,
+  style: Record<string, any>,
+  layout?: { contentSize?: string }
+): string => {
+  if (!style?.elements && !layout?.contentSize) return "";
+
+  let css = "";
+  if (style.elements) {
+    Object.entries(style.elements).forEach(([selector, styles]) => {
+      let cssSelector = "";
+      switch (selector) {
+        case "link":
+          cssSelector = "a";
+          break;
+        case "heading":
+          cssSelector = ["h1", "h2", "h3", "h4", "h5", "h6"]
+            .map((tag) => `.wp-block-${blockId} ${tag}`)
+            .join(", ");
+          break;
+        case "button":
+          cssSelector = ["button", ".wp-block-button__link"]
+            .map((sel) => `.wp-block-${blockId} ${sel}`)
+            .join(", ");
+          break;
+        default:
+          cssSelector = selector;
+          break;
+      }
+
+      const regularProps: Record<string, any> = {};
+      const pseudoSelectors: Record<string, any> = {};
+
+      Object.entries(styles as Record<string, any>).forEach(
+        ([property, value]) => {
+          if (property.startsWith(":")) {
+            pseudoSelectors[property] = value;
+          } else {
+            regularProps[property] = value;
+          }
+        }
+      );
+
+      if (Object.keys(regularProps).length > 0) {
+        css += `.wp-block-${blockId} ${cssSelector} {\n`;
+        css += processStyleProperties(regularProps);
+        css += "}\n";
+      }
+
+      Object.entries(pseudoSelectors).forEach(([pseudo, pseudoStyles]) => {
+        css += `.wp-block-${blockId} ${cssSelector}${pseudo} {\n`;
+        css += processStyleProperties(pseudoStyles as Record<string, any>);
+        css += "}\n";
+      });
+    });
+  }
+
+  if (layout?.contentSize) {
+    css += `.wp-block-${blockId} > * {\n`;
+    css += `  max-width: ${layout.contentSize};\n`;
+    css += `  margin-left: auto;\n`;
+    css += `  margin-right: auto;\n`;
+    css += `}\n`;
+  }
+
+  return css ? `/* Styles for ${blockId} */\n${css}` : "";
+};
