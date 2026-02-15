@@ -1,6 +1,6 @@
-# WordPress Setup - Traditional Site
+# WordPress Setup
 
-This WordPress instance intentionally represents a **typical small business site** - not optimized, running on modest infrastructure.
+This WordPress instance serves as the shared CMS backend for both the traditional and headless frontends.
 
 ## Local Development (Docker)
 
@@ -15,7 +15,7 @@ cd wordpress
 # Start containers
 docker-compose up -d
 
-# Run setup script (installs WordPress, plugins, creates pages)
+# Run setup script (installs WordPress, plugins, creates content)
 docker-compose exec wpcli sh /scripts/setup.sh
 ```
 
@@ -23,11 +23,75 @@ docker-compose exec wpcli sh /scripts/setup.sh
 **Admin:** http://localhost:8080/wp-admin
 **GraphQL:** http://localhost:8080/graphql
 
-### Default Credentials
+### Default Admin Credentials
 - **Username:** admin
 - **Password:** admin123
 
-### Docker Commands
+---
+
+## wp-config.php Setup
+
+The only constant you need to add to `wp-config.php` is the JWT secret for preview mode authentication:
+
+```php
+define('GRAPHQL_JWT_AUTH_SECRET_KEY', 'your-jwt-secret-here');
+```
+
+### Setting it via WP-CLI (recommended)
+
+```bash
+# Generate and set in one command
+docker-compose exec wpcli wp config set GRAPHQL_JWT_AUTH_SECRET_KEY "$(openssl rand -base64 64)" --type=constant --url="http://localhost:8080"
+```
+
+### Setting it manually
+
+```bash
+# Shell into the wordpress container
+docker-compose exec wordpress bash
+apt-get update && apt-get install -y nano
+nano /var/www/html/wp-config.php
+
+# Add this line above "/* That's all, stop editing! */"
+# define('GRAPHQL_JWT_AUTH_SECRET_KEY', 'paste-your-secret-here');
+```
+
+Generate a secret with:
+
+```bash
+openssl rand -base64 64
+```
+
+### What does NOT go in wp-config.php
+
+| Variable | Where it lives | Notes |
+|---|---|---|
+| `HEADLESS_SECRET` | Next.js `.env.local` | Only needed on the Next.js side for ISR revalidation |
+| `WP_USER` / `WP_APP_PASS` | Next.js `.env.local` | Created via WP Admin UI, not config files |
+
+---
+
+## Application Password Setup (for headless frontend)
+
+The headless Next.js app can optionally authenticate against the WP REST API. Currently the template structure endpoint is public, so this is optional but recommended.
+
+1. Log into **http://localhost:8080/wp-admin**
+2. Go to **Users → Add New User**
+3. Create a user:
+   - **Username:** `frontendUser`
+   - **Role:** Subscriber (read-only is sufficient)
+4. Go to **Users →** click the new user → scroll to **Application Passwords**
+5. Enter name: `headless-frontend` → click **Add New Application Password**
+6. Copy the generated password into your Next.js `.env.local` as `WP_APP_PASS`
+
+**What role does the user need?**
+- **Subscriber** is enough for current read-only usage
+- **Editor** if you later add preview/draft support
+- Never needs Administrator
+
+---
+
+## Docker Commands
 
 ```bash
 # Start containers
@@ -44,104 +108,76 @@ docker-compose logs -f
 
 # Run WP-CLI commands
 docker-compose exec wpcli wp <command>
+
+# Shell into WordPress container
+docker-compose exec wordpress bash
+
+# Shell into WP-CLI container
+docker-compose exec wpcli sh
 ```
+
+> **Common mistake:** `docker-compose exec nano wp-config.php` treats `nano` as a
+> service name. You need to exec into a service first, then run the command:
+> `docker-compose exec wordpress bash` → then `nano wp-config.php`
 
 ---
 
-## Production: AWS Lightsail
+## Theme
 
-### Instance Specification
-- **Plan:** Nano ($5/mo)
-- **RAM:** 512 MB
-- **CPU:** 1 vCPU
-- **Storage:** 20 GB SSD
-- **Transfer:** 1 TB
-- **OS:** Amazon Linux 2 or Ubuntu 22.04
+The Elevation Theme is a custom block theme mounted into the container from `./theme/`. Changes to theme files are reflected immediately (no rebuild needed).
 
-### Provisioning Steps
+### Content Created by Setup Script
 
-1. **Create Lightsail Instance**
-   ```bash
-   # Via AWS Console or CLI
-   aws lightsail create-instances \
-     --instance-names "speedtest-wp" \
-     --availability-zone "us-west-2a" \
-     --blueprint-id "wordpress" \
-     --bundle-id "nano_3_0"
-   ```
+| Type | Count | Details |
+|------|-------|---------|
+| Pages | 6 | Home, About, Services, Portfolio, Contact, Blog |
+| Blog Posts | 5 | Design trends, case studies, process articles |
+| Projects | 8 | Residential, commercial, hospitality portfolio items |
+| Team Members | 5 | Custom post type with meta fields |
+| Testimonials | 5 | Custom post type with ratings and photos |
+| Navigation | 1 | Primary menu with nested dropdowns |
 
-2. **Get Default Credentials**
-   ```bash
-   # SSH into instance
-   ssh -i ~/.ssh/lightsail.pem bitnami@<instance-ip>
+### Required Plugins (installed by setup script)
 
-   # Get WordPress admin password
-   cat /home/bitnami/bitnami_credentials
-   ```
+| Plugin | Purpose |
+|--------|---------|
+| WPGraphQL | GraphQL API for headless frontend |
+| WPGraphQL JWT Auth | Preview mode authentication |
+| Rank Math SEO | SEO metadata |
+| WPGraphQL for Rank Math | Exposes SEO data via GraphQL |
+| Contact Form 7 | Contact page form |
+| Smart Slider 3 | Hero sliders |
+| WP Super Cache | Basic page caching |
 
-3. **Configure Domain**
-   - Add A record: `slow.speedtest.denverheadless.com` → Instance IP
-   - Install SSL via Bitnami HTTPS Configuration Tool:
-     ```bash
-     sudo /opt/bitnami/bncert-tool
-     ```
+---
 
-## WordPress Configuration
+## Production Deployment
 
-### Theme
-- **Astra** (free version) or **GeneratePress** (free version)
-- Use default settings, no performance optimization
+### Hetzner CX22 (headless backend)
 
-### Required Plugins
+WordPress runs on the same Hetzner CX22 as the headless Next.js frontend. This means GraphQL requests from Next.js to WordPress happen over localhost with zero network latency.
 
-| Plugin | Purpose | Notes |
-|--------|---------|-------|
-| WPGraphQL | Headless API | Required for headless frontend |
-| WPGraphQL JWT Auth | Preview/auth | Required for headless frontend |
-| WPGraphQL for Rank Math | SEO in GraphQL | Required for headless frontend |
-| Rank Math SEO | SEO | Free tier |
-| Contact Form 7 | Forms | Free |
-| Smart Slider 3 | Sliders | Free version |
-| WP Super Cache | Caching | Basic caching only |
+- **Deployment:** Coolify (self-hosted PaaS)
+- **SSL:** Let's Encrypt via Coolify
+- **CDN:** Cloudflare (free tier)
 
-### Content Types
+### Cheap Shared Hosting (traditional frontend)
 
-Using standard WordPress:
-- **Pages:** Homepage, About, Services, Portfolio, Contact
-- **Posts:** Not used
-- **Custom Post Type:** Projects (for portfolio)
+The traditional WordPress site runs on intentionally modest shared hosting to represent a typical small business setup.
 
-### WPGraphQL Setup
+- **Domain:** slow.speedtest.denverheadless.com
+- **Purpose:** Slow baseline for comparison demo
 
-1. Install WPGraphQL plugin
-2. Enable in Settings → GraphQL
-3. Endpoint: `https://slow.speedtest.denverheadless.com/graphql`
+---
 
 ## Performance Notes
 
-**Intentionally NOT doing:**
-- Image optimization
-- CDN configuration
-- PHP OpCache tuning
-- MySQL optimization
-- Advanced caching
-- Asset minification
-- Lazy loading
+The traditional WP site is **intentionally NOT optimized**:
+- No image optimization
+- No CDN
+- No PHP OpCache tuning
+- No MySQL optimization
+- No advanced caching
+- No asset minification
 
-**The goal:** Represent a typical $5/mo WordPress site that a small business might have.
-
-## Backup & Recovery
-
-```bash
-# Export database
-wp db export backup.sql
-
-# Export uploads
-tar -czf uploads.tar.gz wp-content/uploads/
-```
-
-## Domain Configuration
-
-| Record | Type | Value |
-|--------|------|-------|
-| slow.speedtest.denverheadless.com | A | <Lightsail IP> |
+This represents a typical $5/mo WordPress site that a small business would have.
