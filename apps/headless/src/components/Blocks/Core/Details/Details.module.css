@@ -1,0 +1,9 @@
+.summary::marker {
+  padding: 0 0.5rem;
+  font-size: var(--font-size-lg);
+  color: var(--color-charcoal-gray);
+}
+
+[open] .summary::marker {
+  color: var(--color-warm-coral);
+}
