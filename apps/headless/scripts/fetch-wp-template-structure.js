@@ -1,78 +1,60 @@
-/**
- * Fetches WordPress template structure (template parts, patterns, navigation)
- * and caches them locally for faster builds.
- *
- * This script is run before dev/build to pre-fetch template data.
- */
-
-require('dotenv').config({ path: '.env.development.local' });
-require('dotenv').config({ path: '.env.local' });
-require('dotenv').config({ path: '.env' });
-
 const fs = require('fs');
 const path = require('path');
 
-const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
+// Load environment-specific .env file
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const envFiles = [
+  `.env.${NODE_ENV}.local`,
+  '.env.local',
+  `.env.${NODE_ENV}`,
+  '.env'
+];
+
+// Load the first env file that exists
+for (const envFile of envFiles) {
+  const envPath = path.join(__dirname, '..', envFile);
+  if (fs.existsSync(envPath)) {
+    require('dotenv').config({ path: envPath });
+    console.log(`Loaded env from: ${envFile}`);
+    break;
+  }
+}
+
+const WP_API = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'http://localhost:8000';
 const WP_USER = process.env.WP_USER;
 const WP_APP_PASS = process.env.WP_APP_PASS;
 
-if (!WP_URL) {
-  console.error('ERROR: NEXT_PUBLIC_WORDPRESS_API_URL is not defined');
-  process.exit(1);
-}
+const outDir = path.join(__dirname, '../data');
+if (!fs.existsSync(outDir)) fs.mkdirSync(outDir);
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-
-async function fetchWithAuth(url) {
-  const headers = {};
-
-  if (WP_USER && WP_APP_PASS) {
-    const auth = Buffer.from(`${WP_USER}:${WP_APP_PASS}`).toString('base64');
-    headers['Authorization'] = `Basic ${auth}`;
-  }
-
-  const response = await fetch(url, { headers });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-  }
-
-  return response.json();
-}
-
-async function main() {
-  console.log('[fetch-wp-template-structure] Starting...');
-  console.log(`[fetch-wp-template-structure] WordPress URL: ${WP_URL}`);
-
-  // Create data directory if it doesn't exist
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-
+(async () => {
   try {
-    // Fetch template structure from custom REST endpoint
-    // This endpoint should be implemented in your WordPress theme
-    const templateUrl = `${WP_URL}/wp-json/template-structure/v1/full`;
-    console.log(`[fetch-wp-template-structure] Fetching: ${templateUrl}`);
+    const url = `${WP_API}/wp-json/template-structure/v1/full`;
+    console.log(`Fetching: ${url}`);
 
-    const data = await fetchWithAuth(templateUrl);
-
-    // Write to cache file
-    const cacheFile = path.join(DATA_DIR, 'template-structure.json');
-    fs.writeFileSync(cacheFile, JSON.stringify(data, null, 2));
-
-    console.log(`[fetch-wp-template-structure] Cached to: ${cacheFile}`);
-    console.log('[fetch-wp-template-structure] Done!');
-  } catch (error) {
-    console.warn(`[fetch-wp-template-structure] Warning: ${error.message}`);
-    console.warn('[fetch-wp-template-structure] Continuing without cached templates...');
-
-    // Create empty cache file so build doesn't fail
-    const cacheFile = path.join(DATA_DIR, 'template-structure.json');
-    if (!fs.existsSync(cacheFile)) {
-      fs.writeFileSync(cacheFile, JSON.stringify({ templateParts: [], patterns: [] }, null, 2));
+    const headers = {};
+    if (WP_USER && WP_APP_PASS) {
+      const auth = Buffer.from(`${WP_USER}:${WP_APP_PASS}`).toString('base64');
+      headers['Authorization'] = `Basic ${auth}`;
     }
-  }
-}
 
-main();
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.statusText}`);
+
+    const data = await res.json();
+
+    // Save each type to separate files (parts.header.json, patterns.hero.json, etc.)
+    for (const [type, items] of Object.entries(data)) {
+      for (const [slug, itemData] of Object.entries(items)) {
+        const filename = `${type}.${slug}.json`;
+        fs.writeFileSync(path.join(outDir, filename), JSON.stringify(itemData, null, 2));
+        console.log(`Saved: ${filename}`);
+      }
+    }
+
+    console.log('Done!');
+  } catch (error) {
+    console.error('Error:', error.message);
+    console.warn('Continuing without cached templates...');
+  }
+})();
