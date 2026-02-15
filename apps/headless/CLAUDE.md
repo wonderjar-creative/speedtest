@@ -4,7 +4,7 @@ Optimized Next.js frontend for **Elevation Design Studio** demo. Part of the Den
 
 **Purpose:** The "fast" side of the speed comparison demonstrating headless architecture benefits.
 - **Target:** Lighthouse 95-100, LCP < 1s
-- **Deploy:** Vercel at `fast.speedtest.denverheadless.com`
+- **Deploy:** Coolify on Hetzner at `fast.speedtest.denverheadless.com`
 
 ## Commands
 
@@ -62,13 +62,18 @@ WordPress blocks -> React components:
 
 ## Environment Variables
 
-Required in `.env.development.local`:
+Copy `.env.development.local.example` → `.env.development.local` and fill in:
 ```bash
-NEXT_PUBLIC_WORDPRESS_API_URL=https://slow.speedtest.denverheadless.com
-HEADLESS_SECRET=xxx                  # ISR revalidation
+NEXT_PUBLIC_WORDPRESS_API_URL=http://localhost:8080  # Local Docker WP
+HEADLESS_SECRET=xxx                  # ISR revalidation (openssl rand -hex 32)
 WP_USER=username                     # WordPress app password user
 WP_APP_PASS=xxxx xxxx xxxx xxxx      # WordPress app password
 ```
+
+## Production Notes
+
+- **sharp required**: Production standalone mode needs `sharp` for `next/image` optimization. Include in Dockerfile.
+- **Localhost WP**: In production, WP and Next.js are colocated on the same Hetzner server — GraphQL calls over localhost.
 
 ## Demo Pages: Elevation Design Studio
 
