@@ -1,22 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-// Load environment-specific .env file
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const envFiles = [
-  `.env.${NODE_ENV}.local`,
-  '.env.local',
-  `.env.${NODE_ENV}`,
-  '.env'
-];
+// Load env files in reverse priority (lowest first, highest last overrides)
+// Matches Next.js behavior: .env < .env.local
+const envFiles = ['.env', '.env.local'];
 
-// Load the first env file that exists
 for (const envFile of envFiles) {
   const envPath = path.join(__dirname, '..', envFile);
   if (fs.existsSync(envPath)) {
-    require('dotenv').config({ path: envPath });
+    require('dotenv').config({ path: envPath, override: true });
     console.log(`Loaded env from: ${envFile}`);
-    break;
   }
 }
 

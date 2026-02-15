@@ -62,7 +62,7 @@ WordPress blocks -> React components:
 
 ## Environment Variables
 
-Copy `.env.development.local.example` → `.env.development.local` and fill in:
+Copy `.env.example` → `.env.local` and fill in:
 ```bash
 NEXT_PUBLIC_WORDPRESS_API_URL=http://localhost:8080  # Local Docker WP
 HEADLESS_SECRET=xxx                  # ISR revalidation (openssl rand -hex 32)

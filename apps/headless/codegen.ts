@@ -1,32 +1,20 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
-import { loadEnvConfig } from "@next/env";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
 
-// Load environment files manually in the correct order
-const NODE_ENV = process.env.NODE_ENV || 'development';
+// Load env files in reverse priority (lowest first, highest last overrides)
+// Matches Next.js behavior: .env < .env.local
 const projectDir = process.cwd();
+const envFiles = ['.env', '.env.local'];
 
-const envFiles = [
-  `.env.${NODE_ENV}.local`,
-  '.env.local',
-  `.env.${NODE_ENV}`,
-  '.env'
-];
-
-// Load the first env file that exists
 for (const envFile of envFiles) {
   const envPath = path.join(projectDir, envFile);
   if (fs.existsSync(envPath)) {
-    dotenv.config({ path: envPath });
+    dotenv.config({ path: envPath, override: true });
     console.log(`[codegen] Loaded env from: ${envFile}`);
-    break;
   }
 }
-
-// Also try Next.js env loader as backup
-loadEnvConfig(projectDir);
 
 const wordpressUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
