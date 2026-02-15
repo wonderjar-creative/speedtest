@@ -4,6 +4,20 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.0] - 2026-02-15
+
+### Changed
+
+- Simplified env setup: consolidated per-environment `.env.{env}.local.example` files into single `.env.example` → `.env.local` pattern
+- Updated env loading in `codegen.ts` and `fetch-wp-template-structure.js` to merge `.env` + `.env.local` (was break-on-first-match, which skipped shared defaults)
+- Removed unused `@next/env` import from codegen
+- Deploy target: Coolify on Hetzner (was Vercel)
+
+### Removed
+
+- `.env.development.local.example` and `.env.production.local.example` (replaced by single `.env.example`)
+- `.env.example.old` (stale)
+
 ## [0.5.0] - 2026-02-10
 
 ### Fixed
