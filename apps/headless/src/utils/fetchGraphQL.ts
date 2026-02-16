@@ -49,6 +49,13 @@ export async function fetchGraphQL<T = any>(
     const data = await response.json();
 
     if (data.errors) {
+      // If we have partial data alongside errors, log warnings but return the data.
+      // This handles cases like SEO plugin fields failing while content loads fine.
+      if (data.data) {
+        console.warn("GraphQL partial errors (data still returned):", data.errors);
+        return data.data;
+      }
+      // No data at all — this is a hard failure
       console.error("GraphQL Errors:", data.errors);
       throw new Error("Error executing GraphQL query");
     }
