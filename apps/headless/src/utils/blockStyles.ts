@@ -104,9 +104,11 @@ export const getBlockClasses = (
 }
 
 const convertPreset = (value: string): string => {
-  // Converts "var:preset|spacing|40" to "var(--spacing--40)"
+  // Converts "var:preset|spacing|40" to "var(--wp--preset--spacing--40)"
+  // Matches WordPress CSS custom property naming convention
   if (typeof value === 'string' && value.startsWith('var:preset|')) {
-    value = 'var(--' + value.replace(/var:preset\|/g, '').replace(/\|/g, '-') + ')';
+    const parts = value.replace('var:preset|', '').split('|');
+    value = `var(--wp--preset--${parts.join('--')})`;
   }
 
   return value;
