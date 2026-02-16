@@ -1,0 +1,496 @@
+/**
+ * WordPress Block Theme Compatibility CSS
+ *
+ * Generated from theme.json — provides CSS custom properties
+ * and utility classes that WordPress block markup expects.
+ */
+
+/* ============================================
+   CSS Custom Properties (from theme.json)
+   ============================================ */
+
+:root {
+  /* Colors */
+  --wp--preset--color--primary: #0ea5e9;
+  --wp--preset--color--secondary: #64748b;
+  --wp--preset--color--accent: #f97316;
+  --wp--preset--color--black: #000000;
+  --wp--preset--color--white: #FFFFFF;
+  --wp--preset--color--gray-100: #f3f4f6;
+  --wp--preset--color--gray-500: #6b7280;
+  --wp--preset--color--gray-900: #111827;
+
+  /* Gradients */
+  --wp--preset--gradient--gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+  --wp--preset--gradient--gradient-accent: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+
+  /* Spacing */
+  --wp--preset--spacing--20: 10px;
+  --wp--preset--spacing--30: 20px;
+  --wp--preset--spacing--40: 30px;
+  --wp--preset--spacing--50: clamp(30px, 5vw, 50px);
+  --wp--preset--spacing--60: clamp(30px, 7vw, 70px);
+  --wp--preset--spacing--70: clamp(50px, 7vw, 90px);
+  --wp--preset--spacing--80: clamp(70px, 10vw, 140px);
+
+  /* Font Sizes */
+  --wp--preset--font-size--xs: 0.75rem;
+  --wp--preset--font-size--sm: 0.875rem;
+  --wp--preset--font-size--base: 1rem;
+  --wp--preset--font-size--lg: 1.125rem;
+  --wp--preset--font-size--xl: 1.25rem;
+  --wp--preset--font-size--2-xl: 1.5rem;
+  --wp--preset--font-size--3-xl: 1.875rem;
+  --wp--preset--font-size--4-xl: 2.25rem;
+  --wp--preset--font-size--5-xl: 3rem;
+  --wp--preset--font-size--6-xl: 3.75rem;
+  --wp--preset--font-size--7-xl: 4.5rem;
+
+  /* Layout */
+  --wp--style--global--content-size: 900px;
+  --wp--style--global--wide-size: 1400px;
+
+  /* Root padding */
+  --wp--style--root--padding-right: var(--wp--preset--spacing--50);
+  --wp--style--root--padding-left: var(--wp--preset--spacing--50);
+}
+
+
+/* ============================================
+   Global Styles (from theme.json styles)
+   ============================================ */
+
+body {
+  background-color: var(--wp--preset--color--white);
+  color: var(--wp--preset--color--gray-900);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--wp--preset--color--primary);
+}
+a:hover {
+  color: var(--wp--preset--color--accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--wp--preset--color--gray-900);
+  font-weight: 700;
+}
+
+
+/* ============================================
+   Color Utility Classes (has-*-color, has-*-background-color)
+   ============================================ */
+
+/* Text Colors */
+.has-primary-color { color: var(--wp--preset--color--primary); }
+.has-secondary-color { color: var(--wp--preset--color--secondary); }
+.has-accent-color { color: var(--wp--preset--color--accent); }
+.has-black-color { color: var(--wp--preset--color--black); }
+.has-white-color { color: var(--wp--preset--color--white); }
+.has-gray-100-color { color: var(--wp--preset--color--gray-100); }
+.has-gray-500-color { color: var(--wp--preset--color--gray-500); }
+.has-gray-900-color { color: var(--wp--preset--color--gray-900); }
+
+/* Background Colors */
+.has-primary-background-color { background-color: var(--wp--preset--color--primary); }
+.has-secondary-background-color { background-color: var(--wp--preset--color--secondary); }
+.has-accent-background-color { background-color: var(--wp--preset--color--accent); }
+.has-black-background-color { background-color: var(--wp--preset--color--black); }
+.has-white-background-color { background-color: var(--wp--preset--color--white); }
+.has-gray-100-background-color { background-color: var(--wp--preset--color--gray-100); }
+.has-gray-500-background-color { background-color: var(--wp--preset--color--gray-500); }
+.has-gray-900-background-color { background-color: var(--wp--preset--color--gray-900); }
+
+/* Border Colors */
+.has-primary-border-color { border-color: var(--wp--preset--color--primary); }
+.has-secondary-border-color { border-color: var(--wp--preset--color--secondary); }
+.has-accent-border-color { border-color: var(--wp--preset--color--accent); }
+.has-black-border-color { border-color: var(--wp--preset--color--black); }
+.has-white-border-color { border-color: var(--wp--preset--color--white); }
+.has-gray-100-border-color { border-color: var(--wp--preset--color--gray-100); }
+.has-gray-500-border-color { border-color: var(--wp--preset--color--gray-500); }
+.has-gray-900-border-color { border-color: var(--wp--preset--color--gray-900); }
+
+/* Gradient Backgrounds */
+.has-gradient-primary-gradient-background { background: var(--wp--preset--gradient--gradient-primary); }
+.has-gradient-accent-gradient-background { background: var(--wp--preset--gradient--gradient-accent); }
+
+
+/* ============================================
+   Font Size Classes (has-*-font-size)
+   ============================================ */
+
+.has-xs-font-size { font-size: var(--wp--preset--font-size--xs); }
+.has-sm-font-size { font-size: var(--wp--preset--font-size--sm); }
+.has-base-font-size { font-size: var(--wp--preset--font-size--base); }
+.has-lg-font-size { font-size: var(--wp--preset--font-size--lg); }
+.has-xl-font-size { font-size: var(--wp--preset--font-size--xl); }
+.has-2-xl-font-size { font-size: var(--wp--preset--font-size--2-xl); }
+.has-3-xl-font-size { font-size: var(--wp--preset--font-size--3-xl); }
+.has-4-xl-font-size { font-size: var(--wp--preset--font-size--4-xl); }
+.has-5-xl-font-size { font-size: var(--wp--preset--font-size--5-xl); }
+.has-6-xl-font-size { font-size: var(--wp--preset--font-size--6-xl); }
+.has-7-xl-font-size { font-size: var(--wp--preset--font-size--7-xl); }
+
+
+/* ============================================
+   Typography Utility Classes
+   ============================================ */
+
+.has-text-color { /* marker class, color set by specific class */ }
+.has-background { /* marker class, background set by specific class */ }
+.has-text-align-left { text-align: left; }
+.has-text-align-center { text-align: center; }
+.has-text-align-right { text-align: right; }
+.has-drop-cap::first-letter {
+  float: left;
+  font-size: 3.25em;
+  line-height: 0.68;
+  font-weight: 100;
+  margin: 0.05em 0.1em 0 0;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+
+/* ============================================
+   Layout & Alignment
+   ============================================ */
+
+/* Site blocks container */
+.wp-site-blocks {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/* Alignment */
+.alignfull {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.alignwide {
+  max-width: var(--wp--style--global--wide-size);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aligncenter {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.alignleft {
+  float: left;
+  margin-right: 2em;
+}
+
+.alignright {
+  float: right;
+  margin-left: 2em;
+}
+
+/* Constrained layout (has-global-padding) */
+.has-global-padding {
+  padding-right: var(--wp--style--root--padding-right);
+  padding-left: var(--wp--style--root--padding-left);
+}
+
+.has-global-padding > .alignfull {
+  margin-right: calc(-1 * var(--wp--style--root--padding-right));
+  margin-left: calc(-1 * var(--wp--style--root--padding-left));
+}
+
+/* Constrained layout inner content width */
+.constrained > *:not(.alignwide):not(.alignfull) {
+  max-width: var(--wp--style--global--content-size);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.constrained > .alignwide {
+  max-width: var(--wp--style--global--wide-size);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ============================================
+   WordPress Block Base Styles
+   ============================================ */
+
+/* Group */
+.wp-block-group {
+  box-sizing: border-box;
+}
+
+/* Columns */
+.wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+@media (min-width: 782px) {
+  .wp-block-columns {
+    flex-wrap: nowrap;
+  }
+}
+
+.wp-block-column {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Cover */
+.wp-block-cover {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.wp-block-cover__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.has-background-dim-60 { opacity: 0.6; }
+.has-background-dim-50 { opacity: 0.5; }
+.has-background-dim-40 { opacity: 0.4; }
+.has-background-dim-70 { opacity: 0.7; }
+.has-background-dim-80 { opacity: 0.8; }
+.has-background-dim-90 { opacity: 0.9; }
+.has-background-dim-100 { opacity: 1; }
+.has-background-dim { /* base marker class */ }
+
+.wp-block-cover__image-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.wp-block-cover__inner-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--wp--style--global--wide-size);
+  margin: 0 auto;
+}
+
+/* Heading */
+.wp-block-heading {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Paragraph */
+.wp-block-paragraph {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Image */
+.wp-block-image {
+  margin: 0;
+}
+
+.wp-block-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.wp-block-image.is-resized img {
+  width: 100%;
+  height: auto;
+}
+
+/* Buttons */
+.wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.wp-block-button {
+  display: inline-block;
+}
+
+.wp-block-button__link,
+.wp-element-button {
+  display: inline-block;
+  padding: 0.667em 1.333em;
+  border-radius: 0.375rem;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background-color: var(--wp--preset--color--primary);
+  color: var(--wp--preset--color--white);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.wp-block-button__link:hover,
+.wp-element-button:hover {
+  background-color: var(--wp--preset--color--accent);
+}
+
+/* Outline button style */
+.is-style-outline > .wp-block-button__link,
+.is-style-outline > .wp-element-button {
+  background-color: transparent;
+  border: 2px solid currentColor;
+  color: var(--wp--preset--color--white);
+}
+
+.is-style-outline > .wp-block-button__link:hover,
+.is-style-outline > .wp-element-button:hover {
+  background-color: var(--wp--preset--color--white);
+  color: var(--wp--preset--color--gray-900);
+}
+
+/* Separator */
+.wp-block-separator {
+  border: none;
+  border-top: 2px solid currentColor;
+  opacity: 0.4;
+  margin: 2em auto;
+}
+
+.wp-block-separator.is-style-wide {
+  width: 100%;
+}
+
+.wp-block-separator.is-style-dots {
+  border: none;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 2em;
+}
+
+.wp-block-separator.is-style-dots::before {
+  content: "···";
+  padding-left: 2em;
+  font-size: 1.5em;
+}
+
+/* Spacer */
+.wp-block-spacer {
+  clear: both;
+}
+
+/* List */
+.wp-block-list {
+  padding-left: 1.3em;
+}
+
+/* Quote */
+.wp-block-quote {
+  border-left: 0.25em solid var(--wp--preset--color--primary);
+  padding-left: 1em;
+  margin: 1em 0;
+}
+
+/* Site Title */
+.wp-block-site-title {
+  margin: 0;
+}
+
+.wp-block-site-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Navigation */
+.wp-block-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--wp--preset--spacing--40, 1.5em);
+}
+
+/* Details / Accordion */
+.wp-block-details summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.wp-block-details summary::marker,
+.wp-block-details summary::-webkit-details-marker {
+  display: none;
+}
+
+
+/* ============================================
+   Flex Layout (from WordPress layout system)
+   ============================================ */
+
+.flex {
+  display: flex;
+}
+
+.is-layout-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.is-layout-flex > * {
+  margin: 0;
+}
+
+.is-layout-flow > * + * {
+  margin-top: 1.5em;
+}
+
+.is-layout-flow > *:first-child {
+  margin-top: 0;
+}
+
+.is-layout-constrained > * {
+  max-width: var(--wp--style--global--content-size);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.is-layout-constrained > .alignwide {
+  max-width: var(--wp--style--global--wide-size);
+}
+
+.is-layout-constrained > .alignfull {
+  max-width: none;
+}
+
+
+/* ============================================
+   Dark/Light theme on cover blocks
+   ============================================ */
+
+.is-dark {
+  color: var(--wp--preset--color--white);
+}
+
+.is-light {
+  color: var(--wp--preset--color--gray-900);
+}
