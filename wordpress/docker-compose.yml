@@ -56,7 +56,6 @@ services:
       - wp_data:/var/www/html
       - ./theme:/var/www/html/wp-content/themes/elevation-theme
       - wp_uploads:/var/www/html/wp-content/uploads
-      - ./scripts:/scripts
     depends_on:
       - wordpress
     # Keep container available for commands

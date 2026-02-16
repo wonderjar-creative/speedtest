@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * GraphQL Feature class.
  *
  * Extends WPGraphQL schema with custom fields.
+ * The blocksJSON field is provided by the WPGraphQL Gutenberg plugin.
  */
 class GraphQLFeature {
 
@@ -69,106 +70,59 @@ class GraphQLFeature {
 			)
 		);
 
-		// Add blocksJSON field to ContentNode — parsed blocks in frontend-compatible format.
+		// Add templateSlug field to Page type.
 		register_graphql_field(
-			'ContentNode',
-			'blocksJSON',
-			array(
-				'type'        => 'String',
-				'description' => 'JSON-encoded block data in frontend-compatible format.',
-				'resolve'     => function ( $post ) {
-					// Use get_post() instead of $post->contentRaw because WPGraphQL
-					// gates contentRaw behind edit_posts capability, returning null
-					// for unauthenticated/public requests.
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
-					$wp_post     = get_post( $post->databaseId );
-					$content     = $wp_post->post_content ?? '';
-					$blocks      = parse_blocks( $content );
-					$registry    = \WP_Block_Type_Registry::get_instance();
-					$transformed = $this->transform_blocks( $blocks, $registry );
-					return wp_json_encode( $transformed );
-				},
-			)
-		);
-
-		// Add templateSlug field to ContentNode.
-		register_graphql_field(
-			'ContentNode',
+			'Page',
 			'templateSlug',
 			array(
 				'type'        => 'String',
-				'description' => 'The template slug assigned to this content.',
+				'description' => 'The template file slug (e.g., "page-header-absolute-no-title").',
 				'resolve'     => function ( $post ) {
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
-					$template = get_page_template_slug( $post->databaseId );
-					if ( $template ) {
-						$template = str_replace( '.html', '', $template );
-						$template = str_replace( 'templates/', '', $template );
-					}
-					return $template ?: '';
+					return $this->get_template_slug( $post->databaseId, 'page' );
 				},
 			)
 		);
 
-		// Add block data field to ContentNode (legacy).
+		// Add templateSlug field to Post type.
 		register_graphql_field(
-			'ContentNode',
-			'blocksData',
+			'Post',
+			'templateSlug',
 			array(
 				'type'        => 'String',
-				'description' => 'JSON-encoded raw block data for the content.',
+				'description' => 'The template file slug (e.g., "single").',
 				'resolve'     => function ( $post ) {
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
-					$wp_post = get_post( $post->databaseId );
-					$content = $wp_post->post_content ?? '';
-					$blocks  = parse_blocks( $content );
-					return wp_json_encode( $blocks );
+					return $this->get_template_slug( $post->databaseId, 'post' );
 				},
 			)
 		);
 	}
 
 	/**
-	 * Transform parse_blocks() output to frontend-compatible format.
+	 * Get the template slug for a post.
 	 *
-	 * @param array                     $blocks   Raw blocks from parse_blocks().
-	 * @param \WP_Block_Type_Registry $registry Block type registry.
-	 * @return array Transformed blocks.
+	 * Retrieves the template slug from post meta and normalizes it.
+	 * For block themes, the template is stored without .php extension.
+	 *
+	 * @param int    $post_id   The post ID.
+	 * @param string $post_type The post type ('page' or 'post').
+	 * @return string The template slug or default template for the post type.
 	 */
-	private function transform_blocks( array $blocks, \WP_Block_Type_Registry $registry ): array {
-		return array_values(
-			array_filter(
-				array_map(
-					function ( $block ) use ( $registry ) {
-						if ( empty( $block['blockName'] ) ) {
-							return null;
-						}
+	private function get_template_slug( int $post_id, string $post_type = 'page' ): string {
+		$template = get_post_meta( $post_id, '_wp_page_template', true );
 
-						$block_type = $registry->get_registered( $block['blockName'] );
-						$is_dynamic = $block_type && $block_type->is_dynamic();
+		// If no template or default, return the default for this post type.
+		if ( empty( $template ) || 'default' === $template ) {
+			return 'post' === $post_type ? 'single' : 'page';
+		}
 
-						$dynamic_content = null;
-						if ( $is_dynamic ) {
-							$dynamic_content = render_block( $block );
-						}
+		// Remove .php extension if present (classic themes).
+		$slug = preg_replace( '/\.php$/', '', $template );
 
-						$inner_blocks = array();
-						if ( ! empty( $block['innerBlocks'] ) ) {
-							$inner_blocks = $this->transform_blocks( $block['innerBlocks'], $registry );
-						}
+		// Remove any path prefix (e.g., "templates/").
+		$slug = basename( $slug );
 
-						return array(
-							'name'           => $block['blockName'],
-							'attributes'     => ! empty( $block['attrs'] ) ? $block['attrs'] : new \stdClass(),
-							'innerBlocks'    => $inner_blocks,
-							'saveContent'    => $block['innerHTML'] ?? '',
-							'dynamicContent' => $dynamic_content,
-							'isDynamic'      => $is_dynamic,
-						);
-					},
-					$blocks
-				)
-			)
-		);
+		return $slug;
 	}
 }
