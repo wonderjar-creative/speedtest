@@ -251,6 +251,7 @@ const getBlockComponents = async (
             name={block.name}
             attributes={block.attributes as CoreNavigationBlockAttributes}
             saveContent={block.saveContent}
+            rawInnerBlocks={block.innerBlocks as EnrichedBlock[]}
           />
         );
       }

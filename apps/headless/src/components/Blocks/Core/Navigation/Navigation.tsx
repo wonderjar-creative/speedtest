@@ -1,10 +1,11 @@
-import { FrontendBlock } from "@/types/coreBlockTypes";
+import { FrontendBlock, EnrichedBlock } from "@/types/coreBlockTypes";
 import { CoreNavigationBlockAttributes } from "@/gql/graphql";
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from "@/utils/blockStyles";
 import NavigationMenu from "./NavigationMenu";
 
 export interface CoreNavigationBlock extends FrontendBlock {
   attributes?: CoreNavigationBlockAttributes;
+  rawInnerBlocks?: EnrichedBlock[];
 }
 
 interface NavigationData {
@@ -69,22 +70,30 @@ const fetchNavigationData = async (ref: number | undefined): Promise<NavigationD
   }
 };
 
-const Navigation: React.FC<CoreNavigationBlock> = async ({ name, attributes, innerBlocks }) => {
+const Navigation: React.FC<CoreNavigationBlock> = async ({ name, attributes, rawInnerBlocks }) => {
   const { ref, layout } = attributes || {};
-  const navData = await fetchNavigationData(ref as number | undefined);
   const navClasses = getBlockClasses(attributes ?? {}, getBlockBaseClass(name));
   const navStyleAttr = getBlockStyleAttr(attributes?.style);
-  const listLayout = layout?.type || 'flex';
-  const listFlexWrap = layout?.flexWrap || 'nowrap';
-  const listOrientation = layout?.orientation || 'horizontal';
-  const listAttributes = { layout: { type: listLayout, flexWrap: listFlexWrap }, orientation: listOrientation };
-  const listClasses = getBlockClasses(listAttributes, 'wp-block-navigation__list');
-  const listStyleAttr = getBlockStyleAttr(attributes?.style?.elements?.list);
 
-  if (!navData || !navData.blocks || navData.blocks.length === 0) {
+  // Try fetching from saved wp_navigation post first
+  const navData = await fetchNavigationData(ref as number | undefined);
+  let navigationLinks: NavigationLink[] = [];
+
+  if (navData?.blocks && navData.blocks.length > 0) {
+    // Saved navigation post (ref exists)
+    navigationLinks = processNavigationBlocks(navData.blocks);
+  } else if (rawInnerBlocks && rawInnerBlocks.length > 0) {
+    // Inline navigation from pattern/template (no ref)
+    navigationLinks = processNavigationBlocks(rawInnerBlocks);
+  }
+
+  if (navigationLinks.length === 0) {
+    const listAttributes = { layout: { type: 'flex', flexWrap: 'nowrap' } };
+    const listClasses = getBlockClasses(listAttributes, 'wp-block-navigation__list');
+
     return (
       <nav className={navClasses} style={navStyleAttr}>
-        <ul className={listClasses} style={listStyleAttr}>
+        <ul className={listClasses}>
           <li>
             <a href="/">Home (fallback)</a>
           </li>
@@ -93,12 +102,10 @@ const Navigation: React.FC<CoreNavigationBlock> = async ({ name, attributes, inn
     );
   }
 
-  const navigationLinks = processNavigationBlocks(navData.blocks);
-
   return (
     <NavigationMenu
       links={navigationLinks}
-      title={navData.title}
+      title={navData?.title || 'Navigation'}
       className={navClasses}
       style={navStyleAttr}
     />
