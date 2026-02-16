@@ -2,13 +2,23 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Add your WordPress domains here
-    domains: [
-      'projectname.local',           // Local development
-      'cms.example.com',             // Production WordPress
-      'staging.cms.example.com',     // Staging WordPress
-    ]
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8080',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.denverheadless.com',
+      },
+    ],
   },
+  output: 'standalone',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
