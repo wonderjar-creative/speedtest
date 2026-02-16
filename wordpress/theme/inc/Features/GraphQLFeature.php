@@ -69,18 +69,98 @@ class GraphQLFeature {
 			)
 		);
 
-		// Add block data field to ContentNode.
+		// Add blocksJSON field to ContentNode — parsed blocks in frontend-compatible format.
+		register_graphql_field(
+			'ContentNode',
+			'blocksJSON',
+			array(
+				'type'        => 'String',
+				'description' => 'JSON-encoded block data in frontend-compatible format.',
+				'resolve'     => function ( $post ) {
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
+					$blocks     = parse_blocks( $post->contentRaw ?? '' );
+					$registry   = \WP_Block_Type_Registry::get_instance();
+					$transformed = $this->transform_blocks( $blocks, $registry );
+					return wp_json_encode( $transformed );
+				},
+			)
+		);
+
+		// Add templateSlug field to ContentNode.
+		register_graphql_field(
+			'ContentNode',
+			'templateSlug',
+			array(
+				'type'        => 'String',
+				'description' => 'The template slug assigned to this content.',
+				'resolve'     => function ( $post ) {
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
+					$template = get_page_template_slug( $post->databaseId );
+					if ( $template ) {
+						$template = str_replace( '.html', '', $template );
+						$template = str_replace( 'templates/', '', $template );
+					}
+					return $template ?: '';
+				},
+			)
+		);
+
+		// Add block data field to ContentNode (legacy).
 		register_graphql_field(
 			'ContentNode',
 			'blocksData',
 			array(
 				'type'        => 'String',
-				'description' => 'JSON-encoded block data for the content.',
+				'description' => 'JSON-encoded raw block data for the content.',
 				'resolve'     => function ( $post ) {
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
 					$blocks = parse_blocks( $post->contentRaw ?? '' );
 					return wp_json_encode( $blocks );
 				},
+			)
+		);
+	}
+
+	/**
+	 * Transform parse_blocks() output to frontend-compatible format.
+	 *
+	 * @param array                     $blocks   Raw blocks from parse_blocks().
+	 * @param \WP_Block_Type_Registry $registry Block type registry.
+	 * @return array Transformed blocks.
+	 */
+	private function transform_blocks( array $blocks, \WP_Block_Type_Registry $registry ): array {
+		return array_values(
+			array_filter(
+				array_map(
+					function ( $block ) use ( $registry ) {
+						if ( empty( $block['blockName'] ) ) {
+							return null;
+						}
+
+						$block_type = $registry->get_registered( $block['blockName'] );
+						$is_dynamic = $block_type && $block_type->is_dynamic();
+
+						$dynamic_content = null;
+						if ( $is_dynamic ) {
+							$dynamic_content = render_block( $block );
+						}
+
+						$inner_blocks = array();
+						if ( ! empty( $block['innerBlocks'] ) ) {
+							$inner_blocks = $this->transform_blocks( $block['innerBlocks'], $registry );
+						}
+
+						return array(
+							'name'           => $block['blockName'],
+							'attributes'     => ! empty( $block['attrs'] ) ? $block['attrs'] : new \stdClass(),
+							'innerBlocks'    => $inner_blocks,
+							'saveContent'    => $block['innerHTML'] ?? '',
+							'dynamicContent' => $dynamic_content,
+							'isDynamic'      => $is_dynamic,
+						);
+					},
+					$blocks
+				)
 			)
 		);
 	}

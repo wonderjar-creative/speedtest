@@ -1,6 +1,7 @@
 import { fetchTemplatePartWithISR } from "./isrFetchers";
 import { enrichBlocksWithMedia } from "./blockMedia";
 import getBlockComponents, { ContentNodeWithBlocks } from "./getBlockComponents";
+import getPart from "./getPart";
 
 const getSemanticTag = (slug: string): keyof JSX.IntrinsicElements => {
   if (slug.includes('header')) return 'header';
@@ -16,7 +17,12 @@ const renderTemplatePart = async (
   index?: number
 ) => {
   try {
-    const part = await fetchTemplatePartWithISR(slug);
+    // Try ISR first, fallback to static
+    let part = await fetchTemplatePartWithISR(slug);
+    if (!part || !part.blocksJSON) {
+      part = getPart(slug);
+    }
+
     if (part) {
       const partBlocks = JSON.parse(part.blocksJSON || '[]');
       const enrichedBlocks = await enrichBlocksWithMedia(partBlocks);

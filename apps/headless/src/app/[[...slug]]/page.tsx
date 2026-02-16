@@ -1,37 +1,74 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { print } from "graphql/language/printer";
+
+import { setSeoData } from "@/utils/seoData";
+
 import { fetchGraphQL } from "@/utils/fetchGraphQL";
+import { ContentInfoQuery } from "@/queries/general/ContentInfoQuery";
+import { PostsPageQuery } from "@/queries/general/PostsPageQuery";
+import { ContentNode } from "@/gql/graphql";
+import PageTemplate from "@/components/Templates/Page/PageTemplate";
+import IndexTemplate from "@/components/Templates/Index/IndexTemplate";
+import { nextSlugToWpSlug } from "@/utils/nextSlugToWpSlug";
+import PostTemplate from "@/components/Templates/Post/PostTemplate";
+import { SeoQuery } from "@/queries/general/SeoQuery";
+import { JsonLd } from "@/components/Globals/JsonLd/JsonLd";
 
-// Import your GraphQL queries here
-// import { ContentInfoQuery } from "@/queries/general/ContentInfoQuery";
-// import { ContentNode } from "@/gql/graphql";
-
-type Props = {
-  params: Promise<{ slug: string[] | undefined }>;
-};
-
-/**
- * Helper to convert Next.js slug array to WordPress URI
- */
-function nextSlugToWpSlug(slug: string[] | undefined): string {
-  if (!slug || slug.length === 0) return "/";
-  return slug.join("/");
+interface PostsPageNode {
+  databaseId: number;
+  title: string;
+  slug: string;
+  status: string;
+  isPostsPage: boolean;
 }
 
-export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
-  const wpSlug = nextSlugToWpSlug(slug);
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-  // TODO: Fetch SEO data from WordPress
-  // const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
-  //   print(SeoQuery),
-  //   { slug: wpSlug, idType: "URI" }
-  // );
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const _params = await params;
+  const slug = nextSlugToWpSlug(_params.slug);
+  const isPreview = slug.includes("preview");
+
+  const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
+    print(SeoQuery),
+    {
+      slug: isPreview ? slug.split("preview/")[1] : slug,
+      idType: isPreview ? "DATABASE_ID" : "URI",
+    },
+  );
+
+  // If contentNode is null, check if this might be the posts page
+  if (!contentNode) {
+    const { pages } = await fetchGraphQL<{ pages: { nodes: PostsPageNode[] } }>(
+      print(PostsPageQuery),
+    );
+
+    const postsPage = pages?.nodes?.find((page) => page.isPostsPage);
+
+    if (postsPage && postsPage.slug === slug) {
+      // Return basic metadata for posts page
+      return {
+        title: postsPage.title,
+        alternates: {
+          canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`,
+        },
+      };
+    }
+
+    return notFound();
+  }
+
+  const seoData = setSeoData({ seo: contentNode.seo, slug });
 
   return {
-    title: wpSlug === "/" ? "Home" : wpSlug,
-    // Add more metadata from WordPress SEO plugin
-  };
+    ...seoData,
+    alternates: {
+      canonical: seoData.canonicalUrl,
+    },
+  } as Metadata;
 }
 
 export function generateStaticParams() {
@@ -40,53 +77,70 @@ export function generateStaticParams() {
   ];
 }
 
-export const revalidate = 300; // 5 minutes ISR
+export const revalidate = 300; // 5 minutes
 
 export default async function Page({ params }: Props) {
-  const { slug } = await params;
-  const wpSlug = nextSlugToWpSlug(slug);
+  const _params = await params;
+  const slug = nextSlugToWpSlug(_params.slug);
+  const isPreview = slug.includes("preview");
+  const wpSlug = isPreview ? slug.split("preview/")[1] : slug;
+  const idType = isPreview ? "DATABASE_ID" : "URI";
 
-  // TODO: Implement your content fetching logic
-  // This is a placeholder - replace with actual WordPress content fetching
+  // Fetch content info and SEO data in parallel
+  const [{ contentNode }, { contentNode: seoNode }] = await Promise.all([
+    fetchGraphQL<{ contentNode: ContentNode }>(print(ContentInfoQuery), {
+      slug: wpSlug,
+      idType,
+    }),
+    fetchGraphQL<{ contentNode: ContentNode }>(print(SeoQuery), {
+      slug: wpSlug,
+      idType,
+    }),
+  ]);
 
-  // Example:
-  // const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
-  //   print(ContentInfoQuery),
-  //   { slug: wpSlug, idType: "URI" }
-  // );
-  //
-  // if (!contentNode) {
-  //   return notFound();
-  // }
-  //
-  // switch (contentNode.contentTypeName) {
-  //   case "page":
-  //     return <PageTemplate node={contentNode} />;
-  //   case "post":
-  //     return <PostTemplate node={contentNode} />;
-  //   default:
-  //     return <p>{contentNode.contentTypeName} not implemented</p>;
-  // }
+  // If contentNode is null, check if this might be the posts page
+  // (Posts page has uri: null in WordPress but is accessed via its slug)
+  if (!contentNode) {
+    const { pages } = await fetchGraphQL<{ pages: { nodes: PostsPageNode[] } }>(
+      print(PostsPageQuery),
+    );
+
+    const postsPage = pages?.nodes?.find((page) => page.isPostsPage);
+
+    if (postsPage && postsPage.slug === slug) {
+      return (
+        <IndexTemplate
+          node={{ databaseId: postsPage.databaseId } as ContentNode}
+        />
+      );
+    }
+
+    return notFound();
+  }
+
+  // Check if this page is the designated posts page (blog index)
+  if (contentNode.contentTypeName === "page" && contentNode.isPostsPage) {
+    return <IndexTemplate node={contentNode} />;
+  }
+
+  // Extract JSON-LD from SEO data
+  const jsonLd = seoNode?.seo?.jsonLd?.raw;
+
+  const renderTemplate = () => {
+    switch (contentNode.contentTypeName) {
+      case "page":
+        return <PageTemplate node={contentNode} />;
+      case "post":
+        return <PostTemplate node={contentNode} />;
+      default:
+        return <p>{contentNode.contentTypeName} not implemented</p>;
+    }
+  };
 
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold mb-4">
-        {wpSlug === "/" ? "Home" : wpSlug}
-      </h1>
-      <p className="text-gray-600">
-        This is a placeholder page. Connect your WordPress instance and implement
-        the content fetching logic in this file.
-      </p>
-      <div className="mt-8 p-4 bg-gray-100 rounded">
-        <h2 className="font-semibold mb-2">Next Steps:</h2>
-        <ol className="list-decimal list-inside space-y-2">
-          <li>Configure your WordPress URL in .env.development.local</li>
-          <li>Run <code className="bg-gray-200 px-1">npm run codegen</code> to generate GraphQL types</li>
-          <li>Implement GraphQL queries in src/queries/</li>
-          <li>Uncomment and customize the content fetching logic above</li>
-          <li>Create block components in src/components/Blocks/</li>
-        </ol>
-      </div>
-    </main>
+    <>
+      <JsonLd data={jsonLd} />
+      {renderTemplate()}
+    </>
   );
 }
