@@ -14,7 +14,7 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem 
 
   const blockClasses = getBlockClasses(attributes || {}, `${getBlockBaseClass(name)} ${width || height ? 'is-resized' : '' }`);
   const blockStyleAttr = getBlockStyleAttr(style);
-  const imageClasses = getBlockClasses(imageAttributes, `wp-image ${align === 'center' ? 'mx-auto' : ''}`);
+  const imageClasses = getBlockClasses(imageAttributes, 'wp-image');
 
   const sizeObj = getMediaSize(sizeSlug, sizes);
   const imageSrc = sizeObj?.sourceUrl || url || mediaItem?.node?.sourceUrl || '';

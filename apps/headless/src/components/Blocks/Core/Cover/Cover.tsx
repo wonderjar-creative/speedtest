@@ -37,27 +37,14 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   const effectiveDimRatio = dimRatio ?? (overlayColor || customOverlayColor ? 100 : undefined);
   const customCombinedGradientOverlayColor = customGradient ? customGradient : customOverlayColor
 
-  const align = contentPosition ? [contentPosition.split(' ')[0]].map((verticalAlign) => {
-    switch (verticalAlign) {
-      case 'top': return 'items-start';
-      case 'center': return 'items-center';
-      case 'bottom': return 'items-end';
-      default: return 'items-center';
-    }
-  }).join(' ') : 'items-center';
-
-  const justify = contentPosition ? [contentPosition.split(' ')[1]].map((horizontalAlign) => {
-    switch (horizontalAlign) {
-      case 'left': return 'justify-start';
-      case 'center': return 'justify-center';
-      case 'right': return 'justify-end';
-      default: return 'justify-center';
-    }
-  }).join(' ') : 'justify-center';
+  const positionSlug = contentPosition ? contentPosition.replace(/\s+/g, '-') : '';
+  const positionClass = positionSlug && positionSlug !== 'center-center'
+    ? `has-custom-content-position is-position-${positionSlug}`
+    : '';
 
   const blockClasses = getBlockClasses(
     wrapperAttributes,
-    `${getBlockBaseClass(name)} relative overflow-hidden ${!minHeight ? 'min-h-[430px]' : ''}${isDark ? ' is-dark' : ' is-light'} flex ${align} ${justify}${!style?.spacing?.padding ? ' p-8' : ''}`
+    `${getBlockBaseClass(name)}${isDark ? ' is-dark' : ' is-light'}${positionClass ? ` ${positionClass}` : ''}`
   );
   const blockStyleAttr = getBlockStyleAttr({
     ...style,
@@ -68,18 +55,15 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   const backgroundColor = overlayColor;
   const overlayClasses = getBlockClasses(
     { backgroundColor, customGradient, dimRatio: effectiveDimRatio, gradient, style },
-    `wp-block-cover__background absolute top-0 left-0 w-full max-w-full h-full${!backgroundColor && !customOverlayColor ? ' has-background has-deep-black-background-color ' : ' '}${!effectiveDimRatio ? ' opacity-50 ' : ''}`
+    `wp-block-cover__background${!backgroundColor && !customOverlayColor ? ' has-background has-deep-black-background-color' : ''}`
   );
 
   const imageClasses = getBlockClasses(
     { id, sizeSlug },
-    'wp-block-cover__image-background absolute top-0 left-0 w-full max-w-full h-auto object-center object-cover'
+    'wp-block-cover__image-background'
   );
 
-  const innerContainerClasses = getBlockClasses(
-    {},
-    `wp-block-cover__inner-container relative z-10 m-0 w-full max-w-full`
-  );
+  const innerContainerClasses = 'wp-block-cover__inner-container';
 
   const imageSrc = useFeaturedImage && featuredImage
     ? featuredImage?.node?.sourceUrl

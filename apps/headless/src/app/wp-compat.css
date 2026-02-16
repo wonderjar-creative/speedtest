@@ -1,160 +1,10 @@
 /**
  * WordPress Block Theme Compatibility CSS
  *
- * Generated from theme.json — provides CSS custom properties
- * and utility classes that WordPress block markup expects.
+ * Structural styles for WordPress block rendering.
+ * Design tokens and utility classes are in generated-tokens.css
+ * (auto-generated from theme.json by scripts/sync-theme-tokens.mjs).
  */
-
-/* ============================================
-   CSS Custom Properties (from theme.json)
-   ============================================ */
-
-:root {
-  /* Colors */
-  --wp--preset--color--primary: #0ea5e9;
-  --wp--preset--color--secondary: #64748b;
-  --wp--preset--color--accent: #f97316;
-  --wp--preset--color--black: #000000;
-  --wp--preset--color--white: #FFFFFF;
-  --wp--preset--color--gray-100: #f3f4f6;
-  --wp--preset--color--gray-500: #6b7280;
-  --wp--preset--color--gray-900: #111827;
-
-  /* Gradients */
-  --wp--preset--gradient--gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
-  --wp--preset--gradient--gradient-accent: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-
-  /* Spacing */
-  --wp--preset--spacing--20: 10px;
-  --wp--preset--spacing--30: 20px;
-  --wp--preset--spacing--40: 30px;
-  --wp--preset--spacing--50: clamp(30px, 5vw, 50px);
-  --wp--preset--spacing--60: clamp(30px, 7vw, 70px);
-  --wp--preset--spacing--70: clamp(50px, 7vw, 90px);
-  --wp--preset--spacing--80: clamp(70px, 10vw, 140px);
-
-  /* Font Sizes */
-  --wp--preset--font-size--xs: 0.75rem;
-  --wp--preset--font-size--sm: 0.875rem;
-  --wp--preset--font-size--base: 1rem;
-  --wp--preset--font-size--lg: 1.125rem;
-  --wp--preset--font-size--xl: 1.25rem;
-  --wp--preset--font-size--2-xl: 1.5rem;
-  --wp--preset--font-size--3-xl: 1.875rem;
-  --wp--preset--font-size--4-xl: 2.25rem;
-  --wp--preset--font-size--5-xl: 3rem;
-  --wp--preset--font-size--6-xl: 3.75rem;
-  --wp--preset--font-size--7-xl: 4.5rem;
-
-  /* Layout */
-  --wp--style--global--content-size: 900px;
-  --wp--style--global--wide-size: 1400px;
-
-  /* Root padding */
-  --wp--style--root--padding-right: var(--wp--preset--spacing--50);
-  --wp--style--root--padding-left: var(--wp--preset--spacing--50);
-}
-
-
-/* ============================================
-   Global Styles (from theme.json styles)
-   ============================================ */
-
-body {
-  background-color: var(--wp--preset--color--white);
-  color: var(--wp--preset--color--gray-900);
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-a {
-  color: var(--wp--preset--color--primary);
-}
-a:hover {
-  color: var(--wp--preset--color--accent);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--wp--preset--color--gray-900);
-  font-weight: 700;
-}
-
-
-/* ============================================
-   Color Utility Classes (has-*-color, has-*-background-color)
-   ============================================ */
-
-/* Text Colors */
-.has-primary-color { color: var(--wp--preset--color--primary); }
-.has-secondary-color { color: var(--wp--preset--color--secondary); }
-.has-accent-color { color: var(--wp--preset--color--accent); }
-.has-black-color { color: var(--wp--preset--color--black); }
-.has-white-color { color: var(--wp--preset--color--white); }
-.has-gray-100-color { color: var(--wp--preset--color--gray-100); }
-.has-gray-500-color { color: var(--wp--preset--color--gray-500); }
-.has-gray-900-color { color: var(--wp--preset--color--gray-900); }
-
-/* Background Colors */
-.has-primary-background-color { background-color: var(--wp--preset--color--primary); }
-.has-secondary-background-color { background-color: var(--wp--preset--color--secondary); }
-.has-accent-background-color { background-color: var(--wp--preset--color--accent); }
-.has-black-background-color { background-color: var(--wp--preset--color--black); }
-.has-white-background-color { background-color: var(--wp--preset--color--white); }
-.has-gray-100-background-color { background-color: var(--wp--preset--color--gray-100); }
-.has-gray-500-background-color { background-color: var(--wp--preset--color--gray-500); }
-.has-gray-900-background-color { background-color: var(--wp--preset--color--gray-900); }
-
-/* Border Colors */
-.has-primary-border-color { border-color: var(--wp--preset--color--primary); }
-.has-secondary-border-color { border-color: var(--wp--preset--color--secondary); }
-.has-accent-border-color { border-color: var(--wp--preset--color--accent); }
-.has-black-border-color { border-color: var(--wp--preset--color--black); }
-.has-white-border-color { border-color: var(--wp--preset--color--white); }
-.has-gray-100-border-color { border-color: var(--wp--preset--color--gray-100); }
-.has-gray-500-border-color { border-color: var(--wp--preset--color--gray-500); }
-.has-gray-900-border-color { border-color: var(--wp--preset--color--gray-900); }
-
-/* Gradient Backgrounds */
-.has-gradient-primary-gradient-background { background: var(--wp--preset--gradient--gradient-primary); }
-.has-gradient-accent-gradient-background { background: var(--wp--preset--gradient--gradient-accent); }
-
-
-/* ============================================
-   Font Size Classes (has-*-font-size)
-   ============================================ */
-
-.has-xs-font-size { font-size: var(--wp--preset--font-size--xs); }
-.has-sm-font-size { font-size: var(--wp--preset--font-size--sm); }
-.has-base-font-size { font-size: var(--wp--preset--font-size--base); }
-.has-lg-font-size { font-size: var(--wp--preset--font-size--lg); }
-.has-xl-font-size { font-size: var(--wp--preset--font-size--xl); }
-.has-2-xl-font-size { font-size: var(--wp--preset--font-size--2-xl); }
-.has-3-xl-font-size { font-size: var(--wp--preset--font-size--3-xl); }
-.has-4-xl-font-size { font-size: var(--wp--preset--font-size--4-xl); }
-.has-5-xl-font-size { font-size: var(--wp--preset--font-size--5-xl); }
-.has-6-xl-font-size { font-size: var(--wp--preset--font-size--6-xl); }
-.has-7-xl-font-size { font-size: var(--wp--preset--font-size--7-xl); }
-
-
-/* ============================================
-   Typography Utility Classes
-   ============================================ */
-
-.has-text-color { /* marker class, color set by specific class */ }
-.has-background { /* marker class, background set by specific class */ }
-.has-text-align-left { text-align: left; }
-.has-text-align-center { text-align: center; }
-.has-text-align-right { text-align: right; }
-.has-drop-cap::first-letter {
-  float: left;
-  font-size: 3.25em;
-  line-height: 0.68;
-  font-weight: 100;
-  margin: 0.05em 0.1em 0 0;
-  text-transform: uppercase;
-  font-style: normal;
-}
 
 
 /* ============================================
@@ -286,6 +136,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 430px;
+  padding: 2rem;
   box-sizing: border-box;
 }
 
@@ -294,26 +146,32 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-.has-background-dim-60 { opacity: 0.6; }
-.has-background-dim-50 { opacity: 0.5; }
+.has-background-dim { opacity: 0.5; }
+.has-background-dim-10 { opacity: 0.1; }
+.has-background-dim-20 { opacity: 0.2; }
+.has-background-dim-30 { opacity: 0.3; }
 .has-background-dim-40 { opacity: 0.4; }
+.has-background-dim-50 { opacity: 0.5; }
+.has-background-dim-60 { opacity: 0.6; }
 .has-background-dim-70 { opacity: 0.7; }
 .has-background-dim-80 { opacity: 0.8; }
 .has-background-dim-90 { opacity: 0.9; }
 .has-background-dim-100 { opacity: 1; }
-.has-background-dim { /* base marker class */ }
 
 .wp-block-cover__image-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   z-index: 0;
 }
 
@@ -350,6 +208,11 @@ h1, h2, h3, h4, h5, h6 {
 .wp-block-image.is-resized img {
   width: 100%;
   height: auto;
+}
+
+.wp-block-image.aligncenter img {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Buttons */
@@ -473,20 +336,41 @@ h1, h2, h3, h4, h5, h6 {
    Flex Layout (from WordPress layout system)
    ============================================ */
 
-.flex {
-  display: flex;
-}
-
 .is-layout-flex {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 0.5em;
 }
 
 .is-layout-flex > * {
   margin: 0;
 }
 
+.is-layout-flex.is-vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.is-layout-flex.is-vertical.is-content-justification-left { align-items: flex-start; }
+.is-layout-flex.is-vertical.is-content-justification-center { align-items: center; }
+.is-layout-flex.is-vertical.is-content-justification-right { align-items: flex-end; }
+
+.is-content-justification-left { justify-content: flex-start; }
+.is-content-justification-center { justify-content: center; }
+.is-content-justification-right { justify-content: flex-end; }
+.is-content-justification-space-between { justify-content: space-between; }
+
+.is-vertically-aligned-top { align-items: flex-start; }
+.is-vertically-aligned-center { align-items: center; }
+.is-vertically-aligned-bottom { align-items: flex-end; }
+.is-vertically-aligned-stretch { align-items: stretch; }
+
+.is-nowrap {
+  flex-wrap: nowrap;
+}
+
+/* Flow layout */
 .is-layout-flow > * + * {
   margin-top: 1.5em;
 }
@@ -495,6 +379,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
 }
 
+/* Constrained layout */
 .is-layout-constrained > * {
   max-width: var(--wp--style--global--content-size);
   margin-left: auto;
@@ -512,6 +397,33 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* Grid layout */
+.is-layout-grid {
+  display: grid;
+  gap: 1.25em;
+}
+
+/* Stacked on mobile — WP columns default to stacking */
+@media (max-width: 781px) {
+  .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+    flex-basis: 100% !important;
+  }
+}
+
+
+/* ============================================
+   Cover Block Position Classes
+   ============================================ */
+
+.wp-block-cover.is-position-top-left { align-items: flex-start; justify-content: flex-start; }
+.wp-block-cover.is-position-top-center { align-items: flex-start; justify-content: center; }
+.wp-block-cover.is-position-top-right { align-items: flex-start; justify-content: flex-end; }
+.wp-block-cover.is-position-center-left { align-items: center; justify-content: flex-start; }
+.wp-block-cover.is-position-center-right { align-items: center; justify-content: flex-end; }
+.wp-block-cover.is-position-bottom-left { align-items: flex-end; justify-content: flex-start; }
+.wp-block-cover.is-position-bottom-center { align-items: flex-end; justify-content: center; }
+.wp-block-cover.is-position-bottom-right { align-items: flex-end; justify-content: flex-end; }
 
 
 /* ============================================

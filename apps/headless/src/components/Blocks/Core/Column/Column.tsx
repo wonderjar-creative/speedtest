@@ -11,7 +11,7 @@ const Column: React.FC<CoreColumnBlock> = ({ name, attributes, innerBlocks }) =>
 
   return (
     <div
-      className={getBlockClasses(attributes || {}, `${getBlockBaseClass(name)} flow flex-grow flex-basis-0 break-words md:flex-1`)}
+      className={getBlockClasses(attributes || {}, getBlockBaseClass(name))}
       style={{
         ...getBlockStyleAttr(style),
         flexBasis: width || undefined,

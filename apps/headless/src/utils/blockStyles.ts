@@ -37,7 +37,7 @@ export const getBlockClasses = (
     backgroundColor ? `has-${backgroundColor}-background-color has-background` : '',
     borderColor ? `has-${borderColor}-border-color` : '',
     className || '',
-    dimRatio ? `opacity-${dimRatio || '50'}` : '',
+    dimRatio ? `has-background-dim has-background-dim-${dimRatio || '50'}` : '',
     direction ? `text-direction-${direction}` : '',
     dropCap ? 'has-drop-cap' : '',
     fontFamily ? `has-${fontFamily}-font-family` : '',
@@ -53,29 +53,20 @@ export const getBlockClasses = (
   const { type, flexWrap, justifyContent, orientation, verticalAlignment } = layout || {};
 
   if (type) {
-    classes.push(type);
+    classes.push(`is-layout-${type}`);
 
     if (type === 'flex') {
-      // Handle flex layout specifics
-      const isVertical = orientation === 'vertical';
-      if (orientation) {
-        classes.push(isVertical ? 'flex-col' : 'flex-row');
-      } else {
-        classes.push('flex-row');
+      if (orientation === 'vertical') {
+        classes.push('is-vertical');
       }
-
-      if (isVertical) {
-        classes.push(`items-${justifyContent || 'start'}`);
-        classes.push(`justify-${verticalAlignment || 'center'}`);
-      } else {
-        classes.push(`justify-${justifyContent?.replace('space-', '') || 'start'}`);
-        classes.push(`items-${verticalAlignment || 'center'}`);
+      if (justifyContent) {
+        classes.push(`is-content-justification-${justifyContent}`);
       }
-
-      if (flexWrap) {
-        classes.push(`flex-${flexWrap}`);
-      } else {
-        classes.push('flex-wrap');
+      if (verticalAlignment) {
+        classes.push(`is-vertically-aligned-${verticalAlignment}`);
+      }
+      if (flexWrap === 'nowrap') {
+        classes.push('is-nowrap');
       }
     }
 
@@ -84,13 +75,9 @@ export const getBlockClasses = (
     }
   }
 
-  // Handle isStackedOnMobile
-  if (isStackedOnMobile !== undefined) {
-    if (isStackedOnMobile) {
-      classes.push('flex-col', 'sm:flex-row');
-    } else {
-      classes.push('flex-row');
-    }
+  // Handle isStackedOnMobile — WP defaults columns to stacked; class marks opt-out
+  if (isStackedOnMobile === false) {
+    classes.push('is-not-stacked-on-mobile');
   }
 
   // Handle classes from style object
