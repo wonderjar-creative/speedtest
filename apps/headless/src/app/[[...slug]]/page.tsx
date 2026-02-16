@@ -32,24 +32,55 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = nextSlugToWpSlug(_params.slug);
   const isPreview = slug.includes("preview");
 
-  const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
-    print(SeoQuery),
-    {
-      slug: isPreview ? slug.split("preview/")[1] : slug,
-      idType: isPreview ? "DATABASE_ID" : "URI",
-    },
-  );
+  // Try SEO query first (requires WPGraphQL for Rank Math plugin)
+  try {
+    const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
+      print(SeoQuery),
+      {
+        slug: isPreview ? slug.split("preview/")[1] : slug,
+        idType: isPreview ? "DATABASE_ID" : "URI",
+      },
+    );
 
-  // If contentNode is null, check if this might be the posts page
-  if (!contentNode) {
+    if (contentNode?.seo) {
+      const seoData = setSeoData({ seo: contentNode.seo, slug });
+      return {
+        ...seoData,
+        alternates: {
+          canonical: seoData.canonicalUrl,
+        },
+      } as Metadata;
+    }
+  } catch {
+    // SEO plugin not available — fall through to basic metadata
+  }
+
+  // Fallback: use ContentInfoQuery for basic metadata
+  try {
+    const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
+      print(ContentInfoQuery),
+      {
+        slug: isPreview ? slug.split("preview/")[1] : slug,
+        idType: isPreview ? "DATABASE_ID" : "URI",
+      },
+    );
+
+    if (contentNode) {
+      return {
+        title: slug === "/" ? "Home" : slug.replace(/\//g, " ").trim(),
+      };
+    }
+  } catch {
+    // Content not found
+  }
+
+  // Check if this might be the posts page
+  try {
     const { pages } = await fetchGraphQL<{ pages: { nodes: PostsPageNode[] } }>(
       print(PostsPageQuery),
     );
-
     const postsPage = pages?.nodes?.find((page) => page.isPostsPage);
-
     if (postsPage && postsPage.slug === slug) {
-      // Return basic metadata for posts page
       return {
         title: postsPage.title,
         alternates: {
@@ -57,18 +88,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       };
     }
-
-    return notFound();
+  } catch {
+    // Posts page query failed
   }
 
-  const seoData = setSeoData({ seo: contentNode.seo, slug });
-
-  return {
-    ...seoData,
-    alternates: {
-      canonical: seoData.canonicalUrl,
-    },
-  } as Metadata;
+  return { title: slug === "/" ? "Home" : slug };
 }
 
 export function generateStaticParams() {
@@ -86,8 +110,8 @@ export default async function Page({ params }: Props) {
   const wpSlug = isPreview ? slug.split("preview/")[1] : slug;
   const idType = isPreview ? "DATABASE_ID" : "URI";
 
-  // Fetch content info and SEO data in parallel
-  const [{ contentNode }, { contentNode: seoNode }] = await Promise.all([
+  // Fetch content info (required) and SEO data (optional — needs WPGraphQL for Rank Math)
+  const [{ contentNode }, seoResult] = await Promise.all([
     fetchGraphQL<{ contentNode: ContentNode }>(print(ContentInfoQuery), {
       slug: wpSlug,
       idType,
@@ -95,8 +119,9 @@ export default async function Page({ params }: Props) {
     fetchGraphQL<{ contentNode: ContentNode }>(print(SeoQuery), {
       slug: wpSlug,
       idType,
-    }),
+    }).catch(() => ({ contentNode: null })),
   ]);
+  const seoNode = seoResult.contentNode;
 
   // If contentNode is null, check if this might be the posts page
   // (Posts page has uri: null in WordPress but is accessed via its slug)
