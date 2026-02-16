@@ -21,6 +21,8 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem 
   const imageWidth = sizeObj?.width || mediaItem?.node?.mediaDetails?.width || 0;
   const imageHeight = sizeObj?.height || mediaItem?.node?.mediaDetails?.height || 0;
 
+  if (!imageSrc) return null;
+
   const useFill = !imageWidth && !imageHeight;
   const fillHeight = useFill && width && !height ? width : '300px';
 

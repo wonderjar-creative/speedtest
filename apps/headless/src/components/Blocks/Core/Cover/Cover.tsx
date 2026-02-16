@@ -81,34 +81,40 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
     `wp-block-cover__inner-container relative z-10 m-0 w-full max-w-full`
   );
 
-  const image = useFeaturedImage && featuredImage ? (
-    <Image
-      alt={featuredImage?.node?.altText || 'Cover Image'}
-      className={imageClasses}
-      src={featuredImage?.node?.sourceUrl || ''}
-      style={{ objectFit: 'cover' }}
-      width={featuredImage?.node?.mediaDetails?.width || 1600}
-      height={featuredImage?.node?.mediaDetails?.height || 900}
-    />
-  ) : mediaItem?.node ? (
-    <Image
-      alt={mediaItem.node.altText || alt || 'Cover Image'}
-      className={imageClasses}
-      src={mediaItem.node.sourceUrl || url || ''}
-      style={{ objectFit: 'cover' }}
-      width={mediaItem.node.mediaDetails?.width || 1600}
-      height={mediaItem.node.mediaDetails?.height || 900}
-    />
-  ) : (
-    <Image
-      alt={alt || 'Cover Image'}
-      className={imageClasses}
-      src={url || ''}
-      style={{ objectFit: 'cover' }}
-      width={1600}
-      height={900}
-    />
-  );
+  const imageSrc = useFeaturedImage && featuredImage
+    ? featuredImage?.node?.sourceUrl
+    : mediaItem?.node?.sourceUrl || url;
+
+  const image = imageSrc ? (
+    useFeaturedImage && featuredImage ? (
+      <Image
+        alt={featuredImage?.node?.altText || 'Cover Image'}
+        className={imageClasses}
+        src={imageSrc}
+        style={{ objectFit: 'cover' }}
+        width={featuredImage?.node?.mediaDetails?.width || 1600}
+        height={featuredImage?.node?.mediaDetails?.height || 900}
+      />
+    ) : mediaItem?.node ? (
+      <Image
+        alt={mediaItem.node.altText || alt || 'Cover Image'}
+        className={imageClasses}
+        src={imageSrc}
+        style={{ objectFit: 'cover' }}
+        width={mediaItem.node.mediaDetails?.width || 1600}
+        height={mediaItem.node.mediaDetails?.height || 900}
+      />
+    ) : (
+      <Image
+        alt={alt || 'Cover Image'}
+        className={imageClasses}
+        src={imageSrc}
+        style={{ objectFit: 'cover' }}
+        width={1600}
+        height={900}
+      />
+    )
+  ) : null;
 
   return (
     <TagComponent
@@ -116,7 +122,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
       className={blockClasses}
       {...(style && { style: blockStyleAttr })}
     >
-      {url || useFeaturedImage ? image : null}
+      {image}
       <span
         aria-hidden="true"
         className={overlayClasses}
