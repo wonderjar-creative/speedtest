@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     // Add your WordPress domains here
     domains: [
-      'projectname.local',           // Local development
+      'projectname.local',           // LocalWP development
+      'localhost:8080',              // Docker development
+      'images.unsplash.com',         // Unspash images
       'cms.example.com',             // Production WordPress
       'staging.cms.example.com',     // Staging WordPress
     ]
