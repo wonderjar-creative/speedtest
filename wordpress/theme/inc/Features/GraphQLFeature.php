@@ -77,9 +77,14 @@ class GraphQLFeature {
 				'type'        => 'String',
 				'description' => 'JSON-encoded block data in frontend-compatible format.',
 				'resolve'     => function ( $post ) {
+					// Use get_post() instead of $post->contentRaw because WPGraphQL
+					// gates contentRaw behind edit_posts capability, returning null
+					// for unauthenticated/public requests.
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
-					$blocks     = parse_blocks( $post->contentRaw ?? '' );
-					$registry   = \WP_Block_Type_Registry::get_instance();
+					$wp_post     = get_post( $post->databaseId );
+					$content     = $wp_post->post_content ?? '';
+					$blocks      = parse_blocks( $content );
+					$registry    = \WP_Block_Type_Registry::get_instance();
 					$transformed = $this->transform_blocks( $blocks, $registry );
 					return wp_json_encode( $transformed );
 				},
@@ -114,7 +119,9 @@ class GraphQLFeature {
 				'description' => 'JSON-encoded raw block data for the content.',
 				'resolve'     => function ( $post ) {
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
-					$blocks = parse_blocks( $post->contentRaw ?? '' );
+					$wp_post = get_post( $post->databaseId );
+					$content = $wp_post->post_content ?? '';
+					$blocks  = parse_blocks( $content );
 					return wp_json_encode( $blocks );
 				},
 			)
