@@ -31,7 +31,7 @@ const Submenu: React.FC<SubmenuProps> = ({ items, depth = 0 }) => {
       {items.map((item, index) => (
         <li
           key={item.id || index}
-          className={`wp-block-navigation-item ${item.children ? 'wp-block-navigation-item--has-submenu relative group' : ''} ${item.cssClasses?.join(' ') || ''}`}
+          className={`wp-block-navigation-item ${item.children ? 'wp-block-navigation-item--has-submenu' : ''} ${item.cssClasses?.join(' ') || ''}`}
         >
           <Link
             href={item.path || item.url}
@@ -133,7 +133,7 @@ export default function NavigationMenu({ links, title, className, style }: Navig
         {links.map((link, index) => (
           <li
             key={link.id || index}
-            className={`wp-block-navigation-item ${link.children ? 'wp-block-navigation-item--has-submenu relative' : ''} ${link.cssClasses?.join(' ') || ''}`}
+            className={`wp-block-navigation-item ${link.children ? 'wp-block-navigation-item--has-submenu' : ''} ${link.cssClasses?.join(' ') || ''}`}
           >
             <Link
               href={link.path || link.url}
