@@ -4,6 +4,19 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.7.0] - 2026-02-17
+
+### Changed
+
+- Renamed `fetch-wp-template-structure` to `sync-templates` and converted to ESM
+- Moved `sync-templates` from `apps/headless/scripts/` to root `scripts/`
+- Wired `sync-templates` into `dev-headless` and `build` Makefile targets so template data stays current automatically
+- Fixed dotenv resolution to load from headless `node_modules`
+
+### Removed
+
+- `wordpress/theme/package.json` and `wordpress/theme/scripts/sync-theme-version.js` (unused)
+
 ## [0.6.0] - 2026-02-15
 
 ### Changed
