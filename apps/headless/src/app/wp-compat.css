@@ -457,6 +457,10 @@
   padding: 0;
 }
 
+.wp-block-navigation-item--has-submenu {
+  position: relative;
+}
+
 .wp-block-navigation-item--has-submenu:hover > .wp-block-navigation__submenu {
   display: block;
 }
