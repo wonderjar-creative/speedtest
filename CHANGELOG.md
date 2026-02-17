@@ -4,6 +4,12 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.7.1] - 2026-02-17
+
+### Fixed
+
+- `.alignfull` breakout centering: replaced `left: 50%; transform: translateX(-50%)` with `margin-left: calc(50% - 50vw)` approach — the old technique miscalculated when the containing block was narrower than the viewport, pushing elements too far left
+
 ## [0.7.0] - 2026-02-17
 
 ### Changed
