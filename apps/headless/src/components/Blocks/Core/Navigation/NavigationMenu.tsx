@@ -27,7 +27,7 @@ interface SubmenuProps {
 
 const Submenu: React.FC<SubmenuProps> = ({ items, depth = 0 }) => {
   return (
-    <ul className={`wp-block-navigation__submenu hidden group-hover:block ${depth === 0 ? 'md:absolute md:left-0 md:bg-soft-cream md:shadow-lg md:rounded-lg md:py-1 md:min-w-48' : 'md:ml-4'}`}>
+    <ul className={`wp-block-navigation__submenu ${depth === 0 ? 'wp-block-navigation__submenu--depth-0' : 'wp-block-navigation__submenu--nested'}`}>
       {items.map((item, index) => (
         <li
           key={item.id || index}
@@ -36,11 +36,11 @@ const Submenu: React.FC<SubmenuProps> = ({ items, depth = 0 }) => {
           <Link
             href={item.path || item.url}
             target={item.target || '_self'}
-            className="wp-block-navigation-item__content block px-4 py-2"
+            className="wp-block-navigation-item__content"
           >
             {item.label}
             {item.children && (
-              <svg className="ml-2 inline-block" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
+              <svg className="wp-block-navigation-item__submenu-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
             )}
           </Link>
           {item.children && item.children.length > 0 && (
@@ -58,90 +58,91 @@ export default function NavigationMenu({ links, title, className, style }: Navig
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const renderMobileLink = (link: NavigationLink, index: number) => (
-    <li key={link.id || index} className="py-2">
-      <div className="flex items-center justify-between">
-        <Link
-          href={link.url}
-          target={link.target}
-          className="flex-1"
-          onClick={() => !link.children && setIsOpen(false)}
-        >
-          {link.label}
-        </Link>
-        {link.children && link.children.length > 0 && (
-          <button
-            onClick={() => setOpenMobileSubmenu(
-              openMobileSubmenu === (link.id || index.toString())
-                ? null
-                : (link.id || index.toString())
-            )}
-            className="ml-2 p-2"
-            aria-label="Toggle submenu"
+  const renderMobileLink = (link: NavigationLink, index: number) => {
+    const itemId = link.id || index.toString();
+    const isSubmenuOpen = openMobileSubmenu === itemId;
+
+    return (
+      <li key={itemId} className="wp-block-navigation__mobile-item">
+        <div className="wp-block-navigation__mobile-item-row">
+          <Link
+            href={link.url}
+            target={link.target}
+            className="wp-block-navigation__mobile-item-link"
+            onClick={() => !link.children && setIsOpen(false)}
           >
-            <svg className={`inline-block transition-transform ${openMobileSubmenu === (link.id || index.toString()) ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
-          </button>
+            {link.label}
+          </Link>
+          {link.children && link.children.length > 0 && (
+            <button
+              onClick={() => setOpenMobileSubmenu(isSubmenuOpen ? null : itemId)}
+              className="wp-block-navigation__mobile-submenu-toggle"
+              aria-label="Toggle submenu"
+            >
+              <svg className={isSubmenuOpen ? 'is-open' : ''} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
+            </button>
+          )}
+        </div>
+        {link.children && link.children.length > 0 && isSubmenuOpen && (
+          <ul className="wp-block-navigation__mobile-submenu">
+            {link.children.map((child, childIndex) => renderMobileLink(child, childIndex))}
+          </ul>
         )}
-      </div>
-      {link.children && link.children.length > 0 && openMobileSubmenu === (link.id || index.toString()) && (
-        <ul className="pl-4 mt-2">
-          {link.children.map((child, childIndex) => renderMobileLink(child, childIndex))}
-        </ul>
-      )}
-    </li>
-  );
+      </li>
+    );
+  };
 
   return (
     <nav className={`${className || ''}`} style={style} aria-label={title}>
       <button
         onClick={toggleMenu}
-        className="md:hidden p-2"
+        className="wp-block-navigation__responsive-toggle"
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
         {isOpen ? (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         )}
       </button>
 
       {isOpen && (
-        <div className="fixed z-50 top-0 left-0 w-full h-full bg-soft-cream shadow-md md:hidden overflow-y-auto">
+        <div className="wp-block-navigation__mobile-overlay">
           <button
-            className="absolute top-4 right-4 text-deep-black"
+            className="wp-block-navigation__mobile-close"
             onClick={() => setIsOpen(false)}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
-          <div className="border-b border-gray-200 py-4">
-            <ul className="flex flex-col p-4">
+          <div className="wp-block-navigation__mobile-container">
+            <ul className="wp-block-navigation__mobile-list">
               {links.map((link, index) => renderMobileLink(link, index))}
             </ul>
           </div>
         </div>
       )}
 
-      <ul className="hidden md:flex md:items-center md:space-x-4">
+      <ul className="wp-block-navigation__desktop-list">
         {links.map((link, index) => (
           <li
             key={link.id || index}
-            className={`wp-block-navigation-item group ${link.children ? 'wp-block-navigation-item--has-submenu relative' : ''} ${link.cssClasses?.join(' ') || ''}`}
+            className={`wp-block-navigation-item ${link.children ? 'wp-block-navigation-item--has-submenu relative' : ''} ${link.cssClasses?.join(' ') || ''}`}
           >
             <Link
               href={link.path || link.url}
               target={link.target || '_self'}
-              className="wp-block-navigation-item__content inline-flex items-center px-1 py-1"
+              className="wp-block-navigation-item__content"
             >
               {link.label}
               {link.children && link.children.length > 0 && (
-                <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
+                <svg className="wp-block-navigation-item__submenu-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" strokeWidth="1.5"></path></svg>
               )}
             </Link>
             {link.children && link.children.length > 0 && (
