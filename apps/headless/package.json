@@ -5,17 +5,17 @@
   "private": true,
   "scripts": {
     "sync-tokens": "node ../../scripts/sync-theme-tokens.mjs",
-    "predev": "npm run sync-tokens && npm run fetch-wp-template-structure",
+    "predev": "npm run sync-tokens && npm run sync-templates",
     "dev": "(graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js) || echo '[codegen] Skipped — run npm run codegen once GraphQL endpoint is healthy'; next dev",
-    "prebuild": "npm run sync-tokens && (npm run fetch-wp-template-structure || true)",
+    "prebuild": "npm run sync-tokens && (npm run sync-templates || true)",
     "build": "NODE_ENV=${NODE_ENV:-production} graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && NODE_ENV=${NODE_ENV:-production} next build",
-    "build:prod": "NODE_ENV=production npm run fetch-wp-template-structure && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build",
+    "build:prod": "NODE_ENV=production npm run sync-templates && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next data node_modules src/gql",
     "codegen": "graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
     "codegen:prod": "NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
-    "fetch-wp-template-structure": "node ../../scripts/fetch-wp-template-structure.js"
+    "sync-templates": "node ../../scripts/sync-templates.mjs"
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",

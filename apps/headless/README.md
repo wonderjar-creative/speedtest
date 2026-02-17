@@ -47,7 +47,7 @@ This will:
 pnpm dev           # Fetch templates -> codegen -> next dev
 pnpm build         # Production build (requires WordPress)
 pnpm codegen       # Regenerate GraphQL types
-pnpm fetch-wp-template-structure  # Update template/pattern cache
+pnpm sync-templates  # Update template/pattern cache
 pnpm lint          # ESLint
 pnpm clean         # Remove .next, data, node_modules, src/gql
 ```
@@ -115,5 +115,5 @@ src/
 
 - **Build fails with GraphQL errors**: Check WordPress is accessible
 - **Preview not working**: Verify JWT credentials in WordPress
-- **Template parts missing**: Run `pnpm fetch-wp-template-structure`
+- **Template parts missing**: Run `pnpm sync-templates`
 - **Styles missing**: Ensure `theme.json` matches Tailwind config

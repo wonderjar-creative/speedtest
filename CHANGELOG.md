@@ -9,7 +9,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Simplified env setup: consolidated per-environment `.env.{env}.local.example` files into single `.env.example` → `.env.local` pattern
-- Updated env loading in `codegen.ts` and `fetch-wp-template-structure.js` to merge `.env` + `.env.local` (was break-on-first-match, which skipped shared defaults)
+- Updated env loading in `codegen.ts` and `sync-templates.mjs` to merge `.env` + `.env.local` (was break-on-first-match, which skipped shared defaults)
 - Removed unused `@next/env` import from codegen
 - Deploy target: Coolify on Hetzner (was Vercel)
 

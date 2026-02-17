@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens fetch-templates
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates
 
 help:
 	@echo "Usage: make [target]"
@@ -15,7 +15,7 @@ help:
 	@echo "  install-comparison  Install comparison dependencies"
 	@echo "  install-headless    Install headless dependencies"
 	@echo "  sync-tokens         Sync design tokens from theme.json to headless app"
-	@echo "  fetch-templates     Fetch WP template/pattern structure to headless data/"
+	@echo "  sync-templates      Sync WP template/pattern structure to headless data/"
 
 # Docker commands
 up:
@@ -34,14 +34,14 @@ logs:
 sync-tokens:
 	node scripts/sync-theme-tokens.mjs
 
-fetch-templates:
-	node scripts/fetch-wp-template-structure.js
+sync-templates:
+	node scripts/sync-templates.mjs
 
 # Local development (outside docker)
 dev-comparison:
 	cd apps/comparison && npm run dev
 
-dev-headless: sync-tokens fetch-templates
+dev-headless: sync-tokens sync-templates
 	cd apps/headless && npm run dev
 
 install-comparison:
