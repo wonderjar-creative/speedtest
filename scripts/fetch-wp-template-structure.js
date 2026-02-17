@@ -11,7 +11,7 @@ const envFiles = ['.env', '.env.local'];
 for (const envFile of envFiles) {
   const envPath = path.join(HEADLESS, envFile);
   if (fs.existsSync(envPath)) {
-    require('dotenv').config({ path: envPath, override: true });
+    require(path.join(HEADLESS, 'node_modules', 'dotenv')).config({ path: envPath, override: true });
     console.log(`Loaded env from: ${envFile}`);
   }
 }
