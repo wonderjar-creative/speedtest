@@ -1,12 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const ROOT = path.resolve(__dirname, '..');
+const HEADLESS = path.join(ROOT, 'apps', 'headless');
+
 // Load env files in reverse priority (lowest first, highest last overrides)
 // Matches Next.js behavior: .env < .env.local
 const envFiles = ['.env', '.env.local'];
 
 for (const envFile of envFiles) {
-  const envPath = path.join(__dirname, '..', envFile);
+  const envPath = path.join(HEADLESS, envFile);
   if (fs.existsSync(envPath)) {
     require('dotenv').config({ path: envPath, override: true });
     console.log(`Loaded env from: ${envFile}`);
@@ -17,7 +20,7 @@ const WP_API = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'http://localhost:80
 const WP_USER = process.env.WP_USER;
 const WP_APP_PASS = process.env.WP_APP_PASS;
 
-const outDir = path.join(__dirname, '../data');
+const outDir = path.join(HEADLESS, 'data');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir);
 
 (async () => {

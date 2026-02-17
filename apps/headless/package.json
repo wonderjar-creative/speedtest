@@ -15,7 +15,7 @@
     "clean": "rm -rf .next data node_modules src/gql",
     "codegen": "graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
     "codegen:prod": "NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js",
-    "fetch-wp-template-structure": "node ./scripts/fetch-wp-template-structure.js"
+    "fetch-wp-template-structure": "node ../../scripts/fetch-wp-template-structure.js"
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
