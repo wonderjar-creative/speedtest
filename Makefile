@@ -41,7 +41,7 @@ fetch-templates:
 dev-comparison:
 	cd apps/comparison && npm run dev
 
-dev-headless: sync-tokens
+dev-headless: sync-tokens fetch-templates
 	cd apps/headless && npm run dev
 
 install-comparison:
