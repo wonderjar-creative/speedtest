@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens
 
 help:
 	@echo "Usage: make [target]"
@@ -14,6 +14,7 @@ help:
 	@echo "  dev-headless      Run headless app locally"
 	@echo "  install-comparison  Install comparison dependencies"
 	@echo "  install-headless    Install headless dependencies"
+	@echo "  sync-tokens         Sync design tokens from theme.json to headless app"
 
 # Docker commands
 up:
@@ -28,11 +29,15 @@ build:
 logs:
 	cd wordpress/ && docker-compose logs -f
 
+# Design tokens
+sync-tokens:
+	node scripts/sync-theme-tokens.mjs
+
 # Local development (outside docker)
 dev-comparison:
 	cd apps/comparison && npm run dev
 
-dev-headless:
+dev-headless: sync-tokens
 	cd apps/headless && npm run dev
 
 install-comparison:
