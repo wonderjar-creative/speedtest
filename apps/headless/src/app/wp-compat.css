@@ -21,20 +21,16 @@
 .alignfull {
   width: 100vw;
   max-width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 /* When alignfull is a direct child of wp-site-blocks (no constrained parent), reset */
 .wp-site-blocks > .alignfull {
-  position: relative;
-  left: auto;
-  transform: none;
   width: 100%;
   max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .alignwide {
@@ -69,12 +65,8 @@
 .has-global-padding > .alignfull {
   margin-right: calc(-1 * var(--wp--style--root--padding-right));
   margin-left: calc(-1 * var(--wp--style--root--padding-left));
-  /* Reset the viewport-based breakout since negative margins handle it here */
   width: auto;
   max-width: none;
-  position: static;
-  left: auto;
-  transform: none;
 }
 
 /* Constrained layout inner content width */
@@ -93,9 +85,8 @@
 .constrained > .alignfull {
   max-width: none;
   width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 
@@ -393,9 +384,8 @@
 .is-layout-constrained > .alignfull {
   max-width: none;
   width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 /* Grid layout */
