@@ -7,10 +7,11 @@ export interface CoreTemplatePartBlock extends FrontendBlock {
 }
 
 const TemplatePart: React.FC<CoreTemplatePartBlock> = ({ name, attributes, innerBlocks }) => {
+  const Tag = (attributes?.tagName || 'div') as keyof JSX.IntrinsicElements;
   return (
-    <div className={`${getBlockBaseClass(name)} ${attributes?.slug ? `wp-template-part-${attributes.slug}` : ''}`}>
+    <Tag className={`${getBlockBaseClass(name)} ${attributes?.slug ? `wp-template-part-${attributes.slug}` : ''}`}>
       {innerBlocks}
-    </div>
+    </Tag>
   );
 };
 

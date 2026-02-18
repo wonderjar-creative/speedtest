@@ -39,6 +39,11 @@
           "color": "#f3f4f6"
         },
         {
+          "slug": "gray-300",
+          "name": "Gray 300",
+          "color": "#d1d5db"
+        },
+        {
           "slug": "gray-500",
           "name": "Gray 500",
           "color": "#6b7280"

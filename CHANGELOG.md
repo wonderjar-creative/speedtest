@@ -4,6 +4,33 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.8.0] - 2026-02-17
+
+### Added
+
+- Synced all visual enhancements from WP theme.css to headless wp-compat.css:
+  - Layout gap resets (header→main, footer, stacked full-width sections)
+  - Sticky header
+  - Button hover lift (translateY + box-shadow) and active state
+  - Nav underline animation (desktop only, with active state)
+  - Post card hover effects (lift + shadow + image scale)
+  - Image border-radius (8px)
+  - Ken Burns animation on cover images (scale 1→1.12, 25s)
+  - Form input styling (border, radius, focus ring)
+  - Quote cite styling (em dash prefix, gray-500, normal style)
+  - Dropdown nav polish (border, hover colors, disabled underline in submenu)
+  - Focus-visible accessibility outline
+  - Reduced motion media query
+  - Responsive grid (tablet 2-col, mobile 1-col)
+- `gray-300` color (#d1d5db) to theme.json palette and regenerated design tokens
+
+### Fixed
+
+- Details.module.css: replaced non-existent CSS variable names with correct WP token names
+- TemplatePart.tsx: renders semantic `<header>`/`<footer>` tags from WP `tagName` attribute instead of always `<div>`
+- Outline button hover now matches WP theme (primary bg / white text, was white bg / gray-900 text)
+- Quote block: updated border width (4px) and padding to match WP theme
+
 ## [0.7.1] - 2026-02-17
 
 ### Fixed
