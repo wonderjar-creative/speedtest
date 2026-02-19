@@ -8,7 +8,7 @@ Marketing demo for Denver Headless showing performance difference between tradit
 **Timeline:** 1-2 weeks
 **Type:** Internal POC, not client work
 **Domain:** speedtest.denverheadless.com
-**Pitch:** "Same content. Same backend. 5x faster. See it live."
+**Pitch:** "Same server. Same content. Same backend. 5x faster. See it live."
 
 ## Ethical Stack
 
@@ -22,13 +22,13 @@ We intentionally avoid AWS, Vercel, Google, and Big Tech infrastructure. This is
 | **SSL** | Let's Encrypt | Automated via Coolify |
 | **Analytics** | Plausible | Open source, no cookies, not surveillance |
 | **Maps** | Mapbox | Not Google Maps |
-| **Trad WP Host** | Cheap shared hosting | Intentionally slow for comparison |
+| **Trad WP** | Same Hetzner WP instance | Monolithic rendering, same server as headless |
 
-**Key insight:** Next.js is just a Node.js app. `next build && next start` behind Caddy on Hetzner is fast, simple, sufficient. Vercel isn't required.
+**Key insight:** Next.js is just a Node.js app. `next build && next start` behind Caddy on Hetzner is fast, simple, sufficient. Vercel isn't required. Both traditional and headless run on the same Hetzner box — the speed difference is purely architectural, not infrastructure.
 
 ## Architecture
 
-Three separate deployments sharing content from one WordPress backend:
+Three interfaces sharing one WordPress backend on one server:
 
 1. **Comparison Interface** (speedtest.denverheadless.com)
    - Next.js app with split-screen layout
@@ -37,21 +37,24 @@ Three separate deployments sharing content from one WordPress backend:
    - Page navigation syncs both sides
 
 2. **Traditional WordPress** (slow.speedtest.denverheadless.com)
-   - WordPress on cheap shared hosting (intentionally slow)
+   - Same WordPress instance on Hetzner, rendered monolithically
    - Standard theme (Astra, GeneratePress, or Kadence)
    - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WP Super Cache)
    - NOT optimized - represents typical small business site
+   - Same server, same content — only the delivery architecture differs
 
 3. **Headless Frontend** (fast.speedtest.denverheadless.com)
    - Next.js 14+ deployed via Coolify on Hetzner
    - Connects to same WordPress via WPGraphQL
    - Fully optimized (ISR, next/image, standalone Docker output)
    - GraphQL requests over localhost (zero network latency)
+   - Same server, same content — only the delivery architecture differs
 
 4. **WordPress Backend** (Hetzner CX22)
-   - Headless CMS only, no frontend theme
+   - Serves both traditional theme AND headless API
    - WPGraphQL + ACF for structured content
    - Same server as headless frontend
+   - Traditional theme active for slow.*, WPGraphQL serves fast.*
 
 ## Demo Business: Peak Performance Consulting
 
@@ -87,7 +90,7 @@ Fictional Denver consulting firm (typical $10-25k project client).
 | `apps/comparison/` | Split-screen comparison app (speedtest.denverheadless.com) |
 | `apps/headless/` | Optimized Next.js frontend (fast.denverheadless.com) |
 | `wordpress/` | WP setup notes, headless theme, content seeds |
-| `traditional/` | Documentation for slow WP site (not deployed from repo) |
+| `traditional/` | Theme config and plugin list for monolithic WP rendering |
 
 ## Commands
 
@@ -109,7 +112,7 @@ cd apps/headless && npm run dev
 
 ## Performance Targets
 
-**Traditional WP (intentionally modest):**
+**Traditional WP (same server, monolithic rendering):**
 - Lighthouse: 45-55
 - LCP: 3.5-5.0s
 - FCP: 1.8-2.5s
