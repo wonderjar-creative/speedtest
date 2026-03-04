@@ -3,12 +3,13 @@ import { FrontendBlock } from '@/types/coreBlockTypes';
 import { CoreImageBlockAttributes } from '@/gql/graphql';
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from '@/utils/blockStyles';
 import { getMediaSize, getSizesAttribute } from '@/utils/mediaSizes';
+import getDynamicMediaItem from '@/utils/getDynamicBlockMediaItem';
 
 export interface CoreImageBlock extends FrontendBlock {
   attributes?: CoreImageBlockAttributes;
 }
 
-const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem }) => {
+const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem, saveContent, dynamicContent }) => {
   const { url, align, alt, anchor, aspectRatio, style, width, height, scale, sizeSlug, ...imageAttributes } = attributes || {};
   const { sizes } = mediaItem?.node?.mediaDetails || {};
 
@@ -17,9 +18,19 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem 
   const imageClasses = getBlockClasses(imageAttributes, 'wp-image');
 
   const sizeObj = getMediaSize(sizeSlug, sizes);
-  const imageSrc = sizeObj?.sourceUrl || url || mediaItem?.node?.sourceUrl || '';
-  const imageWidth = sizeObj?.width || mediaItem?.node?.mediaDetails?.width || 0;
-  const imageHeight = sizeObj?.height || mediaItem?.node?.mediaDetails?.height || 0;
+  let imageSrc = sizeObj?.sourceUrl || url || mediaItem?.node?.sourceUrl || '';
+  let imageWidth = sizeObj?.width || mediaItem?.node?.mediaDetails?.width || 0;
+  let imageHeight = sizeObj?.height || mediaItem?.node?.mediaDetails?.height || 0;
+
+  // Fallback: extract image from dynamicContent or saveContent HTML
+  if (!imageSrc) {
+    const fallback = getDynamicMediaItem(dynamicContent) || getDynamicMediaItem(saveContent);
+    if (fallback?.node) {
+      imageSrc = fallback.node.sourceUrl || '';
+      imageWidth = imageWidth || fallback.node.mediaDetails?.width || 0;
+      imageHeight = imageHeight || fallback.node.mediaDetails?.height || 0;
+    }
+  }
 
   if (!imageSrc) return null;
 

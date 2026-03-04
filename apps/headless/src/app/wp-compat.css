@@ -27,7 +27,11 @@
   margin-block-start: 0;
 }
 
-.wp-block-group[class*="alignfull"] + .wp-block-group[class*="alignfull"] {
+/* Full-width sections sit flush — no gap between them */
+.wp-site-blocks > .alignfull,
+main.wp-block-group > .alignfull,
+div.entry-content > .alignfull
+.wp-block-group.alignfull + .wp-block-group.alignfull {
   margin-block-start: 0;
 }
 
@@ -209,7 +213,14 @@
   }
 }
 
-/* Heading */
+/* Heading — restore browser-default sizes stripped by Tailwind preflight */
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1em; }
+h5 { font-size: 0.83em; }
+h6 { font-size: 0.67em; }
+
 .wp-block-heading {
   margin-top: 0;
   margin-bottom: 0;
@@ -251,6 +262,8 @@
 
 .wp-block-button {
   display: inline-block;
+  background: transparent !important;
+  color: inherit;
 }
 
 .wp-block-button__link,
@@ -262,7 +275,7 @@
   line-height: inherit;
   text-decoration: none;
   cursor: pointer;
-  border: none;
+  border: 2px solid transparent;
   background-color: var(--wp--preset--color--primary);
   color: var(--wp--preset--color--white);
   transition: all 0.2s ease-in-out;
@@ -270,7 +283,7 @@
 
 .wp-block-button__link:hover,
 .wp-element-button:hover {
-  background-color: var(--wp--preset--color--accent);
+  color: var(--wp--preset--color--white);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -285,7 +298,7 @@
 .is-style-outline > .wp-element-button {
   background-color: transparent;
   border: 2px solid currentColor;
-  color: var(--wp--preset--color--white);
+  color: inherit;
 }
 
 .is-style-outline > .wp-block-button__link:hover,
@@ -497,6 +510,8 @@
   align-items: center;
   padding: 0.25rem;
   position: relative;
+  color: inherit;
+  text-decoration: none;
 }
 
 /* Nav underline animation (desktop only) */
@@ -596,7 +611,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5em;
+  gap: 24px;
 }
 
 .is-layout-flex > * {
@@ -626,13 +641,25 @@
   flex-wrap: nowrap;
 }
 
-/* Flow layout */
-.is-layout-flow > * + * {
-  margin-top: 1.5em;
+/* Flow & constrained layout — matches WP core block gap rules.
+   Uses :where() for zero specificity so inline styles always win. */
+:root :where(.is-layout-flow) > *,
+:root :where(.is-layout-constrained) > * {
+  margin-block-start: 24px;
+  margin-block-end: 0;
 }
 
-.is-layout-flow > *:first-child {
-  margin-top: 0;
+:root :where(.is-layout-flow) > *:first-child,
+:root :where(.is-layout-constrained) > *:first-child {
+  margin-block-start: 0;
+}
+
+/* Full-width sections flush against each other — no flow gap */
+:root :where(.is-layout-flow) > .alignfull,
+:root :where(.is-layout-flow) > [class*="alignfull"],
+:root :where(.is-layout-constrained) > .alignfull,
+:root :where(.is-layout-constrained) > [class*="alignfull"] {
+  margin-block-start: 0;
 }
 
 /* Constrained layout */
@@ -771,6 +798,22 @@ select:focus {
 /* ============================================
    Reduced Motion
    ============================================ */
+
+/* ============================================
+   Scroll Reveal Animations
+   ============================================ */
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   *,

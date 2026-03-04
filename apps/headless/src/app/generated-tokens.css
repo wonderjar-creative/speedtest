@@ -80,7 +80,7 @@ body {
 a {
   color: var(--wp--preset--color--primary);
 }
-a:hover {
+a:hover:not(.wp-block-button__link):not(.wp-element-button) {
   color: var(--wp--preset--color--accent);
 }
 

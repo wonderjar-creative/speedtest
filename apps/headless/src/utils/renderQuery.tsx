@@ -2,10 +2,15 @@ import React from 'react';
 import Link from 'next/link';
 import { fetchGraphQL } from './fetchGraphQL';
 import { PostsQuery } from '@/queries/general/PostsQuery';
+import { TeamMembersQuery } from '@/queries/general/TeamMembersQuery';
+import { ProjectsQuery } from '@/queries/general/ProjectsQuery';
+import { TestimonialsQuery } from '@/queries/general/TestimonialsQuery';
 import { print } from 'graphql';
 import { enrichBlocksWithMedia } from './blockMedia';
 import { EnrichedBlock } from '@/types/coreBlockTypes';
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from './blockStyles';
+import { fetchPatternWithISR } from './isrFetchers';
+import getPattern from './getPattern';
 
 // Local type to avoid dependency on generated graphql types
 type Maybe<T> = T | null | undefined;
@@ -15,9 +20,10 @@ export interface PostNode {
   id: string;
   databaseId: number;
   title: string;
-  excerpt: string;
-  date: string;
+  excerpt?: string;
+  date?: string;
   uri: string;
+  content?: string;
   featuredImage?: {
     node: {
       sourceUrl: string;
@@ -42,19 +48,107 @@ export interface PostNode {
       uri: string;
     }>;
   };
+  // CPT meta fields (team_member)
+  position?: string;
+  bio?: string;
+  order?: number;
+  // CPT meta fields (project)
+  location?: string;
+  projectType?: string;
+  squareFootage?: number;
+  yearCompleted?: number;
+  // CPT meta fields (testimonial)
+  authorName?: string;
+  authorRole?: string;
+  rating?: number;
+  // Shared
+  photoUrl?: string;
 }
 
-interface PostsQueryResult {
-  posts: {
-    pageInfo: {
-      hasNextPage: boolean;
-      hasPreviousPage: boolean;
-      startCursor: string;
-      endCursor: string;
-    };
-    nodes: PostNode[];
+interface QueryResultCollection {
+  pageInfo: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string;
+    endCursor: string;
   };
+  nodes: PostNode[];
 }
+
+// Meta key (snake_case) to PostNode property (camelCase) mapping
+const META_KEY_MAP: Record<string, keyof PostNode> = {
+  position: 'position',
+  bio: 'bio',
+  photo_url: 'photoUrl',
+  order: 'order',
+  location: 'location',
+  project_type: 'projectType',
+  square_footage: 'squareFootage',
+  year_completed: 'yearCompleted',
+  author_name: 'authorName',
+  author_role: 'authorRole',
+  rating: 'rating',
+};
+
+/**
+ * Map a postType to the correct GraphQL query and result field name.
+ */
+const getQueryConfig = (postType: string) => {
+  switch (postType) {
+    case 'team_member':
+      return { query: TeamMembersQuery, field: 'teamMembers' };
+    case 'project':
+      return { query: ProjectsQuery, field: 'projects' };
+    case 'testimonial':
+      return { query: TestimonialsQuery, field: 'testimonials' };
+    default:
+      return { query: PostsQuery, field: 'posts' };
+  }
+};
+
+/**
+ * Resolve block bindings from elevation/post-meta source.
+ * Mutates the block's saveContent or attributes based on bound meta values.
+ */
+const resolveBlockBindings = (block: EnrichedBlock, post: PostNode): EnrichedBlock => {
+  const bindings = block.attributes?.metadata?.bindings;
+  if (!bindings) return block;
+
+  const resolved = { ...block, attributes: { ...block.attributes } };
+
+  // Resolve content binding
+  if (bindings.content?.source === 'elevation/post-meta') {
+    const metaKey = bindings.content.args?.key;
+    if (metaKey) {
+      const propName = META_KEY_MAP[metaKey] || metaKey;
+      let value = (post as Record<string, any>)[propName];
+
+      // Convert rating to stars
+      if (metaKey === 'rating' && typeof value === 'number') {
+        value = '★'.repeat(Math.min(5, Math.max(0, value)));
+      }
+
+      if (value !== undefined && value !== null) {
+        // Replace saveContent with the resolved value
+        resolved.saveContent = `<p>${String(value)}</p>`;
+      }
+    }
+  }
+
+  // Resolve url binding
+  if (bindings.url?.source === 'elevation/post-meta') {
+    const metaKey = bindings.url.args?.key;
+    if (metaKey) {
+      const propName = META_KEY_MAP[metaKey] || metaKey;
+      const value = (post as Record<string, any>)[propName];
+      if (value) {
+        resolved.attributes = { ...resolved.attributes, url: String(value) };
+      }
+    }
+  }
+
+  return resolved;
+};
 
 // Render blocks within post context
 const renderPostBlocks = async (
@@ -78,15 +172,37 @@ const renderPostBlocks = async (
 
 // Render a single block with post context
 const renderSinglePostBlock = async (
-  block: EnrichedBlock,
+  originalBlock: EnrichedBlock,
   post: PostNode,
   page: Maybe<Page>,
   stylesCollector?: string[],
   index: number = 0
 ): Promise<React.ReactNode> => {
+  // Resolve any block bindings before rendering
+  const block = resolveBlockBindings(originalBlock, post);
   const { attributes, innerBlocks } = block;
   const blockClasses = getBlockClasses(attributes || {}, getBlockBaseClass(block.name));
   const blockStyleAttr = getBlockStyleAttr(attributes?.style || {});
+
+  // Handle pattern blocks — resolve and render with post context
+  if (block.name === 'core/pattern' && attributes?.slug) {
+    try {
+      const cleanSlug = attributes.slug.replace(/^[^/]+\//, '');
+      let pattern = await fetchPatternWithISR(cleanSlug);
+      if (!pattern || !pattern.blocksJSON) {
+        pattern = getPattern(cleanSlug);
+      }
+      if (pattern && pattern.blocksJSON) {
+        const patternBlocks = JSON.parse(pattern.blocksJSON);
+        const enriched = await enrichBlocksWithMedia(patternBlocks);
+        const rendered = await renderPostBlocks(enriched, post, page, stylesCollector);
+        return <React.Fragment key={`pattern-${post.id}-${index}`}>{rendered}</React.Fragment>;
+      }
+    } catch (error) {
+      console.error(`Error rendering pattern in post context: ${attributes.slug}`, error);
+    }
+    return null;
+  }
 
   // Handle post-title block
   if (block.name === 'core/post-title') {
@@ -113,6 +229,7 @@ const renderSinglePostBlock = async (
 
   // Handle post-date block
   if (block.name === 'core/post-date') {
+    if (!post.date) return null;
     const dateObj = new Date(post.date);
     const formattedDate = dateObj.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -188,6 +305,21 @@ const renderSinglePostBlock = async (
     const isLink = attributes?.isLink;
     const width = attributes?.width;
     const height = attributes?.height;
+    const aspectRatio = attributes?.aspectRatio;
+    const scale = attributes?.scale;
+
+    const imgStyle: React.CSSProperties = {};
+    if (aspectRatio) imgStyle.aspectRatio = aspectRatio;
+    if (scale) imgStyle.objectFit = scale as React.CSSProperties['objectFit'];
+    if (aspectRatio || scale) {
+      imgStyle.width = '100%';
+      imgStyle.height = '100%';
+    }
+
+    const figureStyle: React.CSSProperties = {
+      ...blockStyleAttr,
+      ...(aspectRatio ? { aspectRatio } : {}),
+    };
 
     const imgElement = (
       <img
@@ -196,14 +328,73 @@ const renderSinglePostBlock = async (
         width={width || featuredImage.mediaDetails?.width}
         height={height || featuredImage.mediaDetails?.height}
         className="wp-block-post-featured-image__image"
+        style={Object.keys(imgStyle).length > 0 ? imgStyle : undefined}
         loading="lazy"
       />
     );
 
     return (
-      <figure key={`post-featured-image-${post.id}-${index}`} className={blockClasses} style={blockStyleAttr}>
+      <figure key={`post-featured-image-${post.id}-${index}`} className={blockClasses} style={figureStyle}>
         {isLink ? <Link href={post.uri}>{imgElement}</Link> : imgElement}
       </figure>
+    );
+  }
+
+  // Handle post-content block (used in testimonial cards)
+  if (block.name === 'core/post-content') {
+    const postContent = post.content || '';
+    if (!postContent) return null;
+    return (
+      <div
+        key={`post-content-${post.id}-${index}`}
+        className={blockClasses}
+        style={blockStyleAttr}
+        dangerouslySetInnerHTML={{ __html: postContent }}
+      />
+    );
+  }
+
+  // Handle paragraph block with resolved bindings
+  if (block.name === 'core/paragraph' && block.saveContent) {
+    // saveContent is already wrapped in <p>, extract inner HTML
+    const inner = block.saveContent.replace(/^<p[^>]*>/, '').replace(/<\/p>$/, '');
+    return (
+      <p
+        key={`paragraph-${post.id}-${index}`}
+        dangerouslySetInnerHTML={{ __html: inner }}
+        className={blockClasses}
+        style={blockStyleAttr}
+      />
+    );
+  }
+
+  // Handle column blocks - recursively render inner blocks
+  if (block.name === 'core/column' && innerBlocks && innerBlocks.length > 0) {
+    const enrichedInnerBlocks = await enrichBlocksWithMedia(innerBlocks as EnrichedBlock[]);
+    const renderedInnerBlocks = await renderPostBlocks(enrichedInnerBlocks, post, page, stylesCollector);
+    return (
+      <div
+        key={`column-${post.id}-${index}`}
+        className={blockClasses}
+        style={blockStyleAttr}
+      >
+        {renderedInnerBlocks}
+      </div>
+    );
+  }
+
+  // Handle columns blocks - recursively render inner blocks
+  if (block.name === 'core/columns' && innerBlocks && innerBlocks.length > 0) {
+    const enrichedInnerBlocks = await enrichBlocksWithMedia(innerBlocks as EnrichedBlock[]);
+    const renderedInnerBlocks = await renderPostBlocks(enrichedInnerBlocks, post, page, stylesCollector);
+    return (
+      <div
+        key={`columns-${post.id}-${index}`}
+        className={blockClasses}
+        style={blockStyleAttr}
+      >
+        {renderedInnerBlocks}
+      </div>
     );
   }
 
@@ -247,23 +438,28 @@ const renderQuery = async (
   const { attributes, innerBlocks } = block;
   const query = attributes?.query || {};
   const perPage = query.perPage || 10;
+  const postType = query.postType || 'post';
 
   const blockClasses = getBlockClasses(attributes || {}, 'wp-block-query');
   const blockStyleAttr = getBlockStyleAttr(attributes?.style || {});
+
+  // Determine which GraphQL query to use based on postType
+  const queryConfig = getQueryConfig(postType);
 
   // Fetch posts from WordPress
   let posts: PostNode[] = [];
   let pageInfo = null;
 
   try {
-    const result = await fetchGraphQL<PostsQueryResult>(
-      print(PostsQuery),
+    const result = await fetchGraphQL<Record<string, QueryResultCollection>>(
+      print(queryConfig.query),
       { first: perPage }
     );
-    posts = result.posts?.nodes || [];
-    pageInfo = result.posts?.pageInfo || null;
+    const collection = result[queryConfig.field];
+    posts = collection?.nodes || [];
+    pageInfo = collection?.pageInfo || null;
   } catch (error) {
-    console.error('Error fetching posts for Query block:', error);
+    console.error(`Error fetching ${postType} for Query block:`, error);
   }
 
   // Find the post-template, pagination, and no-results blocks
@@ -332,6 +528,23 @@ const renderQuery = async (
 
   const postTemplateClasses = postTemplateBlock?.attributes?.className || '';
 
+  // Build grid styles from post-template layout
+  const templateLayout = postTemplateBlock?.attributes?.layout;
+  const templateStyle = postTemplateBlock?.attributes?.style;
+  const templateStyleObj: Record<string, string> = {};
+  if (templateLayout?.type === 'grid' && templateLayout?.columnCount) {
+    templateStyleObj.display = 'grid';
+    templateStyleObj.gridTemplateColumns = `repeat(${templateLayout.columnCount}, 1fr)`;
+  }
+  if (templateStyle?.spacing?.blockGap) {
+    const gap = templateStyle.spacing.blockGap;
+    // Handle var:preset|spacing|X format
+    const gapValue = typeof gap === 'string' && gap.startsWith('var:')
+      ? `var(--wp--${gap.slice(4).replace(/\|/g, '--')})`
+      : gap;
+    templateStyleObj.gap = gapValue;
+  }
+
   return (
     <div
       key={index}
@@ -339,7 +552,10 @@ const renderQuery = async (
       style={blockStyleAttr}
     >
       {posts.length > 0 && (
-        <ul className={`wp-block-post-template ${postTemplateClasses}`.trim()}>
+        <ul
+          className={`wp-block-post-template ${postTemplateClasses}`.trim()}
+          style={Object.keys(templateStyleObj).length > 0 ? templateStyleObj : undefined}
+        >
           {renderedPosts}
         </ul>
       )}

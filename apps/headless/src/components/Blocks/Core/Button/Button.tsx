@@ -10,7 +10,7 @@ export interface CoreButtonBlock extends FrontendBlock {
 
 const Button: React.FC<CoreButtonBlock> = ({ name, attributes, saveContent }) => {
   const { anchor, className, linkTarget, rel, style, url } = attributes || {};
-  const blockClasses = getBlockClasses({}, getBlockBaseClass(name));
+  const blockClasses = getBlockClasses(attributes || {}, getBlockBaseClass(name));
   const blockStyleAttr = getBlockStyleAttr(style);
   const linkClasses = getBlockClasses(attributes || {}, 'wp-block-button__link');
   const content = saveContent || '';

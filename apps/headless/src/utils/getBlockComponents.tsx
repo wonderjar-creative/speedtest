@@ -239,6 +239,8 @@ const getBlockComponents = async (
             name={block.name}
             attributes={block.attributes as CoreImageBlockAttributes}
             mediaItem={block.mediaItem}
+            saveContent={block.saveContent}
+            dynamicContent={block.dynamicContent}
           />
         );
       }

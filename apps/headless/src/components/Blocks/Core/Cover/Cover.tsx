@@ -42,9 +42,13 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
     ? `has-custom-content-position is-position-${positionSlug}`
     : '';
 
+  // WP computes isDark dynamically at render time; patterns often omit it.
+  // Default to dark when there's an overlay with meaningful opacity.
+  const effectivelyDark = isDark ?? ((overlayColor || customOverlayColor) && (dimRatio ?? 0) >= 50);
+
   const blockClasses = getBlockClasses(
     wrapperAttributes,
-    `${getBlockBaseClass(name)}${isDark ? ' is-dark' : ' is-light'}${positionClass ? ` ${positionClass}` : ''}`
+    `${getBlockBaseClass(name)}${effectivelyDark ? ' is-dark' : ' is-light'}${positionClass ? ` ${positionClass}` : ''}`
   );
   const blockStyleAttr = getBlockStyleAttr({
     ...style,

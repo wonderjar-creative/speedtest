@@ -1,6 +1,7 @@
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import "./globals.css";
+import { ScrollReveal, CounterAnimation } from "@/components/Effects";
 
 export const metadata: Metadata = {
   title: "Elevation Design Studio",
@@ -25,7 +26,11 @@ export default async function RootLayout({
             </a>
           </div>
         )}
-        <div className="wp-site-blocks">{children}</div>
+        <ScrollReveal>
+          <CounterAnimation>
+            <div className="wp-site-blocks">{children}</div>
+          </CounterAnimation>
+        </ScrollReveal>
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ const Heading: React.FC<CoreHeadingBlock> = ({ name, attributes, saveContent }) 
   const { anchor, className, level, style } = attributes || {};
   const blockClasses = getBlockClasses(attributes || {}, getBlockBaseClass(name));
   const blockStyleAttr = getBlockStyleAttr(style);
-  const Tag = `h${level}` || 'h2';
+  const Tag = level ? `h${level}` : 'h2';
   const content = stripOuterTag(saveContent || '', Tag);
   const html = getTransformedHtml(content || '') || '';
 
