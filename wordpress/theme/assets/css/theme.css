@@ -20,7 +20,10 @@
 }
 
 /* Remove gaps between stacked full-width sections */
-.wp-block-group[class*="alignfull"] + .wp-block-group[class*="alignfull"] {
+.wp-site-blocks > .alignfull,
+main.wp-block-group > .alignfull,
+div.entry-content > .alignfull
+.wp-block-group.alignfull + .wp-block-group.alignfull {
   margin-block-start: 0;
 }
 

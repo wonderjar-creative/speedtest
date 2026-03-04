@@ -8,6 +8,7 @@
 
 namespace ElevationTheme\Inc;
 
+use ElevationTheme\Inc\Features\BlockBindingsFeature;
 use ElevationTheme\Inc\Features\RestFeature;
 use ElevationTheme\Inc\Features\GraphQLFeature;
 use ElevationTheme\Inc\Features\PostTypesFeature;
@@ -47,6 +48,7 @@ class Loader {
 			new PostTypesFeature(),
 			new RestFeature(),
 			new GraphQLFeature(),
+			new BlockBindingsFeature(),
 		);
 	}
 

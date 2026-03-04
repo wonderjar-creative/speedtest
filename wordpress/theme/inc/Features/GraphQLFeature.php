@@ -40,6 +40,10 @@ class GraphQLFeature {
 	 * @return void
 	 */
 	public function register_types(): void {
+		$this->register_project_fields();
+		$this->register_team_member_fields();
+		$this->register_testimonial_fields();
+
 		// Add isPostsPage field to Page type.
 		register_graphql_field(
 			'Page',
@@ -97,6 +101,136 @@ class GraphQLFeature {
 				},
 			)
 		);
+	}
+
+	/**
+	 * Register GraphQL fields for the Project CPT.
+	 *
+	 * @return void
+	 */
+	private function register_project_fields(): void {
+		$fields = array(
+			'location'       => array(
+				'type' => 'String',
+				'key'  => 'location',
+			),
+			'projectType'    => array(
+				'type' => 'String',
+				'key'  => 'project_type',
+			),
+			'squareFootage'  => array(
+				'type' => 'Int',
+				'key'  => 'square_footage',
+			),
+			'yearCompleted'  => array(
+				'type' => 'Int',
+				'key'  => 'year_completed',
+			),
+			'photoUrl'       => array(
+				'type' => 'String',
+				'key'  => 'photo_url',
+			),
+		);
+
+		foreach ( $fields as $field_name => $config ) {
+			register_graphql_field(
+				'Project',
+				$field_name,
+				array(
+					'type'        => $config['type'],
+					'description' => "Project {$field_name} meta field.",
+					'resolve'     => function ( $post ) use ( $config ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
+						$value = get_post_meta( $post->databaseId, $config['key'], true );
+						return 'Int' === $config['type'] ? (int) $value : $value;
+					},
+				)
+			);
+		}
+	}
+
+	/**
+	 * Register GraphQL fields for the TeamMember CPT.
+	 *
+	 * @return void
+	 */
+	private function register_team_member_fields(): void {
+		$fields = array(
+			'position' => array(
+				'type' => 'String',
+				'key'  => 'position',
+			),
+			'bio'      => array(
+				'type' => 'String',
+				'key'  => 'bio',
+			),
+			'photoUrl' => array(
+				'type' => 'String',
+				'key'  => 'photo_url',
+			),
+			'order'    => array(
+				'type' => 'Int',
+				'key'  => 'order',
+			),
+		);
+
+		foreach ( $fields as $field_name => $config ) {
+			register_graphql_field(
+				'TeamMember',
+				$field_name,
+				array(
+					'type'        => $config['type'],
+					'description' => "Team member {$field_name} meta field.",
+					'resolve'     => function ( $post ) use ( $config ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
+						$value = get_post_meta( $post->databaseId, $config['key'], true );
+						return 'Int' === $config['type'] ? (int) $value : $value;
+					},
+				)
+			);
+		}
+	}
+
+	/**
+	 * Register GraphQL fields for the Testimonial CPT.
+	 *
+	 * @return void
+	 */
+	private function register_testimonial_fields(): void {
+		$fields = array(
+			'authorName' => array(
+				'type' => 'String',
+				'key'  => 'author_name',
+			),
+			'authorRole' => array(
+				'type' => 'String',
+				'key'  => 'author_role',
+			),
+			'rating'     => array(
+				'type' => 'Int',
+				'key'  => 'rating',
+			),
+			'photoUrl'   => array(
+				'type' => 'String',
+				'key'  => 'photo_url',
+			),
+		);
+
+		foreach ( $fields as $field_name => $config ) {
+			register_graphql_field(
+				'Testimonial',
+				$field_name,
+				array(
+					'type'        => $config['type'],
+					'description' => "Testimonial {$field_name} meta field.",
+					'resolve'     => function ( $post ) use ( $config ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- WPGraphQL model property.
+						$value = get_post_meta( $post->databaseId, $config['key'], true );
+						return 'Int' === $config['type'] ? (int) $value : $value;
+					},
+				)
+			);
+		}
 	}
 
 	/**
