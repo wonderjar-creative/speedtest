@@ -4,6 +4,43 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.9.0] - 2026-03-03
+
+Converted static CPT patterns to dynamic `core/query` blocks with block bindings, so content comes from WordPress CPT posts on both traditional and headless sides.
+
+### Added
+
+- `BlockBindingsFeature.php`: registered `elevation/post-meta` block bindings source — WordPress resolves CPT meta fields (position, bio, rating, location, etc.) at render time, with rating→stars conversion
+- Explicit `register_graphql_field()` calls in `GraphQLFeature.php` for all CPT meta (Project: location, projectType, squareFootage, yearCompleted, photoUrl; TeamMember: position, bio, photoUrl, order; Testimonial: authorName, authorRole, rating, photoUrl)
+- 3 sub-patterns with block bindings: `team-card.php`, `testimonial-card.php`, `project-card.php`
+- 3 CPT GraphQL queries for headless: `TeamMembersQuery.ts`, `ProjectsQuery.ts`, `TestimonialsQuery.ts`
+- CPT query dispatch in `renderQuery.tsx` — maps `postType` attribute to correct GraphQL query
+- Block bindings resolver in headless — resolves `elevation/post-meta` bindings from GraphQL data
+- Pattern resolution in post template context — `core/pattern` blocks inside `core/post-template` now render
+- `core/post-content` block handler (dangerouslySetInnerHTML)
+- Grid layout support for post templates (CSS grid from `columnCount` attribute)
+
+### Changed
+
+- `team-grid.php`, `testimonials.php`, `portfolio-preview.php`, `page-portfolio.php`: replaced hardcoded static HTML with `core/query` blocks iterating over CPT posts
+- Cover block: auto-detects `is-dark` when overlay color + dimRatio >= 50 (was defaulting to `is-light`)
+- Button component: passes `attributes` to `getBlockClasses()` so `is-style-outline` is preserved
+- Paragraph rendering in renderQuery: strips outer `<p>` to avoid `<div><p>` nesting
+- Post-featured-image: applies `aspectRatio` and `scale` (object-fit) from block attributes
+
+### Fixed
+
+- `<hundefined>` tag in SiteTitle and Heading when `level` attribute is undefined
+- Nav links blue on desktop — added `color: inherit`
+- Missing `is-layout-constrained` 24px gap rule (was only on `is-layout-flow`)
+- Heading font sizes stripped by Tailwind preflight — restored browser defaults
+- alignfull sections getting unwanted 24px top margin between alternating backgrounds
+- Button hover turning orange due to global `a:hover` color override in generated-tokens.css
+- Outline button showing filled background (wrong attributes passed to class builder)
+- `.wp-block-button` wrapper showing background color bleed-through — set `background: transparent`
+- Normal vs outline button height mismatch — changed from `border: none` to `border: 2px solid transparent`
+- Flex layout gap: 0.5em → 24px to match WP core
+
 ## [0.8.0] - 2026-02-17
 
 ### Added
