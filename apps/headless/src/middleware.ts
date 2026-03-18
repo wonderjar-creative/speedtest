@@ -47,6 +47,11 @@ async function checkRankMathRedirects(
 }
 
 export async function middleware(request: NextRequest) {
+  // Skip redirect checks if WordPress URL is not configured (local dev without WP)
+  if (!process.env.NEXT_PUBLIC_WORDPRESS_API_URL) {
+    return NextResponse.next();
+  }
+
   const pathnameWithoutTrailingSlash = request.nextUrl.pathname.replace(
     /\/$/,
     "",

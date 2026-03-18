@@ -5,6 +5,13 @@ export async function fetchGraphQL<T = any>(
   variables?: { [key: string]: any },
   headers?: { [key: string]: string },
 ): Promise<T> {
+  const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
+  if (!wpUrl) {
+    throw new Error(
+      "NEXT_PUBLIC_WORDPRESS_API_URL is not defined. Copy .env.example to .env.local and configure it.",
+    );
+  }
+
   const { isEnabled: preview } = await draftMode();
 
   try {
@@ -25,7 +32,7 @@ export async function fetchGraphQL<T = any>(
     });
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`,
+      `${wpUrl}/graphql`,
       {
         method: "POST",
         headers: {
