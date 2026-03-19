@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "the-hendersons",
+    "title": "The Hendersons",
+    "meta": {
+      "author_name": "Mark & Lisa Henderson",
+      "author_role": "Mountain View Residence Clients",
+      "rating": "5"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80&fm=jpg"
+  },
+  {
+    "slug": "rachel-kumar",
+    "title": "Rachel Kumar",
+    "meta": {
+      "author_name": "Rachel Kumar",
+      "author_role": "CEO, Pinnacle Software",
+      "rating": "5"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&q=80&fm=jpg"
+  },
+  {
+    "slug": "david-oconnor",
+    "title": "David O'Connor",
+    "meta": {
+      "author_name": "David O'Connor",
+      "author_role": "Principal, Front Range Development",
+      "rating": "5"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&fm=jpg"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "sarah-mitchell",
+    "title": "Sarah Mitchell",
+    "meta": {
+      "position": "Principal Designer & Founder",
+      "bio": "15+ years transforming Colorado spaces. AIA member, LEED AP, and passionate about sustainable design.",
+      "order": "1"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80&fm=jpg"
+  },
+  {
+    "slug": "james-chen",
+    "title": "James Chen",
+    "meta": {
+      "position": "Senior Architect",
+      "bio": "Specializes in adaptive reuse and historic preservation. Believes every old building has a new story to tell.",
+      "order": "2"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&fm=jpg"
+  },
+  {
+    "slug": "emily-rodriguez",
+    "title": "Emily Rodriguez",
+    "meta": {
+      "position": "Interior Designer",
+      "bio": "Creates warm, livable interiors that balance beauty with everyday function. NCIDQ certified.",
+      "order": "3"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&fm=jpg"
+  },
+  {
+    "slug": "michael-thompson",
+    "title": "Michael Thompson",
+    "meta": {
+      "position": "Project Manager",
+      "bio": "Keeps projects on time and on budget. 10 years managing complex builds across the Front Range.",
+      "order": "4"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&fm=jpg"
+  }
+]

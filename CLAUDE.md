@@ -38,9 +38,9 @@ Three interfaces sharing one WordPress backend on one server:
 
 2. **Traditional WordPress** (slow.speedtest.denverheadless.com)
    - Same WordPress instance on Hetzner, rendered monolithically
-   - Standard theme (Astra, GeneratePress, or Kadence)
-   - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WP Super Cache)
-   - NOT optimized - represents typical small business site
+   - Elevation Design Studio theme (FSE block theme)
+   - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WPGraphQL)
+   - NOT aggressively optimized — represents typical small business site
    - Same server, same content — only the delivery architecture differs
 
 3. **Headless Frontend** (fast.speedtest.denverheadless.com)
@@ -52,35 +52,41 @@ Three interfaces sharing one WordPress backend on one server:
 
 4. **WordPress Backend** (Hetzner CX22)
    - Serves both traditional theme AND headless API
-   - WPGraphQL + ACF for structured content
+   - WPGraphQL + registered post meta for structured content
    - Same server as headless frontend
-   - Traditional theme active for slow.*, WPGraphQL serves fast.*
+   - Elevation theme renders monolithically for slow.*, WPGraphQL serves fast.*
 
-## Demo Business: Peak Performance Consulting
+## Demo Business: Elevation Design Studio
 
-Fictional Denver consulting firm (typical $10-25k project client).
+Fictional Denver architecture & interior design firm (typical $10-25k project client).
 
 | Field | Value |
 |-------|-------|
-| **Industry** | Business consulting |
-| **Tagline** | "Elevating Business Through Strategic Growth" |
-| **Services** | Strategy, leadership coaching, process optimization, team development |
-| **Aesthetic** | Professional, modern, navy/blue primary, trust-focused |
+| **Industry** | Architecture & interior design |
+| **Tagline** | "Creating spaces that inspire since 2010" |
+| **Services** | Residential design, commercial spaces, design consultation, renovation & remodeling |
+| **Aesthetic** | Warm professional, clean layouts, natural materials, Colorado-rooted |
 
 **Pages:**
-- Homepage (hero, services overview, testimonials, stats, CTA)
-- About (story, mission, team members)
-- Services (4 service areas with details)
+- Homepage (hero, client logos, services grid, stats, portfolio preview, about preview, testimonials, CTA)
+- About (story, approach, values, team grid, awards/recognition)
+- Services (4 service areas with images and details)
+- Portfolio (project grid querying the projects CPT)
 - Blog (listing + individual posts)
-- Contact (form, info, Mapbox map)
+- Contact (form, office info, Mapbox map)
+
+**Custom Post Types:**
+- Projects (6 portfolio items with location, type, sq footage, year)
+- Team Members (4 staff with position, bio, display order)
+- Testimonials (3 client reviews with author name, role, rating)
 
 ## Tech Stack
 
 | Component | Stack |
 |-----------|-------|
-| Comparison | Next.js 14+, TypeScript, Tailwind, shadcn/ui |
-| Headless | Next.js 14+, TypeScript, Tailwind, WPGraphQL, Apollo/graphql-request |
-| WordPress | WP 6.4+, WPGraphQL, ACF + WPGraphQL for ACF |
+| Comparison | Next.js 16, TypeScript, Tailwind v4 (not yet implemented) |
+| Headless | Next.js 15, TypeScript, Tailwind v4, WPGraphQL, graphql-request |
+| WordPress | WP 6.7, WPGraphQL, registered post meta (no ACF dependency) |
 | Deployment | Docker (standalone output), Coolify, Cloudflare CDN |
 
 ## Project Structure
@@ -89,8 +95,10 @@ Fictional Denver consulting firm (typical $10-25k project client).
 |------|---------|
 | `apps/comparison/` | Split-screen comparison app (speedtest.denverheadless.com) |
 | `apps/headless/` | Optimized Next.js frontend (fast.denverheadless.com) |
-| `wordpress/` | WP setup notes, headless theme, content seeds |
-| `traditional/` | Theme config and plugin list for monolithic WP rendering |
+| `wordpress/` | Docker compose, theme, seed script, content docs |
+| `wordpress/theme/` | Elevation Design Studio FSE block theme |
+| `wordpress/seed.sh` | Reproducible WP-CLI content seed |
+| `scripts/` | Sync utilities (theme tokens, template structure) |
 
 ## Commands
 
@@ -101,13 +109,15 @@ make down            # Stop all services
 make build           # Build docker images
 make logs            # Tail logs
 
+# WordPress
+make seed            # Seed WordPress with demo content
+make seed-reset      # Delete all seeded content (destructive!)
+
 # Local development
 make dev-comparison  # Run comparison app
-make dev-headless    # Run headless app
-
-# Or run directly
-cd apps/comparison && npm run dev
-cd apps/headless && npm run dev
+make dev-headless    # Run headless app (syncs tokens + templates first)
+make sync-tokens     # Sync design tokens from theme.json → headless CSS
+make sync-templates  # Sync WP template/pattern structure → headless data/
 ```
 
 ## Performance Targets
