@@ -213,6 +213,7 @@ const getBlockComponents = async (
             name={block.name}
             attributes={block.attributes}
             innerBlocks={innerBlocks}
+            saveContent={block.saveContent || block.dynamicContent}
           />
         );
       }

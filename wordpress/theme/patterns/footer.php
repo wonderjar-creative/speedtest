@@ -74,7 +74,7 @@
 <!-- /wp:separator -->
 
 <!-- wp:paragraph {"align":"center","textColor":"gray-500","fontSize":"sm","style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
-<p class="has-text-align-center has-gray-500-color has-text-color has-sm-font-size" style="margin-top:0;margin-bottom:0">&copy; 2024 Elevation Design Studio. All rights reserved.</p>
+<p class="has-text-align-center has-gray-500-color has-text-color has-sm-font-size" style="margin-top:0;margin-bottom:0">&copy; <?php echo date( 'Y' ); ?> Elevation Design Studio. All rights reserved.</p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
