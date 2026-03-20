@@ -129,5 +129,14 @@ class Loader {
 			filemtime( get_template_directory() . '/assets/js/elevation-theme.js' ),
 			true
 		);
+
+		// Parent notification for iframe sync (comparison app).
+		wp_enqueue_script(
+			'parent-notify',
+			get_template_directory_uri() . '/assets/js/parent-notify.js',
+			array(),
+			'1.0.0',
+			true
+		);
 	}
 }
