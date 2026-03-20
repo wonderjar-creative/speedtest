@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import MetricsPanel from "@/components/MetricsPanel";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 
@@ -22,6 +23,7 @@ export default function Home() {
         <div className="p-8">
           <p>Active page: {activePage}</p>
         </div>
+        <MetricsPanel />
         <CTA />
         <Footer />
       </div>
