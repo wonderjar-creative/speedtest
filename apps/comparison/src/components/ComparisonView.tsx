@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import type { RaceStatus } from "@/hooks/useRace";
 
 interface ComparisonViewProps {
@@ -87,37 +87,24 @@ export default function ComparisonView({
 }: ComparisonViewProps) {
   const [slowError, setSlowError] = useState(false);
   const [fastError, setFastError] = useState(false);
-  const [shouldHideAfterDelay, setShouldHideAfterDelay] = useState(false);
-  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [overlayHidden, setOverlayHidden] = useState(false);
 
-  // Auto-fade race timers 5 seconds after race completes
-  useLayoutEffect(() => {
-    // Clear any previous timer
-    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-
-    if (raceStatus !== "complete") {
-      // Only reset to false if needed to avoid unnecessary setState
-      if (shouldHideAfterDelay) {
-        setShouldHideAfterDelay(false);
-      }
-    } else {
-      // Race is complete: show overlay and set timer to hide
-      // Set up timer to fade
-      fadeTimerRef.current = setTimeout(() => setShouldHideAfterDelay(true), 5000);
+  // Auto-fade race timers 5 seconds after race completes.
+  // The synchronous setState on non-complete is intentional — it resets
+  // overlay visibility when a new race starts (countdown/racing).
+  useEffect(() => {
+    if (raceStatus === "complete") {
+      const timer = setTimeout(() => setOverlayHidden(true), 5000);
+      return () => clearTimeout(timer);
     }
-
-    return () => {
-      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-    };
-  }, [raceStatus, shouldHideAfterDelay]);
-
-  const overlayHidden = raceStatus === "complete" && shouldHideAfterDelay;
+    setOverlayHidden(false); // eslint-disable-line react-hooks/set-state-in-effect
+  }, [raceStatus]);
 
   const slowSrc = `${slowUrl}${activePage}`;
   const fastSrc = `${fastUrl}${activePage}`;
 
   return (
-    <section id="comparison" className="px-4 pb-2">
+    <section id="comparison" className="px-4 pb-2 scroll-mt-14">
       <div className="mx-auto max-w-7xl">
         {/* Labels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
