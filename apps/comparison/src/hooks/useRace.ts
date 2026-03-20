@@ -32,22 +32,26 @@ export function useRace(): UseRaceReturn {
   const slowDoneRef = useRef(false);
   const safetyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Timer loop
-  const tick = useCallback(() => {
-    const elapsed = (performance.now() - startTimeRef.current) / 1000;
+  // Timer loop — using ref to avoid stale closure in requestAnimationFrame
+  const tickRef = useRef<() => void>(() => {});
 
-    if (!fastDoneRef.current) {
-      setFastTime(parseFloat(elapsed.toFixed(1)));
-    }
-    if (!slowDoneRef.current) {
-      setSlowTime(parseFloat(elapsed.toFixed(1)));
-    }
+  useEffect(() => {
+    tickRef.current = () => {
+      const elapsed = (performance.now() - startTimeRef.current) / 1000;
 
-    if (!fastDoneRef.current || !slowDoneRef.current) {
-      rafRef.current = requestAnimationFrame(tick);
-    } else {
-      setRaceStatus("complete");
-    }
+      if (!fastDoneRef.current) {
+        setFastTime(parseFloat(elapsed.toFixed(1)));
+      }
+      if (!slowDoneRef.current) {
+        setSlowTime(parseFloat(elapsed.toFixed(1)));
+      }
+
+      if (!fastDoneRef.current || !slowDoneRef.current) {
+        rafRef.current = requestAnimationFrame(tickRef.current);
+      } else {
+        setRaceStatus("complete");
+      }
+    };
   }, []);
 
   // Cleanup on unmount
@@ -118,7 +122,7 @@ export function useRace(): UseRaceReturn {
           fastIframeRef.current.src = fastSrc;
 
         // Start timer loop
-        rafRef.current = requestAnimationFrame(tick);
+        rafRef.current = requestAnimationFrame(tickRef.current);
 
         // Safety timeout — auto-complete after 30s if iframe never loads
         safetyTimeoutRef.current = setTimeout(() => {
@@ -137,7 +141,7 @@ export function useRace(): UseRaceReturn {
         }, 30000);
       }, 300);
     }, 700);
-  }, [tick]);
+  }, []);
 
   return {
     raceStatus,

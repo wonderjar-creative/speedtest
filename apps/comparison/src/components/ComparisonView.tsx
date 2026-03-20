@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import type { RaceStatus } from "@/hooks/useRace";
 
 interface ComparisonViewProps {
@@ -87,16 +87,31 @@ export default function ComparisonView({
 }: ComparisonViewProps) {
   const [slowError, setSlowError] = useState(false);
   const [fastError, setFastError] = useState(false);
-  const [overlayHidden, setOverlayHidden] = useState(false);
+  const [shouldHideAfterDelay, setShouldHideAfterDelay] = useState(false);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-fade race timers 5 seconds after race completes
-  useEffect(() => {
-    if (raceStatus === "complete") {
-      const timer = setTimeout(() => setOverlayHidden(true), 5000);
-      return () => clearTimeout(timer);
+  useLayoutEffect(() => {
+    // Clear any previous timer
+    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+
+    if (raceStatus !== "complete") {
+      // Only reset to false if needed to avoid unnecessary setState
+      if (shouldHideAfterDelay) {
+        setShouldHideAfterDelay(false);
+      }
+    } else {
+      // Race is complete: show overlay and set timer to hide
+      // Set up timer to fade
+      fadeTimerRef.current = setTimeout(() => setShouldHideAfterDelay(true), 5000);
     }
-    setOverlayHidden(false);
-  }, [raceStatus]);
+
+    return () => {
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    };
+  }, [raceStatus, shouldHideAfterDelay]);
+
+  const overlayHidden = raceStatus === "complete" && shouldHideAfterDelay;
 
   const slowSrc = `${slowUrl}${activePage}`;
   const fastSrc = `${fastUrl}${activePage}`;
