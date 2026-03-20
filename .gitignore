@@ -24,6 +24,9 @@ dist/
 # TypeScript
 *.tsbuildinfo
 
+# Superpowers
+.superpowers/
+
 # Temporary files
 *.tmp
 *.log
