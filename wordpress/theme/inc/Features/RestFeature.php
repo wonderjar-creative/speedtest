@@ -292,8 +292,7 @@ class RestFeature {
 				$slug      = pathinfo( $file, PATHINFO_FILENAME );
 				$file_path = $dir . '/' . $file;
 
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local file read.
-				$content = file_get_contents( $file_path );
+				$content = self::read_template_file( $file_path );
 				if ( false === $content ) {
 					continue;
 				}
@@ -377,8 +376,7 @@ class RestFeature {
 			return new \WP_REST_Response( array( 'error' => 'Not found' ), 404 );
 		}
 
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local file read.
-		$content = file_get_contents( $file );
+		$content = self::read_template_file( $file );
 		if ( false === $content ) {
 			return new \WP_REST_Response( array( 'error' => 'Could not read file' ), 500 );
 		}
@@ -427,6 +425,30 @@ class RestFeature {
 			'title'  => $nav_post->post_title,
 			'blocks' => array_values( $blocks ),
 		);
+	}
+
+	/**
+	 * Read a template/pattern file, executing PHP if needed.
+	 *
+	 * For .php files, uses output buffering to execute inline PHP
+	 * (e.g. <?php echo date('Y'); ?>) before returning the content.
+	 *
+	 * @param string $file_path Absolute file path.
+	 * @return string|false File content or false on failure.
+	 */
+	private static function read_template_file( string $file_path ) {
+		if ( ! file_exists( $file_path ) ) {
+			return false;
+		}
+
+		if ( '.php' === substr( $file_path, -4 ) ) {
+			ob_start();
+			include $file_path;
+			return ob_get_clean();
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local file read.
+		return file_get_contents( $file_path );
 	}
 
 	/**

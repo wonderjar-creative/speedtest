@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "home",
+    "title": "Home",
+    "content": ""
+  },
+  {
+    "slug": "about",
+    "title": "About",
+    "content": "<!-- wp:pattern {\"slug\":\"elevation-theme/page-about\"} /-->"
+  },
+  {
+    "slug": "services",
+    "title": "Services",
+    "content": "<!-- wp:pattern {\"slug\":\"elevation-theme/page-services\"} /-->"
+  },
+  {
+    "slug": "portfolio",
+    "title": "Portfolio",
+    "content": "<!-- wp:pattern {\"slug\":\"elevation-theme/page-portfolio\"} /-->"
+  },
+  {
+    "slug": "contact",
+    "title": "Contact",
+    "content": "<!-- wp:pattern {\"slug\":\"elevation-theme/page-contact\"} /-->"
+  },
+  {
+    "slug": "blog",
+    "title": "Blog",
+    "content": ""
+  }
+]

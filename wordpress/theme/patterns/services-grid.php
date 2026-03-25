@@ -40,7 +40,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"textColor":"primary","fontSize":"sm"} -->
-<p class="has-primary-color has-text-color has-sm-font-size">Learn More &rarr;</p>
+<p class="has-primary-color has-text-color has-sm-font-size"><a href="/services/#residential">Learn More &rarr;</a></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
@@ -68,7 +68,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"textColor":"primary","fontSize":"sm"} -->
-<p class="has-primary-color has-text-color has-sm-font-size">Learn More &rarr;</p>
+<p class="has-primary-color has-text-color has-sm-font-size"><a href="/services/#commercial">Learn More &rarr;</a></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
@@ -96,7 +96,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"textColor":"primary","fontSize":"sm"} -->
-<p class="has-primary-color has-text-color has-sm-font-size">Learn More &rarr;</p>
+<p class="has-primary-color has-text-color has-sm-font-size"><a href="/services/#consultation">Learn More &rarr;</a></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
@@ -124,7 +124,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"textColor":"primary","fontSize":"sm"} -->
-<p class="has-primary-color has-text-color has-sm-font-size">Learn More &rarr;</p>
+<p class="has-primary-color has-text-color has-sm-font-size"><a href="/services/#renovation">Learn More &rarr;</a></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->

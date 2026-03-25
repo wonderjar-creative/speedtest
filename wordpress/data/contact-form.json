@@ -1,0 +1,78 @@
+[
+  {
+    "title": "Contact Form",
+    "description": "Main contact form for Elevation Design Studio",
+    "labelPlacement": "top_label",
+    "descriptionPlacement": "below",
+    "button": {
+      "type": "text",
+      "text": "Send Message"
+    },
+    "fields": [
+      {
+        "type": "name",
+        "id": 1,
+        "label": "Name",
+        "isRequired": true,
+        "size": "large",
+        "nameFormat": "simple"
+      },
+      {
+        "type": "email",
+        "id": 2,
+        "label": "Email",
+        "isRequired": true,
+        "size": "large"
+      },
+      {
+        "type": "phone",
+        "id": 3,
+        "label": "Phone",
+        "isRequired": false,
+        "size": "large",
+        "phoneFormat": "standard"
+      },
+      {
+        "type": "select",
+        "id": 4,
+        "label": "Project Type",
+        "isRequired": false,
+        "size": "large",
+        "placeholder": "Select a project type",
+        "choices": [
+          { "text": "Residential Design", "value": "Residential Design" },
+          { "text": "Commercial Spaces", "value": "Commercial Spaces" },
+          { "text": "Design Consultation", "value": "Design Consultation" },
+          { "text": "Renovation & Remodeling", "value": "Renovation & Remodeling" },
+          { "text": "Other", "value": "Other" }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": 5,
+        "label": "Message",
+        "isRequired": true,
+        "size": "large"
+      }
+    ],
+    "confirmations": {
+      "1": {
+        "id": "1",
+        "name": "Default Confirmation",
+        "isDefault": true,
+        "type": "message",
+        "message": "Thank you for reaching out! We'll get back to you within 24 hours."
+      }
+    },
+    "notifications": {
+      "1": {
+        "id": "1",
+        "name": "Admin Notification",
+        "isActive": true,
+        "to": "{admin_email}",
+        "subject": "New Contact Form Submission - {Name:1}",
+        "message": "Name: {Name:1}\nEmail: {Email:2}\nPhone: {Phone:3}\nProject Type: {Project Type:4}\n\nMessage:\n{Message:5}"
+      }
+    }
+  }
+]

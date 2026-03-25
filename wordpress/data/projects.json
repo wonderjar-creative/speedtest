@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "mountain-view-residence",
+    "title": "Mountain View Residence",
+    "excerpt": "A complete renovation of a mid-century modern home with panoramic mountain views.",
+    "meta": {
+      "location": "Golden, CO",
+      "project_type": "Residential",
+      "square_footage": "3200",
+      "year_completed": "2023"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80&fm=jpg"
+  },
+  {
+    "slug": "urban-loft-transformation",
+    "title": "Urban Loft Transformation",
+    "excerpt": "Converting a raw warehouse space into a sophisticated live-work loft in RiNo.",
+    "meta": {
+      "location": "Denver, CO",
+      "project_type": "Residential",
+      "square_footage": "2400",
+      "year_completed": "2023"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80&fm=jpg"
+  },
+  {
+    "slug": "lakeside-retreat",
+    "title": "Lakeside Retreat",
+    "excerpt": "A weekend escape designed around lakeside living with sustainable materials.",
+    "meta": {
+      "location": "Grand Lake, CO",
+      "project_type": "Residential",
+      "square_footage": "2800",
+      "year_completed": "2022"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80&fm=jpg"
+  },
+  {
+    "slug": "tech-startup-hq",
+    "title": "Tech Startup HQ",
+    "excerpt": "A dynamic office supporting collaboration and deep work for a 50-person team.",
+    "meta": {
+      "location": "Boulder, CO",
+      "project_type": "Commercial",
+      "square_footage": "8000",
+      "year_completed": "2024"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&fm=jpg"
+  },
+  {
+    "slug": "boutique-hotel-lobby",
+    "title": "Boutique Hotel Lobby",
+    "excerpt": "Reimagining the arrival experience for a historic Denver hotel.",
+    "meta": {
+      "location": "Denver, CO",
+      "project_type": "Hospitality",
+      "square_footage": "1200",
+      "year_completed": "2024"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80&fm=jpg"
+  },
+  {
+    "slug": "historic-building-revival",
+    "title": "Historic Building Revival",
+    "excerpt": "Adaptive reuse of a 1920s industrial building into mixed-use space.",
+    "meta": {
+      "location": "Denver, CO",
+      "project_type": "Commercial",
+      "square_footage": "18000",
+      "year_completed": "2022"
+    },
+    "featured_image": "https://images.unsplash.com/photo-1600585153490-76fb20a32601?w=800&q=80&fm=jpg"
+  }
+]

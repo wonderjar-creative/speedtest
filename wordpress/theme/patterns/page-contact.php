@@ -42,13 +42,7 @@
 <p class="has-gray-500-color has-text-color">Fill out the form below and we'll get back to you within 24 hours.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)">
-<!-- wp:shortcode -->
-[contact-form-7 title="Contact Form"]
-<!-- /wp:shortcode -->
-</div>
-<!-- /wp:group -->
+<!-- wp:gravityforms/form {"formId":"1","title":false,"description":false} /-->
 </div>
 <!-- /wp:column -->
 

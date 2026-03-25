@@ -22,8 +22,8 @@ const PageTemplate = async ({ node }: TemplateProps) => {
 
   const stylesCollector: string[] = [];
 
-  // templateSlug comes from custom WP theme field, default to 'page' for pages
-  const templateSlug = page.templateSlug || 'page';
+  // Use front-page template for the designated front page, otherwise fall back to templateSlug or 'page'
+  const templateSlug = page.isFrontPage ? 'front-page' : (page.templateSlug || 'page');
 
   // Try ISR first, fallback to static
   let template = await fetchTemplateWithISR(templateSlug);

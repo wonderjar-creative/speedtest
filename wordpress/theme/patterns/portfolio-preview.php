@@ -35,8 +35,8 @@
 
 <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
 <div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--50)">
-<!-- wp:button {"className":"is-style-outline"} -->
-<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button">View All Projects</a></div>
+<!-- wp:button {"className":"is-style-outline","url":"/portfolio"} -->
+<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="/portfolio">View All Projects</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

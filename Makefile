@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset
 
 help:
 	@echo "Usage: make [target]"
@@ -16,6 +16,10 @@ help:
 	@echo "  install-headless    Install headless dependencies"
 	@echo "  sync-tokens         Sync design tokens from theme.json to headless app"
 	@echo "  sync-templates      Sync WP template/pattern structure to headless data/"
+	@echo ""
+	@echo "WordPress:"
+	@echo "  seed                Seed WordPress with demo content"
+	@echo "  seed-reset          Delete all seeded content (destructive!)"
 
 # Docker commands
 up:
@@ -49,3 +53,24 @@ install-comparison:
 
 install-headless:
 	cd apps/headless && npm install
+
+# WordPress content management (seed.sh is mounted at /tmp/seed.sh via docker-compose volume)
+seed:
+	docker compose -f wordpress/docker-compose.yml exec wpcli sh /tmp/seed.sh
+
+seed-reset:
+	@echo "⚠ This will delete ALL posts, pages, projects, team members, and testimonials."
+	@echo "Press Ctrl+C to cancel, or wait 5 seconds..."
+	@sleep 5
+	docker compose -f wordpress/docker-compose.yml exec wpcli sh -c '\
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=page --format=ids) --force 2>/dev/null; \
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=post --format=ids) --force 2>/dev/null; \
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=project --format=ids) --force 2>/dev/null; \
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=team_member --format=ids) --force 2>/dev/null; \
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=testimonial --format=ids) --force 2>/dev/null; \
+		wp --allow-root post delete $$(wp --allow-root post list --post_type=wp_navigation --format=ids) --force 2>/dev/null; \
+		wp --allow-root menu delete "Primary" 2>/dev/null; \
+		wp --allow-root option update page_on_front 0 2>/dev/null; \
+		wp --allow-root option update page_for_posts 0 2>/dev/null; \
+		wp --allow-root option update show_on_front posts 2>/dev/null; \
+		echo "Reset complete."'
