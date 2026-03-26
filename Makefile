@@ -80,7 +80,7 @@ seed-reset:
 
 seed-dump:
 	@echo "Exporting WordPress database to wordpress/seed-dump.sql..."
-	docker compose -f wordpress/docker-compose.yml exec -T db mysqldump -uwordpress -pwordpress wordpress > wordpress/seed-dump.sql
+	docker compose -f wordpress/docker-compose.yml exec -T db mysqldump --no-tablespaces -uwordpress -pwordpress wordpress > wordpress/seed-dump.sql
 	@echo "Done. Commit wordpress/seed-dump.sql and deploy to import on production."
 
 seed-import:
