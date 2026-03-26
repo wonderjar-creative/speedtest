@@ -1,13 +1,12 @@
-# Docker Compose for WordPress local development
-# Run with: docker-compose up -d
+# Docker Compose for WordPress
+# Local dev: docker-compose up -d (auto-merges override for port 8080)
+# Production: Coolify deploys this directly — Traefik handles routing
 
 services:
   # WordPress + PHP + Apache (all-in-one)
   wordpress:
     image: wordpress:6.7-php8.2-apache
     container_name: speedtest-wp
-    ports:
-      - "8080:80"    # Access at http://localhost:8080
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress

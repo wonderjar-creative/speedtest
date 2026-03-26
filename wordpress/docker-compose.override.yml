@@ -1,0 +1,7 @@
+# Local development overrides (auto-merged by docker-compose)
+# NOT used in Coolify — Traefik handles routing in production
+
+services:
+  wordpress:
+    ports:
+      - "8080:80"    # Access at http://localhost:8080
