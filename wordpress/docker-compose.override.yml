@@ -5,3 +5,27 @@ services:
   wordpress:
     ports:
       - "8080:80"    # Access at http://localhost:8080
+
+  # WP-CLI for seeding and managing content (local dev only)
+  wpcli:
+    image: wordpress:cli
+    container_name: speedtest-wpcli
+    user: "33:33"  # Run as www-data (same as wordpress container)
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ./theme:/var/www/html/wp-content/themes/elevation-theme
+      - wp_uploads:/var/www/html/wp-content/uploads
+      - ./seed.sh:/tmp/seed.sh:ro
+      - ./data:/tmp/data:ro
+    depends_on:
+      - wordpress
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+volumes:
+  wp_data:
+  wp_uploads:

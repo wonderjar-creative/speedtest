@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset seed-dump seed-import
 
 help:
 	@echo "Usage: make [target]"
@@ -18,8 +18,10 @@ help:
 	@echo "  sync-templates      Sync WP template/pattern structure to headless data/"
 	@echo ""
 	@echo "WordPress:"
-	@echo "  seed                Seed WordPress with demo content"
+	@echo "  seed                Seed WordPress with demo content (local)"
 	@echo "  seed-reset          Delete all seeded content (destructive!)"
+	@echo "  seed-dump           Export seeded DB to wordpress/seed-dump.sql"
+	@echo "  seed-import         Import seed-dump.sql into running WordPress DB"
 
 # Docker commands
 up:
@@ -54,7 +56,8 @@ install-comparison:
 install-headless:
 	cd apps/headless && npm install
 
-# WordPress content management (seed.sh is mounted at /tmp/seed.sh via docker-compose volume)
+# WordPress content management
+# Workflow: make seed → make seed-dump (local), then make seed-import (production)
 seed:
 	docker compose -f wordpress/docker-compose.yml exec wpcli sh /tmp/seed.sh
 
@@ -74,3 +77,13 @@ seed-reset:
 		wp --allow-root option update page_for_posts 0 2>/dev/null; \
 		wp --allow-root option update show_on_front posts 2>/dev/null; \
 		echo "Reset complete."'
+
+seed-dump:
+	@echo "Exporting WordPress database to wordpress/seed-dump.sql..."
+	docker compose -f wordpress/docker-compose.yml exec -T db mysqldump -uwordpress -pwordpress wordpress > wordpress/seed-dump.sql
+	@echo "Done. Commit wordpress/seed-dump.sql and deploy to import on production."
+
+seed-import:
+	@echo "Importing wordpress/seed-dump.sql into WordPress database..."
+	docker compose -f wordpress/docker-compose.yml exec -T db mysql -uwordpress -pwordpress wordpress < wordpress/seed-dump.sql
+	@echo "Done. You may need to restart the WordPress container."

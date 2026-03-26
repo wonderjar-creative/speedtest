@@ -1,7 +1,0 @@
-FROM wordpress:cli
-
-# Copy seed script and data into the image
-COPY seed.sh /tmp/seed.sh
-COPY data/ /tmp/data/
-
-ENTRYPOINT ["tail", "-f", "/dev/null"]
