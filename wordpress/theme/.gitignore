@@ -1,5 +1,7 @@
-# Composer
-/vendor/
+# Composer – keep autoloader, ignore dev packages
+/vendor/*
+!/vendor/autoload.php
+!/vendor/composer/
 
 # Node
 /node_modules/
