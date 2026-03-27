@@ -12,6 +12,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', '${WP_URL:-http://localhost:8080}');
+        define('WP_SITEURL', '${WP_URL:-http://localhost:8080}');
     volumes:
       # Share WordPress files with WP-CLI
       - wp_data:/var/www/html
