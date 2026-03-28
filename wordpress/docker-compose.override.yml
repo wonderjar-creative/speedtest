@@ -4,25 +4,25 @@
 services:
   wordpress:
     ports:
-      - "8080:80"    # Access at http://localhost:8080
+      - "8080:80"
     volumes:
-      # Override baked-in theme with local files for hot-reloading
+      # Hot-reload theme locally
       - ./theme:/var/www/html/wp-content/themes/elevation-theme
 
-  # WP-CLI for seeding and managing content (local dev only)
+  # WP-CLI as a separate container for local dev
   wpcli:
     image: wordpress:cli
     container_name: speedtest-wpcli
-    user: "33:33"  # Run as www-data (same as wordpress container)
+    user: "33:33"
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-mariadb}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
     volumes:
-      - wp_data:/var/www/html
       - ./theme:/var/www/html/wp-content/themes/elevation-theme
       - wp_uploads:/var/www/html/wp-content/uploads
+      - wp_plugins:/var/www/html/wp-content/plugins
       - ./seed.sh:/tmp/seed.sh:ro
       - ./data:/tmp/data:ro
     depends_on:
@@ -30,5 +30,5 @@ services:
     entrypoint: ["tail", "-f", "/dev/null"]
 
 volumes:
-  wp_data:
   wp_uploads:
+  wp_plugins:
