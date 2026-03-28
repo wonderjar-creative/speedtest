@@ -4,6 +4,7 @@
 
 services:
   wordpress:
+    container_name: speedtest-wp
     build:
       context: .
     restart: unless-stopped
@@ -29,6 +30,7 @@ services:
         condition: service_healthy
 
   mariadb:
+    container_name: speedtest-db
     image: mariadb:11
     restart: unless-stopped
     environment:
