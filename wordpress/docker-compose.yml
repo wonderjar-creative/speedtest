@@ -5,7 +5,10 @@
 services:
   # WordPress + PHP + Apache (all-in-one)
   wordpress:
-    image: wordpress:6.7-php8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: speedtest-wp:latest
     container_name: speedtest-wp
     environment:
       WORDPRESS_DB_HOST: db
@@ -16,10 +19,8 @@ services:
         define('WP_HOME', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
         define('WP_SITEURL', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
     volumes:
-      # Share WordPress files with WP-CLI
+      # Persist WordPress core files
       - wp_data:/var/www/html
-      # Mount your theme into WordPress
-      - ./theme:/var/www/html/wp-content/themes/elevation-theme
       # Persist uploads between restarts
       - wp_uploads:/var/www/html/wp-content/uploads
     depends_on:

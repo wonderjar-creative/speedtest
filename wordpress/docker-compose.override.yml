@@ -5,6 +5,9 @@ services:
   wordpress:
     ports:
       - "8080:80"    # Access at http://localhost:8080
+    volumes:
+      # Override baked-in theme with local files for hot-reloading
+      - ./theme:/var/www/html/wp-content/themes/elevation-theme
 
   # WP-CLI for seeding and managing content (local dev only)
   wpcli:
