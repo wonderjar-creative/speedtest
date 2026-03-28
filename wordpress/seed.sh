@@ -43,8 +43,9 @@ echo ""
 echo "→ Checking WordPress installation..."
 if ! $WP core is-installed 2>/dev/null; then
   echo "  Installing WordPress..."
+  SITE_URL="${WP_HOME:-http://localhost:8080}"
   $WP core install \
-    --url="http://localhost:8080" \
+    --url="$SITE_URL" \
     --title="Elevation Design Studio" \
     --admin_user="admin" \
     --admin_password="admin" \

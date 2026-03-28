@@ -1,53 +1,51 @@
 # Docker Compose for WordPress
-# Local dev: docker-compose up -d (auto-merges override for port 8080)
+# Local dev: docker-compose up -d (auto-merges override for port 8080 + wpcli)
 # Production: Coolify deploys this directly — Traefik handles routing
 
 services:
-  # WordPress + PHP + Apache (all-in-one)
   wordpress:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: speedtest-wp:latest
-    container_name: speedtest-wp
+    restart: unless-stopped
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-db}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
         define('WP_SITEURL', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
     volumes:
-      # Persist WordPress core files
-      - wp_data:/var/www/html
-      # Persist uploads between restarts
       - wp_uploads:/var/www/html/wp-content/uploads
+      - wp_plugins:/var/www/html/wp-content/plugins
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     depends_on:
-      db:
+      mariadb:
         condition: service_healthy
 
-  # MySQL Database
-  db:
-    image: mysql:8.0
-    container_name: speedtest-db
+  mariadb:
+    image: mariadb:11
+    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: ${WORDPRESS_DB_NAME:-wordpress}
+      MARIADB_USER: ${WORDPRESS_DB_USER:-wordpress}
+      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-rootpassword}
     volumes:
-      # Persist database between restarts
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 60s
+      interval: 10s
       timeout: 5s
       retries: 5
 
-
-# Named volumes (Docker manages these)
 volumes:
-  db_data:
-  wp_data:
   wp_uploads:
+  wp_plugins:
+  db_data:
