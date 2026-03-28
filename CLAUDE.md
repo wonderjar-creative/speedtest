@@ -39,7 +39,7 @@ Three interfaces sharing one WordPress backend on one server:
 2. **Traditional WordPress** (slow.speedtest.denverheadless.com)
    - Same WordPress instance on Hetzner, rendered monolithically
    - Elevation Design Studio theme (FSE block theme)
-   - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WPGraphQL)
+   - Typical plugins (Rank Math, Contact Form 7, WPGraphQL)
    - NOT aggressively optimized — represents typical small business site
    - Same server, same content — only the delivery architecture differs
 

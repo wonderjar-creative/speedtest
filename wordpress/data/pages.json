@@ -2,7 +2,7 @@
   {
     "slug": "home",
     "title": "Home",
-    "content": ""
+    "content": "<!-- wp:pattern {\"slug\":\"elevation-theme/hero\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/client-logos\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/services-grid\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/stats-counter\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/portfolio-preview\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/about-preview\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/testimonials\"} /-->\n<!-- wp:pattern {\"slug\":\"elevation-theme/cta\"} /-->"
   },
   {
     "slug": "about",

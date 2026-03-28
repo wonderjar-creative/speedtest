@@ -72,8 +72,6 @@ echo "→ Installing and activating plugins..."
 $WP plugin install wp-graphql --activate 2>/dev/null || echo "  wp-graphql already installed"
 $WP plugin install seo-by-rank-math --activate 2>/dev/null || echo "  rank-math already installed"
 $WP plugin install contact-form-7 --activate 2>/dev/null || echo "  cf7 already installed"
-$WP plugin install smart-slider-3 --activate 2>/dev/null || echo "  smart-slider-3 already installed"
-
 # GitHub plugins (zip installs)
 $WP plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/heads/master.zip --activate 2>/dev/null || echo "  wp-graphql-jwt-auth already installed"
 
