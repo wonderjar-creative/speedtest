@@ -3,6 +3,7 @@
 
 services:
   wordpress:
+    container_name: speedtest-wp
     ports:
       - "8080:80"
     volumes:
