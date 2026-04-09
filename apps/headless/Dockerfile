@@ -1,3 +1,9 @@
+# Multi-stage production build for Next.js
+# Deployed via Coolify as a "Dockerfile" resource
+#
+# Requires: output: 'standalone' in next.config.ts
+# Pattern from: wonderjarcreative-wrapper/templates/frontend
+
 # ─── Stage 1: Dependencies ───────────────────────────────────────
 FROM node:20-alpine AS deps
 WORKDIR /app

@@ -7,7 +7,7 @@
     "sync-tokens": "node ../../scripts/sync-theme-tokens.mjs",
     "predev": "npm run sync-tokens && npm run sync-templates",
     "dev": "(graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js) || echo '[codegen] Skipped — run npm run codegen once GraphQL endpoint is healthy'; next dev",
-    "prebuild": "npm run sync-tokens && (npm run sync-templates || true)",
+    "prebuild": "echo 'Using committed data/*.json and generated-tokens.css'",
     "build": "NODE_ENV=${NODE_ENV:-production} graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && NODE_ENV=${NODE_ENV:-production} next build",
     "build:prod": "NODE_ENV=production npm run sync-templates && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build",
     "start": "next start",
