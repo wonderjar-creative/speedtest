@@ -15,6 +15,9 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
         define('WP_SITEURL', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
+        define('GRAPHQL_JWT_AUTH_SECRET_KEY', '${GRAPHQL_JWT_AUTH_SECRET_KEY:-speedtest-jwt-dev-secret}');
+        define('HEADLESS_URL', '${HEADLESS_URL:-http://localhost:3000}');
+        define('HEADLESS_SECRET', '${HEADLESS_SECRET:-speedtest-dev-secret}');
     volumes:
       - wp_uploads:/var/www/html/wp-content/uploads
       - wp_plugins:/var/www/html/wp-content/plugins
