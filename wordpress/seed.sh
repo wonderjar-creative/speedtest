@@ -80,6 +80,26 @@ $WP plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/a
 echo ""
 
 # -------------------------------------------------------------------
+# 1.6 Headless service user
+# -------------------------------------------------------------------
+# Dedicated user for the Next.js frontend to auth against WPGraphQL.
+# Generate an Application Password manually in wp-admin after seeding:
+#   Users → headless → Application Passwords → New → copy value into
+#   Coolify env vars WP_USER=headless, WP_APP_PASS=<value>.
+echo "→ Ensuring headless service user..."
+if ! $WP user get headless --field=ID 2>/dev/null; then
+  $WP user create headless headless@elevationdesign.test \
+    --role=editor \
+    --user_pass="$(openssl rand -base64 32)" \
+    --porcelain
+  echo "  Created user 'headless'. Generate an Application Password in wp-admin."
+else
+  echo "  User 'headless' already exists."
+fi
+
+echo ""
+
+# -------------------------------------------------------------------
 # 2. Pages (from data/pages.json)
 # -------------------------------------------------------------------
 echo "→ Creating pages..."
