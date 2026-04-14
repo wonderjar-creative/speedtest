@@ -76,6 +76,7 @@ $WP plugin install smart-slider-3 --activate 2>/dev/null || echo "  smart-slider
 
 # GitHub plugins (zip installs)
 $WP plugin install https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/heads/master.zip --activate 2>/dev/null || echo "  wp-graphql-jwt-auth already installed"
+$WP plugin install https://github.com/pristas-peter/wp-graphql-gutenberg/archive/refs/heads/master.zip --activate 2>/dev/null || echo "  wp-graphql-gutenberg already installed"
 
 echo ""
 
