@@ -26,12 +26,26 @@ if (!wordpressUrl) {
 
 console.log(`[codegen] Using WordPress GraphQL endpoint: ${wordpressUrl}/graphql`);
 
+const wpUser = process.env.WP_USER;
+const wpAppPass = process.env.WP_APP_PASS;
+const authHeader =
+  wpUser && wpAppPass
+    ? { Authorization: `Basic ${Buffer.from(`${wpUser}:${wpAppPass}`).toString("base64")}` }
+    : {};
+
+if (authHeader.Authorization) {
+  console.log(`[codegen] Using Basic auth as WP user: ${wpUser}`);
+} else {
+  console.log(`[codegen] No WP_USER/WP_APP_PASS — making unauthenticated introspection request`);
+}
+
 const config: CodegenConfig = {
   overwrite: true,
   schema: {
     [`${wordpressUrl}/graphql`]: {
       headers: {
         "User-Agent": "Codegen",
+        ...authHeader,
       },
     },
   },
