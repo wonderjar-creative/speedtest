@@ -28,12 +28,10 @@ console.log(`[codegen] Using WordPress GraphQL endpoint: ${wordpressUrl}/graphql
 
 const wpUser = process.env.WP_USER;
 const wpAppPass = process.env.WP_APP_PASS;
-const authHeader =
-  wpUser && wpAppPass
-    ? { Authorization: `Basic ${Buffer.from(`${wpUser}:${wpAppPass}`).toString("base64")}` }
-    : {};
+const headers: Record<string, string> = { "User-Agent": "Codegen" };
 
-if (authHeader.Authorization) {
+if (wpUser && wpAppPass) {
+  headers.Authorization = `Basic ${Buffer.from(`${wpUser}:${wpAppPass}`).toString("base64")}`;
   console.log(`[codegen] Using Basic auth as WP user: ${wpUser}`);
 } else {
   console.log(`[codegen] No WP_USER/WP_APP_PASS — making unauthenticated introspection request`);
@@ -42,12 +40,7 @@ if (authHeader.Authorization) {
 const config: CodegenConfig = {
   overwrite: true,
   schema: {
-    [`${wordpressUrl}/graphql`]: {
-      headers: {
-        "User-Agent": "Codegen",
-        ...authHeader,
-      },
-    },
+    [`${wordpressUrl}/graphql`]: { headers },
   },
   generates: {
     "src/gql/": {
