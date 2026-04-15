@@ -48,12 +48,12 @@ const processNavigationBlocks = (blocks: any[]): NavigationLink[] => {
     });
 };
 
-const fetchNavigationData = async (ref: number | undefined): Promise<NavigationData | null> => {
-  if (!ref) return null;
+const PRIMARY_NAV_SLUG = 'primary';
 
+const fetchNavigationData = async (): Promise<NavigationData | null> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/wp-json/blocks/v1/navigation/${ref}`, {
+    const response = await fetch(`${baseUrl}/wp-json/blocks/v1/navigation/slug/${PRIMARY_NAV_SLUG}`, {
       next: { revalidate: 3600 }
     });
 
@@ -71,12 +71,11 @@ const fetchNavigationData = async (ref: number | undefined): Promise<NavigationD
 };
 
 const Navigation: React.FC<CoreNavigationBlock> = async ({ name, attributes, rawInnerBlocks }) => {
-  const { ref, layout } = attributes || {};
   const navClasses = getBlockClasses(attributes ?? {}, getBlockBaseClass(name));
   const navStyleAttr = getBlockStyleAttr(attributes?.style);
 
-  // Try fetching from saved wp_navigation post first
-  const navData = await fetchNavigationData(ref as number | undefined);
+  // Resolve the saved wp_navigation post by slug (ID is unstable across reseeds)
+  const navData = await fetchNavigationData();
   let navigationLinks: NavigationLink[] = [];
 
   if (navData?.blocks && navData.blocks.length > 0) {

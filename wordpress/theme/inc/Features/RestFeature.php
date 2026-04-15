@@ -252,6 +252,45 @@ class RestFeature {
 				'permission_callback' => '__return_true',
 			)
 		);
+
+		register_rest_route(
+			'blocks/v1',
+			'/navigation/slug/(?P<slug>[a-zA-Z0-9_-]+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_navigation_data_by_slug' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	/**
+	 * Get navigation block data by wp_navigation post slug.
+	 *
+	 * @param \WP_REST_Request $request REST request.
+	 * @return array|\WP_Error
+	 */
+	public function get_navigation_data_by_slug( \WP_REST_Request $request ) {
+		$slug     = $request->get_param( 'slug' );
+		$nav_post = get_page_by_path( $slug, OBJECT, 'wp_navigation' );
+
+		if ( ! $nav_post ) {
+			return new \WP_Error(
+				'navigation_not_found',
+				'Navigation with the specified slug not found',
+				array( 'status' => 404 )
+			);
+		}
+
+		$blocks = parse_blocks( $nav_post->post_content );
+		$blocks = self::render_dynamic_blocks( $blocks );
+		$blocks = self::normalize_block_keys( $blocks );
+
+		return array(
+			'id'     => $nav_post->ID,
+			'title'  => $nav_post->post_title,
+			'blocks' => array_values( $blocks ),
+		);
 	}
 
 	/**
