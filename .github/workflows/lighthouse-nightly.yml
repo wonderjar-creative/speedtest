@@ -1,0 +1,41 @@
+name: Lighthouse Nightly
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # 3am Denver (MDT) / 2am (MST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse@12
+
+      - name: Run audits
+        run: node .github/scripts/run-lighthouse.mjs
+        env:
+          SLOW_URL: https://slow.speedtest.denverheadless.com
+          FAST_URL: https://fast.speedtest.denverheadless.com
+          OUTPUT_PATH: apps/comparison/public/metrics.json
+
+      - name: Commit metrics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/comparison/public/metrics.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update nightly lighthouse metrics"
+            git push
+          fi

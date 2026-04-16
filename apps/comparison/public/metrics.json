@@ -1,0 +1,15 @@
+{
+  "generatedAt": null,
+  "runs": {
+    "slow": {
+      "url": "https://slow.speedtest.denverheadless.com",
+      "mobile": null,
+      "desktop": null
+    },
+    "fast": {
+      "url": "https://fast.speedtest.denverheadless.com",
+      "mobile": null,
+      "desktop": null
+    }
+  }
+}
