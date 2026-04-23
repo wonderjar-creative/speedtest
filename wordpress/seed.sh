@@ -336,16 +336,8 @@ else
   echo "  Created block navigation (ID: $NAV_ID)"
 fi
 
-# Update header pattern ref to match this navigation post ID
-HEADER_PATTERN="/var/www/html/wp-content/themes/elevation-theme/patterns/header.php"
-if [ -f "$HEADER_PATTERN" ]; then
-  if grep -q '"ref":' "$HEADER_PATTERN"; then
-    sed -i "s/\"ref\":[0-9]*/\"ref\":$NAV_ID/" "$HEADER_PATTERN"
-  else
-    sed -i "s/wp:navigation {/wp:navigation {\"ref\":$NAV_ID,/" "$HEADER_PATTERN"
-  fi
-  echo "  Updated header pattern ref to $NAV_ID"
-fi
+# The header pattern resolves the ref by slug at render time (patterns/header.php),
+# so no post-ID patching of theme files is needed here.
 
 echo ""
 
