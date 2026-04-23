@@ -40,7 +40,7 @@ export default function Header({
             >
               {page.name}
               {page.starred && (
-                <span className="ml-1 text-yellow-400 text-xs">★</span>
+                <span className="ml-1 text-coral text-xs">★</span>
               )}
               {activePage === page.path && (
                 <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-teal rounded-full" />
@@ -101,7 +101,7 @@ export default function Header({
             >
               {page.name}
               {page.starred && (
-                <span className="ml-1 text-yellow-400 text-xs">★</span>
+                <span className="ml-1 text-coral text-xs">★</span>
               )}
             </button>
           ))}

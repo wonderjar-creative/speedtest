@@ -4,6 +4,16 @@ All notable changes to the Speed Test POC will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- Updated comparison app with brand palette similar to `wonderjarcreative`.
+
+### Fixed
+
+- Removed WordPress theme javascript adding extra mobile-menu toggle button.
+
 ## [0.9.0] - 2026-03-03
 
 Converted static CPT patterns to dynamic `core/query` blocks with block bindings, so content comes from WordPress CPT posts on both traditional and headless sides.

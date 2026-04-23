@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --surface: #1e293b;
-  --surface-alt: #334155;
-  --teal: #5eead4;
-  --teal-dark: #14b8a6;
-  --red: #ef4444;
-  --red-muted: #fca5a5;
-  --green: #22c55e;
-  --green-muted: #86efac;
+  /* Warm professional — Wonderjar palette */
+  --background: #faf7f2;
+  --foreground: #1a1612;
+  --surface: #f1ebe0;
+  --surface-alt: #d9cfbb;
+
+  /* Brand */
+  --teal: #0f766e;
+  --teal-dark: #115e59;
+  --coral: #f97362;
+  --coral-dark: #e85a4a;
+
+  /* Reserved for metric semantics (slow vs fast) */
+  --red: #b91c1c;
+  --red-muted: #7f1d1d;
+  --green: #15803d;
+  --green-muted: #14532d;
 }
 
 @theme inline {
@@ -20,6 +27,8 @@
   --color-surface-alt: var(--surface-alt);
   --color-teal: var(--teal);
   --color-teal-dark: var(--teal-dark);
+  --color-coral: var(--coral);
+  --color-coral-dark: var(--coral-dark);
   --color-red: var(--red);
   --color-red-muted: var(--red-muted);
   --color-green: var(--green);
