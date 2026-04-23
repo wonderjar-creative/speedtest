@@ -20,13 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PostTypesFeature {
 
 	/**
-	 * Register hooks.
+	 * Hook declarations for this feature.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function register(): void {
-		add_action( 'init', array( $this, 'register_post_types' ) );
-		add_action( 'init', array( $this, 'register_meta_fields' ) );
+	public function hooks(): array {
+		return array(
+			array( 'action', 'init', 'register_post_types' ),
+			array( 'action', 'init', 'register_meta_fields' ),
+		);
 	}
 
 	/**

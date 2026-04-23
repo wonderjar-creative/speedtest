@@ -21,17 +21,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GraphQLFeature {
 
 	/**
-	 * Register hooks.
+	 * Hook declarations for this feature.
 	 *
-	 * @return void
+	 * Returns an empty array when WPGraphQL isn't active, so nothing gets wired up.
+	 *
+	 * @return array
 	 */
-	public function register(): void {
-		// Only register if WPGraphQL is active.
+	public function hooks(): array {
 		if ( ! class_exists( 'WPGraphQL' ) ) {
-			return;
+			return array();
 		}
 
-		add_action( 'graphql_register_types', array( $this, 'register_types' ) );
+		return array(
+			array( 'action', 'graphql_register_types', 'register_types' ),
+		);
 	}
 
 	/**

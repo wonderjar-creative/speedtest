@@ -20,17 +20,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 class RestFeature {
 
 	/**
-	 * Register hooks.
+	 * Hook declarations for this feature.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function register(): void {
-		add_filter( 'rest_url', array( $this, 'home_url_as_api_url' ) );
-		add_filter( 'preview_post_link', array( $this, 'set_headless_preview_link' ), 10, 2 );
-		add_filter( 'rest_prepare_page', array( $this, 'set_headless_rest_preview_link' ), 10, 2 );
-		add_filter( 'rest_prepare_post', array( $this, 'set_headless_rest_preview_link' ), 10, 2 );
-		add_action( 'transition_post_status', array( $this, 'headless_revalidate' ), 10, 3 );
-		add_action( 'rest_api_init', array( $this, 'register_api_routes' ) );
+	public function hooks(): array {
+		return array(
+			array( 'filter', 'rest_url', 'home_url_as_api_url' ),
+			array( 'filter', 'preview_post_link', 'set_headless_preview_link', 10, 2 ),
+			array( 'filter', 'rest_prepare_page', 'set_headless_rest_preview_link', 10, 2 ),
+			array( 'filter', 'rest_prepare_post', 'set_headless_rest_preview_link', 10, 2 ),
+			array( 'action', 'transition_post_status', 'headless_revalidate', 10, 3 ),
+			array( 'action', 'rest_api_init', 'register_api_routes' ),
+		);
 	}
 
 	/**
