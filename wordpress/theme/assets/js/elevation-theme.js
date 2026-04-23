@@ -170,34 +170,6 @@
   }
 
   /* ==========================================================================
-     Mobile Menu
-     Adds a hamburger toggle for the WP navigation on mobile.
-     ========================================================================== */
-
-  function initMobileMenu() {
-    var $nav = $('.wp-block-navigation');
-    if (!$nav.length) return;
-
-    var $toggle = $(
-      '<button class="elevation-menu-toggle" aria-label="Toggle menu" aria-expanded="false">' +
-        '<span class="elevation-menu-toggle__bar"></span>' +
-        '<span class="elevation-menu-toggle__bar"></span>' +
-        '<span class="elevation-menu-toggle__bar"></span>' +
-        '</button>'
-    );
-
-    $nav.before($toggle);
-
-    $toggle.on('click', function () {
-      var isOpen = $nav.hasClass('is-menu-open');
-      $nav.toggleClass('is-menu-open');
-      $toggle.toggleClass('is-active');
-      $(this).attr('aria-expanded', !isOpen);
-      $('body').toggleClass('menu-open');
-    });
-  }
-
-  /* ==========================================================================
      Header Scroll Effect
      Adds a shadow to the header when the page is scrolled.
      ========================================================================== */
@@ -340,7 +312,6 @@
     initSmoothScroll();
     initBackToTop();
     initScrollReveal();
-    initMobileMenu();
     initHeaderScroll();
     initDropdowns();
     initTestimonialRotation();
