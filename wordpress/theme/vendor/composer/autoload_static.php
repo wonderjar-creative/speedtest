@@ -22,6 +22,7 @@ class ComposerStaticInitf96c146ddb13f308e9a4a52463c56be0
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'ElevationTheme\\Inc\\Assets' => __DIR__ . '/../..' . '/inc/Assets.php',
         'ElevationTheme\\Inc\\Features\\BlockBindingsFeature' => __DIR__ . '/../..' . '/inc/Features/BlockBindingsFeature.php',
         'ElevationTheme\\Inc\\Features\\GraphQLFeature' => __DIR__ . '/../..' . '/inc/Features/GraphQLFeature.php',
         'ElevationTheme\\Inc\\Features\\PostTypesFeature' => __DIR__ . '/../..' . '/inc/Features/PostTypesFeature.php',

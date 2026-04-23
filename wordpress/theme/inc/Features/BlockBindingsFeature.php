@@ -21,12 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class BlockBindingsFeature {
 
 	/**
-	 * Register hooks.
+	 * Hook declarations for this feature.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function register(): void {
-		add_action( 'init', array( $this, 'register_bindings_source' ) );
+	public function hooks(): array {
+		return array(
+			array( 'action', 'init', 'register_bindings_source' ),
+		);
 	}
 
 	/**

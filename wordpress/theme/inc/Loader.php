@@ -8,11 +8,6 @@
 
 namespace ElevationTheme\Inc;
 
-use ElevationTheme\Inc\Features\BlockBindingsFeature;
-use ElevationTheme\Inc\Features\RestFeature;
-use ElevationTheme\Inc\Features\GraphQLFeature;
-use ElevationTheme\Inc\Features\PostTypesFeature;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,123 +15,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Loader class.
  *
- * Registers all hooks and loads feature modules.
+ * Pure hook registry: collects actions/filters and registers them with
+ * WordPress when run() is called. No domain logic lives here.
  */
 class Loader {
 
 	/**
-	 * Feature instances.
+	 * Registered actions.
 	 *
 	 * @var array
 	 */
-	private $features = [];
+	private $actions = array();
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->load_features();
-	}
-
-	/**
-	 * Load feature modules.
+	 * Registered filters.
 	 *
+	 * @var array
+	 */
+	private $filters = array();
+
+	/**
+	 * Queue an action for registration.
+	 *
+	 * @param string $hook          The WordPress action name.
+	 * @param object $component     The object containing the callback.
+	 * @param string $callback      The method name on the component.
+	 * @param int    $priority      Hook priority.
+	 * @param int    $accepted_args Number of accepted arguments.
 	 * @return void
 	 */
-	private function load_features(): void {
-		$this->features = array(
-			new PostTypesFeature(),
-			new RestFeature(),
-			new GraphQLFeature(),
-			new BlockBindingsFeature(),
-		);
+	public function add_action( string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1 ): void {
+		$this->actions[] = compact( 'hook', 'component', 'callback', 'priority', 'accepted_args' );
 	}
 
 	/**
-	 * Run all hooks.
+	 * Queue a filter for registration.
+	 *
+	 * @param string $hook          The WordPress filter name.
+	 * @param object $component     The object containing the callback.
+	 * @param string $callback      The method name on the component.
+	 * @param int    $priority      Hook priority.
+	 * @param int    $accepted_args Number of accepted arguments.
+	 * @return void
+	 */
+	public function add_filter( string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1 ): void {
+		$this->filters[] = compact( 'hook', 'component', 'callback', 'priority', 'accepted_args' );
+	}
+
+	/**
+	 * Register all queued hooks with WordPress.
 	 *
 	 * @return void
 	 */
 	public function run(): void {
-		// Theme setup.
-		add_action( 'after_setup_theme', array( $this, 'theme_setup' ) );
-
-		// Enqueue styles and scripts.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-
-		// Run feature hooks.
-		foreach ( $this->features as $feature ) {
-			$feature->register();
+		foreach ( $this->actions as $h ) {
+			add_action( $h['hook'], array( $h['component'], $h['callback'] ), $h['priority'], $h['accepted_args'] );
 		}
-	}
 
-	/**
-	 * Theme setup.
-	 *
-	 * @return void
-	 */
-	public function theme_setup(): void {
-		// Add theme support.
-		add_theme_support( 'post-thumbnails' );
-		add_theme_support( 'title-tag' );
-		add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
-
-		// Block editor support.
-		add_theme_support( 'wp-block-styles' );
-		add_theme_support( 'editor-styles' );
-		add_theme_support( 'responsive-embeds' );
-	}
-
-	/**
-	 * Enqueue theme styles.
-	 *
-	 * @return void
-	 */
-	public function enqueue_styles(): void {
-		// Google Fonts — loaded render-blocking (typical slow WP site).
-		wp_enqueue_style(
-			'elevation-google-fonts',
-			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap',
-			[],
-			'1.0.0'
-		);
-
-		wp_enqueue_style(
-			'elevation-theme-styles',
-			get_template_directory_uri() . '/assets/css/theme.css',
-			array( 'elevation-google-fonts' ),
-			filemtime( get_template_directory() . '/assets/css/theme.css' )
-		);
-	}
-
-	/**
-	 * Enqueue theme scripts.
-	 *
-	 * Loads jQuery (render-blocking) + custom theme JS.
-	 *
-	 * @return void
-	 */
-	public function enqueue_scripts(): void {
-		// Ensure jQuery is loaded (WP includes it, render-blocking in <head>).
-		wp_enqueue_script( 'jquery' );
-
-		// Theme JS — depends on jQuery, loaded in footer.
-		wp_enqueue_script(
-			'elevation-theme-scripts',
-			get_template_directory_uri() . '/assets/js/elevation-theme.js',
-			array( 'jquery' ),
-			filemtime( get_template_directory() . '/assets/js/elevation-theme.js' ),
-			true
-		);
-
-		// Parent notification for iframe sync (comparison app).
-		wp_enqueue_script(
-			'parent-notify',
-			get_template_directory_uri() . '/assets/js/parent-notify.js',
-			array(),
-			'1.0.0',
-			true
-		);
+		foreach ( $this->filters as $h ) {
+			add_filter( $h['hook'], array( $h['component'], $h['callback'] ), $h['priority'], $h['accepted_args'] );
+		}
 	}
 }

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'ElevationTheme\\Inc\\Assets' => $baseDir . '/inc/Assets.php',
     'ElevationTheme\\Inc\\Features\\BlockBindingsFeature' => $baseDir . '/inc/Features/BlockBindingsFeature.php',
     'ElevationTheme\\Inc\\Features\\GraphQLFeature' => $baseDir . '/inc/Features/GraphQLFeature.php',
     'ElevationTheme\\Inc\\Features\\PostTypesFeature' => $baseDir . '/inc/Features/PostTypesFeature.php',
