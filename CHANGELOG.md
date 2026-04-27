@@ -8,11 +8,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Updated comparison app with brand palette similar to `wonderjarcreative`.
+- [comparison] Updated with brand palette similar to `wonderjarcreative`.
+- [comparison] Bumped Next.js from pinned 16.1.1 to ^16.2.4 (caret range), resolving open Next.js high-severity advisories.
+- [headless] Upgraded to Next.js 16 / React 19. Renamed `middleware.ts` to `proxy.ts` (Next 16 deprecation), updated `revalidateTag` to the new two-argument signature, and added explicit `JSX` type imports in eight files where React 19 dropped the global namespace.
+- [headless] Migrated from webpack to Turbopack (Next 16 default). The SVGR webpack rule was unused (no `.svg` imports in the project), so the `webpack(...)` block in `next.config.ts` and the `@svgr/webpack` dependency were both removed.
 
 ### Fixed
 
-- Removed WordPress theme javascript adding extra mobile-menu toggle button.
+- [wordpress] Removed theme javascript adding extra mobile-menu toggle button.
 
 ## [0.9.0] - 2026-03-03
 
