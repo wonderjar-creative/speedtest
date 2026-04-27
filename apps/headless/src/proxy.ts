@@ -46,7 +46,7 @@ async function checkRankMathRedirects(
   return null;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathnameWithoutTrailingSlash = request.nextUrl.pathname.replace(
     /\/$/,
     "",

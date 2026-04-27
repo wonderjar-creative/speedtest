@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // Revalidate all WordPress content
-    revalidateTag("wordpress");
+    revalidateTag("wordpress", "max");
 
     return NextResponse.json({
       revalidated: true,

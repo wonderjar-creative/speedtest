@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Image from 'next/image';
 import { FrontendBlock } from '@/types/coreBlockTypes';
 import { CoreCoverBlockAttributes, Maybe, NodeWithFeaturedImageToMediaItemConnectionEdge } from '@/gql/graphql';

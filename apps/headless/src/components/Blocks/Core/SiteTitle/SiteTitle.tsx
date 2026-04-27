@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { FrontendBlock } from '@/types/coreBlockTypes';
 import { CoreSiteTitleBlockAttributes } from '@/gql/graphql';
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from '@/utils/blockStyles';

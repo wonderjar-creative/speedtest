@@ -6,10 +6,10 @@
   "scripts": {
     "sync-tokens": "node ../../scripts/sync-theme-tokens.mjs",
     "predev": "npm run sync-tokens && npm run sync-templates",
-    "dev": "(graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js) || echo '[codegen] Skipped — run npm run codegen once GraphQL endpoint is healthy'; next dev",
+    "dev": "(graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js) || echo '[codegen] Skipped — run npm run codegen once GraphQL endpoint is healthy'; next dev --webpack",
     "prebuild": "echo 'Using committed data/*.json and generated-tokens.css'",
-    "build": "NODE_ENV=${NODE_ENV:-production} graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && NODE_ENV=${NODE_ENV:-production} next build",
-    "build:prod": "NODE_ENV=production npm run sync-templates && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build",
+    "build": "NODE_ENV=${NODE_ENV:-production} graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && NODE_ENV=${NODE_ENV:-production} next build --webpack",
+    "build:prod": "NODE_ENV=production npm run sync-templates && NODE_ENV=production graphql-codegen --config codegen.ts && node ./add-ts-nocheck.js && next build --webpack",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next data node_modules src/gql",
@@ -27,10 +27,10 @@
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
     "html-react-parser": "^5.2.5",
-    "next": "^15.3.3",
+    "next": "^16.2.4",
     "postcss": "^8.5.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-google-recaptcha-v3": "^1.11.0",
     "tailwindcss": "^4.1.0"
   },
@@ -39,10 +39,10 @@
     "@graphql-codegen/client-preset": "4.3.3",
     "@graphql-codegen/schema-ast": "^4.1.0",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "latest",
+    "eslint-config-next": "^16.2.4",
     "typescript": "^5"
   }
 }

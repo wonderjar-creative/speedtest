@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { FrontendBlock } from '@/types/coreBlockTypes';
 import { getBlockClasses, getBlockStyleAttr } from '@/utils/blockStyles';
 

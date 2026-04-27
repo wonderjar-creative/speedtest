@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { fetchTemplatePartWithISR } from "./isrFetchers";
 import { enrichBlocksWithMedia } from "./blockMedia";
 import getBlockComponents, { ContentNodeWithBlocks } from "./getBlockComponents";
