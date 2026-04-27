@@ -26,6 +26,7 @@ dist/
 
 # Superpowers
 .superpowers/
+docs/superpowers/
 
 # Temporary files
 *.tmp
