@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset seed-dump seed-import
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset seed-dump seed-import docker-build-comparison docker-build-headless docker-build-apps
 
 help:
 	@echo "Usage: make [target]"
@@ -16,6 +16,11 @@ help:
 	@echo "  install-headless    Install headless dependencies"
 	@echo "  sync-tokens         Sync design tokens from theme.json to headless app"
 	@echo "  sync-templates      Sync WP template/pattern structure to headless data/"
+	@echo ""
+	@echo "Docker (Next.js apps — verify prod builds locally):"
+	@echo "  docker-build-comparison  Build comparison app's Docker image"
+	@echo "  docker-build-headless    Build headless app's Docker image (needs WP env)"
+	@echo "  docker-build-apps        Build both Next.js Docker images"
 	@echo ""
 	@echo "WordPress:"
 	@echo "  seed                Seed WordPress with demo content (local)"
@@ -55,6 +60,27 @@ install-comparison:
 
 install-headless:
 	cd apps/headless && npm install
+
+# Local Docker builds for the Next.js apps.
+# Mirrors what Coolify does on Hetzner, on your Mac. Useful for catching
+# lockfile-sync errors and prod build issues BEFORE pushing.
+# Note: builds for native arch (arm64 on Apple Silicon). Add
+# --platform linux/amd64 if you ever need an image deployable to Hetzner.
+docker-build-comparison:
+	cd apps/comparison && docker build -t comparison-local .
+
+# Headless needs WP credentials at build time (GraphQL codegen runs in npm run build).
+# Source apps/headless/.env.local before running, or pass build-args manually.
+docker-build-headless:
+	cd apps/headless && docker build -t headless-local \
+		--build-arg NEXT_PUBLIC_BASE_URL=$${NEXT_PUBLIC_BASE_URL} \
+		--build-arg NEXT_PUBLIC_WORDPRESS_API_URL=$${NEXT_PUBLIC_WORDPRESS_API_URL} \
+		--build-arg HEADLESS_SECRET=$${HEADLESS_SECRET} \
+		--build-arg WP_USER=$${WP_USER} \
+		--build-arg WP_APP_PASS=$${WP_APP_PASS} \
+		.
+
+docker-build-apps: docker-build-comparison docker-build-headless
 
 # WordPress content management
 # Workflow: make seed → make seed-dump (local), then make seed-import (production)
