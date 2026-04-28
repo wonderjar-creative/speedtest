@@ -1,14 +1,13 @@
 import { fetchPatternWithISR } from './isrFetchers';
 import { enrichBlocksWithMedia } from './blockMedia';
-import getBlockComponents, { ContentNodeWithBlocks, LcpState } from './getBlockComponents';
+import getBlockComponents, { ContentNodeWithBlocks } from './getBlockComponents';
 import getPattern from './getPattern';
 
 const renderPattern = async (
   slug: string,
   page: ContentNodeWithBlocks,
   stylesCollector?: string[],
-  index?: number,
-  lcpState?: LcpState,
+  index?: number
 ) => {
   try {
     const cleanSlug = slug.replace(/^[^/]+\//, '');
@@ -22,7 +21,7 @@ const renderPattern = async (
     if (pattern && pattern.blocksJSON) {
       const patternBlocks = JSON.parse(pattern.blocksJSON);
       const enrichedBlocks = await enrichBlocksWithMedia(patternBlocks);
-      const components = await getBlockComponents(enrichedBlocks, page, stylesCollector, lcpState);
+      const components = await getBlockComponents(enrichedBlocks, page, stylesCollector);
 
       return components;
     }

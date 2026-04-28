@@ -1,5 +1,5 @@
 import { enrichBlocksWithMedia } from './blockMedia';
-import getBlockComponents, { ContentNodeWithBlocks, LcpState } from './getBlockComponents';
+import getBlockComponents, { ContentNodeWithBlocks } from './getBlockComponents';
 import { getBlockBaseClass, getBlockClasses } from './blockStyles';
 
 const renderPostContent = async (
@@ -7,13 +7,12 @@ const renderPostContent = async (
   attributes: Record<string, any> | undefined,
   page: ContentNodeWithBlocks,
   stylesCollector?: string[],
-  index?: number,
-  lcpState?: LcpState,
+  index?: number
 ) => {
   try {
     const blocks = JSON.parse(page?.blocksJSON || '[]');
     const enrichedBlocks = await enrichBlocksWithMedia(blocks);
-    const components = await getBlockComponents(enrichedBlocks, page, stylesCollector, lcpState);
+    const components = await getBlockComponents(enrichedBlocks, page, stylesCollector);
 
     return (
       <div
