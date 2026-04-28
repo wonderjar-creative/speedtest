@@ -5,14 +5,14 @@
 # Pattern from: wonderjarcreative-wrapper/templates/frontend
 
 # ─── Stage 1: Dependencies ───────────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:24-alpine AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
 RUN npm ci
 
 # ─── Stage 2: Build ─────────────────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -21,7 +21,6 @@ COPY . .
 # These are set at build time via Coolify env vars
 ARG NEXT_PUBLIC_BASE_URL
 ARG NEXT_PUBLIC_WORDPRESS_API_URL
-ARG NEXT_PUBLIC_WORDPRESS_API_HOSTNAME
 ARG HEADLESS_SECRET
 ARG WP_USER
 ARG WP_APP_PASS
@@ -30,7 +29,6 @@ ARG TEMPLATE_PART_REVALIDATE=300
 
 ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 ENV NEXT_PUBLIC_WORDPRESS_API_URL=$NEXT_PUBLIC_WORDPRESS_API_URL
-ENV NEXT_PUBLIC_WORDPRESS_API_HOSTNAME=$NEXT_PUBLIC_WORDPRESS_API_HOSTNAME
 ENV HEADLESS_SECRET=$HEADLESS_SECRET
 ENV WP_USER=$WP_USER
 ENV WP_APP_PASS=$WP_APP_PASS
@@ -41,7 +39,7 @@ ENV TEMPLATE_PART_REVALIDATE=$TEMPLATE_PART_REVALIDATE
 RUN npm run build
 
 # ─── Stage 3: Production ────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
