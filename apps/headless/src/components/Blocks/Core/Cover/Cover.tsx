@@ -7,10 +7,9 @@ import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from '@/utils/b
 export interface CoreCoverBlock extends FrontendBlock {
   attributes?: CoreCoverBlockAttributes;
   featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
-  priority?: boolean;
 }
 
-const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, mediaItem, innerBlocks, priority }) => {
+const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, mediaItem, innerBlocks }) => {
   const {
     anchor,
     alt,
@@ -75,11 +74,6 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
     ? featuredImage?.node?.sourceUrl
     : mediaItem?.node?.sourceUrl || url;
 
-  const imagePerfProps = {
-    sizes: '100vw',
-    ...(priority && { priority: true }),
-  };
-
   const image = imageSrc ? (
     useFeaturedImage && featuredImage ? (
       <Image
@@ -89,7 +83,6 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={featuredImage?.node?.mediaDetails?.width || 1600}
         height={featuredImage?.node?.mediaDetails?.height || 900}
-        {...imagePerfProps}
       />
     ) : mediaItem?.node ? (
       <Image
@@ -99,7 +92,6 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={mediaItem.node.mediaDetails?.width || 1600}
         height={mediaItem.node.mediaDetails?.height || 900}
-        {...imagePerfProps}
       />
     ) : (
       <Image
@@ -109,7 +101,6 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={1600}
         height={900}
-        {...imagePerfProps}
       />
     )
   ) : null;

@@ -11,7 +11,6 @@ import { EnrichedBlock } from '@/types/coreBlockTypes';
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from './blockStyles';
 import { fetchPatternWithISR } from './isrFetchers';
 import getPattern from './getPattern';
-import type { LcpState } from './getBlockComponents';
 
 // Local type to avoid dependency on generated graphql types
 type Maybe<T> = T | null | undefined;
@@ -434,8 +433,7 @@ const renderQuery = async (
   block: EnrichedBlock,
   page: Maybe<Page>,
   stylesCollector?: string[],
-  index: number = 0,
-  _lcpState?: LcpState,
+  index: number = 0
 ): Promise<React.ReactNode> => {
   const { attributes, innerBlocks } = block;
   const query = attributes?.query || {};

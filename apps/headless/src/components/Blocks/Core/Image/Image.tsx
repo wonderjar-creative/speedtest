@@ -7,10 +7,9 @@ import getDynamicMediaItem from '@/utils/getDynamicBlockMediaItem';
 
 export interface CoreImageBlock extends FrontendBlock {
   attributes?: CoreImageBlockAttributes;
-  priority?: boolean;
 }
 
-const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem, saveContent, dynamicContent, priority }) => {
+const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem, saveContent, dynamicContent }) => {
   const { url, align, alt, anchor, aspectRatio, style, width, height, scale, sizeSlug, ...imageAttributes } = attributes || {};
   const { sizes } = mediaItem?.node?.mediaDetails || {};
 
@@ -51,8 +50,6 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem,
         src={imageSrc}
         alt={alt || ''}
         {...(useFill ? { fill: true } : { width: imageWidth, height: imageHeight })}
-        sizes={useFill ? '100vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
-        {...(priority && { priority: true })}
         className={imageClasses}
         style={{
           ...aspectRatio && { aspectRatio: `${aspectRatio}` },
