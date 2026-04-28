@@ -482,3 +482,46 @@ select:focus {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================================================================
+   Navigation Block — Responsive Breakpoint Override
+   ==========================================================================
+   WordPress core's nav block hardcodes its mobile/desktop breakpoint at 600px
+   (in wp-includes/blocks/navigation/style.css). The site-title block doesn't
+   fit alongside the full inline nav below ~768px, so we extend the "mobile"
+   range up to 767px to match the headless app's breakpoint. */
+
+@media (min-width: 600px) and (max-width: 767.999px) {
+  /* Re-show hamburger toggle (WP core hides it at >= 600) */
+  .wp-block-navigation__responsive-container-open:not(.always-shown) {
+    display: flex;
+  }
+
+  /* Hide inline nav container until hamburger is opened */
+  .wp-block-navigation:not(.has-overlay-menu)
+    .wp-block-navigation__responsive-container:not(.is-menu-open):not(.hidden-by-default) {
+    display: none;
+  }
+
+  /* When opened, render as a fixed full-screen overlay */
+  .wp-block-navigation:not(.has-overlay-menu)
+    .wp-block-navigation__responsive-container.is-menu-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000;
+    background-color: var(--wp--preset--color--white, #fff);
+    padding: var(--wp--preset--spacing--40, 1.5rem);
+    overflow: auto;
+  }
+
+  /* Reveal the close (X) button while the overlay is open */
+  .wp-block-navigation__responsive-container.is-menu-open
+    .wp-block-navigation__responsive-container-close {
+    display: flex;
+  }
+}
