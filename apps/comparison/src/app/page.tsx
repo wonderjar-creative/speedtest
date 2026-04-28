@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ComparisonView from "@/components/ComparisonView";
@@ -19,6 +19,9 @@ const FAST_URL =
 
 export default function Home() {
   const [activePage, setActivePage] = useState("/");
+  // Mirrors activePage for synchronous reads inside the postMessage handler,
+  // which fires from a load event and would otherwise capture stale state.
+  const activePageRef = useRef("/");
   const {
     raceStatus,
     countdownText,
@@ -33,6 +36,7 @@ export default function Home() {
 
   const handleNavigate = useCallback(
     (path: string) => {
+      activePageRef.current = path;
       setActivePage(path);
 
       // Update both iframes
@@ -55,9 +59,14 @@ export default function Home() {
       const path = event.data.path as string;
       if (!path) return;
 
-      // Update active page
+      // Dedupe: an iframe postMessages its path on every load, including the
+      // initial load. Without this guard, slow's load triggers fast.src=same,
+      // which reloads fast, which triggers slow.src=same — infinite ping-pong.
+      if (path === activePageRef.current) return;
+
       const matchedPage = PAGES.find((p) => p.path === path);
       if (matchedPage) {
+        activePageRef.current = path;
         setActivePage(path);
       }
 
