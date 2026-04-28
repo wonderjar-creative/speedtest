@@ -39,13 +39,16 @@ export default function Home() {
       activePageRef.current = path;
       setActivePage(path);
 
-      // Update both iframes
+      // WP has no client-side router — full reload is its real behavior.
       if (slowIframeRef.current) {
         slowIframeRef.current.src = `${SLOW_URL}${path}`;
       }
-      if (fastIframeRef.current) {
-        fastIframeRef.current.src = `${FAST_URL}${path}`;
-      }
+      // Headless gets a soft router.push via postMessage — instant nav,
+      // which is the whole point of the headless architecture.
+      fastIframeRef.current?.contentWindow?.postMessage(
+        { type: "navigate", path },
+        FAST_URL,
+      );
     },
     [slowIframeRef, fastIframeRef],
   );
