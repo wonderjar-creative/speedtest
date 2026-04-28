@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import metricsData from "../../public/metrics.json";
-
-type Device = "mobile" | "desktop";
 
 interface DeviceMetrics {
   performance: number;
@@ -84,31 +81,12 @@ function MetricsRow({
 }
 
 export default function MetricsPanel() {
-  const [device, setDevice] = useState<Device>("mobile");
-  const slow: DeviceMetrics = metricsData.runs.slow[device];
-  const fast: DeviceMetrics = metricsData.runs.fast[device];
+  const slow: DeviceMetrics = metricsData.runs.slow.mobile;
+  const fast: DeviceMetrics = metricsData.runs.fast.mobile;
 
   return (
     <section className="bg-surface border-y border-surface-alt py-6 px-4">
       <div className="mx-auto max-w-5xl">
-        <div className="flex justify-center mb-5">
-          <div className="inline-flex bg-background rounded-full p-1 border border-surface-alt">
-            {(["mobile", "desktop"] as Device[]).map((d) => (
-              <button
-                key={d}
-                onClick={() => setDevice(d)}
-                className={`px-4 py-1 text-xs uppercase tracking-wider font-semibold rounded-full transition-colors ${
-                  device === d
-                    ? "bg-teal text-background"
-                    : "text-foreground/60 hover:text-foreground"
-                }`}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
-        </div>
-
         <div className="grid grid-cols-2 gap-4 md:gap-8 divide-x divide-surface-alt">
           <div className="space-y-3">
             <div className="text-center text-sm font-medium text-red-muted uppercase tracking-wider">
