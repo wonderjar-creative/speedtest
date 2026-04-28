@@ -36,10 +36,15 @@ const generateRandomId = (length = 8) => {
   return Math.random().toString(36).substring(2, 2 + length);
 }
 
+// Tracks whether the LCP-eligible image (first cover or image block in render order)
+// has been marked. Mutable so it threads through recursive renders.
+export type LcpState = { found: boolean };
+
 const getBlockComponents = async (
   enrichedBlocks: EnrichedBlock[],
   page: ContentNodeWithBlocks,
   stylesCollector?: string[],
+  lcpState: LcpState = { found: false },
 ): Promise<React.ReactNode[]> => {
   if (!enrichedBlocks || enrichedBlocks.length === 0) {
     console.log('No blocks to render.');
@@ -52,17 +57,17 @@ const getBlockComponents = async (
 
     // Handle template parts - resolve to actual blocks
     if (block.name === 'core/template-part' && block.attributes?.slug) {
-      return await renderTemplatePart(block.attributes.slug, page, stylesCollector, index);
+      return await renderTemplatePart(block.attributes.slug, page, stylesCollector, index, lcpState);
     }
 
     // Handle patterns - resolve to actual blocks
     if (block.name === 'core/pattern' && block.attributes?.slug) {
-      return await renderPattern(block.attributes.slug, page, stylesCollector, index);
+      return await renderPattern(block.attributes.slug, page, stylesCollector, index, lcpState);
     }
 
     // Handle Query blocks - fetch posts and render with context
     if (block.name === 'core/query') {
-      return await renderQuery(block, page, stylesCollector, index);
+      return await renderQuery(block, page, stylesCollector, index, lcpState);
     }
 
     let innerBlocks: Maybe<React.ReactNode[]> = [];
@@ -72,7 +77,8 @@ const getBlockComponents = async (
       innerBlocks = await getBlockComponents(
         await enrichBlocksWithMedia(block.innerBlocks as EnrichedBlock[]),
         page,
-        stylesCollector
+        stylesCollector,
+        lcpState,
       );
     }
 
@@ -154,6 +160,8 @@ const getBlockComponents = async (
       }
       case 'core/cover': {
         const Cover = dynamic(() => import('@/components/Blocks/Core/Cover/Cover'), { ssr: true });
+        const isLCP = !lcpState.found;
+        if (isLCP) lcpState.found = true;
 
         return (
           <Cover
@@ -163,6 +171,7 @@ const getBlockComponents = async (
             featuredImage={featuredImage}
             mediaItem={block.mediaItem}
             innerBlocks={innerBlocks}
+            priority={isLCP}
           />
         );
       }
@@ -233,6 +242,8 @@ const getBlockComponents = async (
       }
       case 'core/image': {
         const Image = dynamic(() => import('@/components/Blocks/Core/Image/Image'), { ssr: true });
+        const isLCP = !lcpState.found;
+        if (isLCP) lcpState.found = true;
 
         return (
           <Image
@@ -242,6 +253,7 @@ const getBlockComponents = async (
             mediaItem={block.mediaItem}
             saveContent={block.saveContent}
             dynamicContent={block.dynamicContent}
+            priority={isLCP}
           />
         );
       }
@@ -294,7 +306,7 @@ const getBlockComponents = async (
         );
       }
       case 'core/post-content': {
-        return await renderPostContent(block.name, block.attributes, page, stylesCollector, index);
+        return await renderPostContent(block.name, block.attributes, page, stylesCollector, index, lcpState);
       }
       case 'core/post-title': {
         const PostTitle = dynamic(() => import('@/components/Blocks/Core/PostTitle/PostTitle'), { ssr: true });

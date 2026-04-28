@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { fetchTemplatePartWithISR } from "./isrFetchers";
 import { enrichBlocksWithMedia } from "./blockMedia";
-import getBlockComponents, { ContentNodeWithBlocks } from "./getBlockComponents";
+import getBlockComponents, { ContentNodeWithBlocks, LcpState } from "./getBlockComponents";
 import getPart from "./getPart";
 
 const getSemanticTag = (slug: string): keyof JSX.IntrinsicElements => {
@@ -15,7 +15,8 @@ const renderTemplatePart = async (
   slug: string,
   page: ContentNodeWithBlocks,
   stylesCollector?: string[],
-  index?: number
+  index?: number,
+  lcpState?: LcpState,
 ) => {
   try {
     // Try ISR first, fallback to static
@@ -27,7 +28,7 @@ const renderTemplatePart = async (
     if (part) {
       const partBlocks = JSON.parse(part.blocksJSON || '[]');
       const enrichedBlocks = await enrichBlocksWithMedia(partBlocks);
-      const components = await getBlockComponents(enrichedBlocks, page, stylesCollector);
+      const components = await getBlockComponents(enrichedBlocks, page, stylesCollector, lcpState);
 
       const TagName = getSemanticTag(slug);
       return (
