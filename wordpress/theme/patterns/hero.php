@@ -15,8 +15,8 @@ $hero_url = get_theme_file_uri( 'assets/hero.jpg' );
 <div class="wp-block-cover__inner-container">
 <!-- wp:group {"layout":{"type":"constrained"}} -->
 <div class="wp-block-group">
-<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"4rem"}},"textColor":"white"} -->
-<h1 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:4rem">Elevation Design Studio</h1>
+<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"clamp(3rem, calc(2.704rem + 1.481vw), 4rem)"}},"textColor":"white"} -->
+<h1 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="font-size:clamp(3rem, calc(2.704rem + 1.481vw), 4rem)">Elevation Design Studio</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"1.25rem"}},"textColor":"white"} -->

@@ -115,19 +115,19 @@
     "typography": {
       "writingMode": true,
       "defaultFontSizes": false,
-      "fluid": true,
+      "fluid": false,
       "fontSizes": [
-        { "slug": "xs", "size": "0.75rem", "name": "XS" },
-        { "slug": "sm", "size": "0.875rem", "name": "SM" },
-        { "slug": "base", "size": "1rem", "name": "Base" },
-        { "slug": "lg", "size": "1.125rem", "name": "LG" },
-        { "slug": "xl", "size": "1.25rem", "name": "XL" },
-        { "slug": "2xl", "size": "1.5rem", "name": "2XL" },
-        { "slug": "3xl", "size": "1.875rem", "name": "3XL" },
-        { "slug": "4xl", "size": "2.25rem", "name": "4XL" },
-        { "slug": "5xl", "size": "3rem", "name": "5XL" },
-        { "slug": "6xl", "size": "3.75rem", "name": "6XL" },
-        { "slug": "7xl", "size": "4.5rem", "name": "7XL" }
+        { "slug": "xs",   "name": "XS",   "size": "0.75rem" },
+        { "slug": "sm",   "name": "SM",   "size": "0.875rem" },
+        { "slug": "base", "name": "Base", "size": "clamp(0.875rem, calc(0.838rem + 0.185vw), 1rem)" },
+        { "slug": "lg",   "name": "LG",   "size": "clamp(0.95rem, calc(0.913rem + 0.185vw), 1.125rem)" },
+        { "slug": "xl",   "name": "XL",   "size": "clamp(1rem, calc(0.926rem + 0.37vw), 1.25rem)" },
+        { "slug": "2xl",  "name": "2XL",  "size": "clamp(1.25rem, calc(1.176rem + 0.37vw), 1.5rem)" },
+        { "slug": "3xl",  "name": "3XL",  "size": "clamp(1.5rem, calc(1.389rem + 0.556vw), 1.875rem)" },
+        { "slug": "4xl",  "name": "4XL",  "size": "clamp(1.75rem, calc(1.602rem + 0.741vw), 2.25rem)" },
+        { "slug": "5xl",  "name": "5XL",  "size": "clamp(2.25rem, calc(2.028rem + 1.111vw), 3rem)" },
+        { "slug": "6xl",  "name": "6XL",  "size": "clamp(2.75rem, calc(2.454rem + 1.481vw), 3.75rem)" },
+        { "slug": "7xl",  "name": "7XL",  "size": "clamp(3rem, calc(2.556rem + 2.222vw), 4.5rem)" }
       ]
     },
     "useRootPaddingAwareAlignments": true
@@ -139,7 +139,7 @@
     },
     "typography": {
       "fontFamily": "system-ui, -apple-system, sans-serif",
-      "fontSize": "1rem",
+      "fontSize": "var:preset|font-size|base",
       "lineHeight": "1.5"
     },
     "elements": {

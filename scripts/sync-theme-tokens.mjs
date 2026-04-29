@@ -31,6 +31,15 @@ const spacingSizes = settings?.spacing?.spacingSizes || [];
 const fontSizes = settings?.typography?.fontSizes || [];
 const layout = settings?.layout || {};
 
+// Convert "var:preset|font-size|base" → "var(--wp--preset--font-size--base)".
+// Mirrors WP's saved-style reference syntax. Pass-through for anything else.
+function resolvePresetReference(value) {
+  if (typeof value !== 'string') return value;
+  if (!value.startsWith('var:preset|')) return value;
+  const parts = value.replace('var:preset|', '').split('|');
+  return `var(--wp--preset--${parts.join('--')})`;
+}
+
 // ============================================
 // Generate WP CSS Custom Properties (:root)
 // ============================================
@@ -52,7 +61,7 @@ for (const s of spacingSizes) {
   wpVars += `  --wp--preset--spacing--${s.slug}: ${s.size};\n`;
 }
 
-// Font sizes
+// Font sizes — pass-through; clamp() values live in theme.json.
 for (const f of fontSizes) {
   wpVars += `  --wp--preset--font-size--${f.slug}: ${f.size};\n`;
 }
@@ -85,15 +94,15 @@ for (const c of colors) {
 // ============================================
 
 const fontFamily = styles?.typography?.fontFamily || 'system-ui, -apple-system, sans-serif';
-const fontSize = styles?.typography?.fontSize || '1rem';
+const fontSize = resolvePresetReference(styles?.typography?.fontSize || '1rem');
 const lineHeight = styles?.typography?.lineHeight || '1.5';
-const bgColor = styles?.color?.background || 'var(--wp--preset--color--white)';
-const textColor = styles?.color?.text || 'var(--wp--preset--color--gray-900)';
+const bgColor = resolvePresetReference(styles?.color?.background || 'var(--wp--preset--color--white)');
+const textColor = resolvePresetReference(styles?.color?.text || 'var(--wp--preset--color--gray-900)');
 
 // Element styles
-const linkColor = styles?.elements?.link?.color?.text || 'var(--wp--preset--color--primary)';
-const linkHoverColor = styles?.elements?.link?.[':hover']?.color?.text || 'var(--wp--preset--color--accent)';
-const headingColor = styles?.elements?.heading?.color?.text || 'var(--wp--preset--color--gray-900)';
+const linkColor = resolvePresetReference(styles?.elements?.link?.color?.text || 'var(--wp--preset--color--primary)');
+const linkHoverColor = resolvePresetReference(styles?.elements?.link?.[':hover']?.color?.text || 'var(--wp--preset--color--accent)');
+const headingColor = resolvePresetReference(styles?.elements?.heading?.color?.text || 'var(--wp--preset--color--gray-900)');
 const headingWeight = styles?.elements?.heading?.typography?.fontWeight || '700';
 
 // ============================================
