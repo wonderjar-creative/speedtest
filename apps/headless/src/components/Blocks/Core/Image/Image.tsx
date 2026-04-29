@@ -12,6 +12,7 @@ export interface CoreImageBlock extends FrontendBlock {
 const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem, saveContent, dynamicContent }) => {
   const { url, align, alt, anchor, aspectRatio, style, width, height, scale, sizeSlug, ...imageAttributes } = attributes || {};
   const { sizes } = mediaItem?.node?.mediaDetails || {};
+  const isPriority = Boolean((attributes as { priority?: boolean } | undefined)?.priority);
 
   const blockClasses = getBlockClasses(attributes || {}, `${getBlockBaseClass(name)} ${width || height ? 'is-resized' : '' }`);
   const blockStyleAttr = getBlockStyleAttr(style);
@@ -50,6 +51,8 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem,
         src={imageSrc}
         alt={alt || ''}
         {...(useFill ? { fill: true } : { width: imageWidth, height: imageHeight })}
+        sizes={useFill ? '100vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+        {...(isPriority && { priority: true as const })}
         className={imageClasses}
         style={{
           ...aspectRatio && { aspectRatio: `${aspectRatio}` },

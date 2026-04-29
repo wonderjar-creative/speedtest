@@ -296,6 +296,20 @@ const getBlockComponents = async (
       case 'core/post-content': {
         return await renderPostContent(block.name, block.attributes, page, stylesCollector, index);
       }
+      case 'core/post-featured-image': {
+        const PostFeaturedImage = dynamic(() => import('@/components/Blocks/Core/PostFeaturedImage/PostFeaturedImage'), { ssr: true });
+
+        return (
+          <PostFeaturedImage
+            key={index}
+            name={block.name}
+            attributes={block.attributes}
+            featuredImage={featuredImage}
+            postUri={page?.uri ?? undefined}
+            postTitle={page?.title ?? undefined}
+          />
+        );
+      }
       case 'core/post-title': {
         const PostTitle = dynamic(() => import('@/components/Blocks/Core/PostTitle/PostTitle'), { ssr: true });
 

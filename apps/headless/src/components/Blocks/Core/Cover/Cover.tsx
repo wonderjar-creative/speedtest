@@ -74,6 +74,16 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
     ? featuredImage?.node?.sourceUrl
     : mediaItem?.node?.sourceUrl || url;
 
+  // Cover blocks are full-bleed, so sizes="100vw" is always correct.
+  // priority opts the image into eager-load + preload — controlled by an
+  // editor-toggled attribute so the LCP candidate is explicit per page,
+  // not guessed by render order. See BlockExtensionsFeature.php.
+  const isPriority = Boolean((attributes as { priority?: boolean } | undefined)?.priority);
+  const imagePerfProps = {
+    sizes: '100vw',
+    ...(isPriority && { priority: true as const }),
+  };
+
   const image = imageSrc ? (
     useFeaturedImage && featuredImage ? (
       <Image
@@ -83,6 +93,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={featuredImage?.node?.mediaDetails?.width || 1600}
         height={featuredImage?.node?.mediaDetails?.height || 900}
+        {...imagePerfProps}
       />
     ) : mediaItem?.node ? (
       <Image
@@ -92,6 +103,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={mediaItem.node.mediaDetails?.width || 1600}
         height={mediaItem.node.mediaDetails?.height || 900}
+        {...imagePerfProps}
       />
     ) : (
       <Image
@@ -101,6 +113,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
         style={{ objectFit: 'cover' }}
         width={1600}
         height={900}
+        {...imagePerfProps}
       />
     )
   ) : null;
