@@ -10,7 +10,7 @@
 
 $hero_url = get_theme_file_uri( 'assets/hero.jpg' );
 ?>
-<!-- wp:cover {"url":"<?php echo esc_url( $hero_url ); ?>","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":80,"minHeightUnit":"vh","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<!-- wp:cover {"url":"<?php echo esc_url( $hero_url ); ?>","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":80,"minHeightUnit":"vh","align":"full","priority":true,"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
 <div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);min-height:80vh"><span aria-hidden="true" class="wp-block-cover__background has-gray-900-background-color has-background-dim-60 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Modern architecture interior" src="<?php echo esc_url( $hero_url ); ?>" data-object-fit="cover"/>
 <div class="wp-block-cover__inner-container">
 <!-- wp:group {"layout":{"type":"constrained"}} -->

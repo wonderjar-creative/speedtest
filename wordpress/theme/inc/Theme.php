@@ -9,6 +9,7 @@
 namespace ElevationTheme\Inc;
 
 use ElevationTheme\Inc\Features\BlockBindingsFeature;
+use ElevationTheme\Inc\Features\BlockExtensionsFeature;
 use ElevationTheme\Inc\Features\GraphQLFeature;
 use ElevationTheme\Inc\Features\PostTypesFeature;
 use ElevationTheme\Inc\Features\RestFeature;
@@ -76,6 +77,7 @@ class Theme {
 			new RestFeature(),
 			new GraphQLFeature(),
 			new BlockBindingsFeature(),
+			new BlockExtensionsFeature(),
 		);
 	}
 

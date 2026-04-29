@@ -10,7 +10,7 @@
  */
 
 ?>
-<!-- wp:cover {"url":"https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1920&q=80","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":350,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<!-- wp:cover {"url":"https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1920&q=80","dimRatio":60,"overlayColor":"gray-900","isUserOverlayColor":true,"minHeight":350,"align":"full","priority":true,"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
 <div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);min-height:350px"><span aria-hidden="true" class="wp-block-cover__background has-gray-900-background-color has-background-dim-60 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Design studio interior" src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1920&amp;q=80" data-object-fit="cover"/>
 <div class="wp-block-cover__inner-container">
 <!-- wp:group {"layout":{"type":"constrained"}} -->
