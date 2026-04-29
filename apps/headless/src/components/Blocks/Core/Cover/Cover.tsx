@@ -70,9 +70,19 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
 
   const innerContainerClasses = 'wp-block-cover__inner-container';
 
-  const imageSrc = useFeaturedImage && featuredImage
+  const rawImageSrc = useFeaturedImage && featuredImage
     ? featuredImage?.node?.sourceUrl
     : mediaItem?.node?.sourceUrl || url;
+
+  // For WP-served theme assets we ship a local mirror in public/ so the
+  // image optimizer reads from disk instead of fetching the asset back
+  // through public DNS to the slow WP origin. Slow.* is unaffected — it
+  // still resolves the original URL. See public/hero.jpg.
+  const imageSrc = rawImageSrc?.match(
+    /\/wp-content\/themes\/elevation\/assets\/hero\.jpg$/,
+  )
+    ? '/hero.jpg'
+    : rawImageSrc;
 
   // Cover blocks are full-bleed, so sizes="100vw" is always correct.
   // priority opts the image into eager-load + preload — controlled by an

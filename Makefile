@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates seed seed-reset seed-dump seed-import docker-build-comparison docker-build-headless docker-build-apps
+.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates sync-assets seed seed-reset seed-dump seed-import docker-build-comparison docker-build-headless docker-build-apps
 
 help:
 	@echo "Usage: make [target]"
@@ -16,6 +16,7 @@ help:
 	@echo "  install-headless    Install headless dependencies"
 	@echo "  sync-tokens         Sync design tokens from theme.json to headless app"
 	@echo "  sync-templates      Sync WP template/pattern structure to headless data/"
+	@echo "  sync-assets         Mirror theme assets that headless serves locally for LCP"
 	@echo ""
 	@echo "Docker (Next.js apps — verify prod builds locally):"
 	@echo "  docker-build-comparison  Build comparison app's Docker image"
@@ -47,6 +48,11 @@ sync-tokens:
 
 sync-templates:
 	node scripts/sync-templates.mjs
+
+# Theme assets that the headless app serves locally to skip the cross-server
+# fetch for LCP-critical images. Cover.tsx rewrites the slow.* URL to /<file>.
+sync-assets:
+	cp wordpress/theme/assets/hero.jpg apps/headless/public/hero.jpg
 
 # Local development (outside docker)
 dev-comparison:
