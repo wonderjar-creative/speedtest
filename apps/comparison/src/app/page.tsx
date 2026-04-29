@@ -73,9 +73,14 @@ export default function Home() {
         setActivePage(path);
       }
 
-      // Sync the other iframe
+      // Sync the other iframe. Slow has no client-side router, so a full
+      // reload is its real behavior. Fast soft-navs via postMessage —
+      // overwriting fast.src would force a full reload and defeat that.
       if (event.origin === SLOW_URL && fastIframeRef.current) {
-        fastIframeRef.current.src = `${FAST_URL}${path}`;
+        fastIframeRef.current.contentWindow?.postMessage(
+          { type: "navigate", path },
+          FAST_URL,
+        );
       } else if (event.origin === FAST_URL && slowIframeRef.current) {
         slowIframeRef.current.src = `${SLOW_URL}${path}`;
       }
@@ -90,7 +95,9 @@ export default function Home() {
       <Header
         activePage={activePage}
         onNavigate={handleNavigate}
-        onRace={startRace}
+        onRace={() =>
+          startRace(`${SLOW_URL}${activePage}`, `${FAST_URL}${activePage}`)
+        }
         raceDisabled={raceStatus !== "idle" && raceStatus !== "complete"}
       />
 

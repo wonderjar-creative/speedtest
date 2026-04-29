@@ -11,7 +11,7 @@ interface UseRaceReturn {
   slowTime: number | null;
   fastDone: boolean;
   slowDone: boolean;
-  startRace: () => void;
+  startRace: (slowSrc: string, fastSrc: string) => void;
   slowIframeRef: React.RefObject<HTMLIFrameElement | null>;
   fastIframeRef: React.RefObject<HTMLIFrameElement | null>;
 }
@@ -62,7 +62,11 @@ export function useRace(): UseRaceReturn {
     };
   }, []);
 
-  const startRace = useCallback(() => {
+  // Caller passes current URLs because the iframes' src attributes are set
+  // once on mount and never updated by React — fast soft-navs via postMessage,
+  // which doesn't touch the src attribute, and the iframe is cross-origin so
+  // contentWindow.location can't be read.
+  const startRace = useCallback((slowSrc: string, fastSrc: string) => {
     // Cancel any lingering animation frame or safety timeout from a previous race
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     if (safetyTimeoutRef.current) clearTimeout(safetyTimeoutRef.current);
@@ -114,12 +118,8 @@ export function useRace(): UseRaceReturn {
         slowIframeRef.current?.addEventListener("load", onSlowLoad);
 
         // Reload both iframes by re-assigning src
-        const slowSrc = slowIframeRef.current?.src;
-        const fastSrc = fastIframeRef.current?.src;
-        if (slowIframeRef.current && slowSrc)
-          slowIframeRef.current.src = slowSrc;
-        if (fastIframeRef.current && fastSrc)
-          fastIframeRef.current.src = fastSrc;
+        if (slowIframeRef.current) slowIframeRef.current.src = slowSrc;
+        if (fastIframeRef.current) fastIframeRef.current.src = fastSrc;
 
         // Start timer loop
         rafRef.current = requestAnimationFrame(tickRef.current);

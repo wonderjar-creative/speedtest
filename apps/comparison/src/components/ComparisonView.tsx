@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { RaceStatus } from "@/hooks/useRace";
 
 interface ComparisonViewProps {
@@ -89,6 +89,14 @@ export default function ComparisonView({
   const [fastError, setFastError] = useState(false);
   const [overlayHidden, setOverlayHidden] = useState(false);
 
+  // Iframe srcs are captured once on mount. Subsequent navigation is driven
+  // imperatively (slow: direct .src write; fast: postMessage → router.push).
+  // Binding src to activePage forces React to re-set the src attribute on
+  // every state change, which triggers a full reload of the fast iframe and
+  // defeats its soft-nav optimization.
+  const [initialSlowSrc] = useState(() => `${slowUrl}${activePage}`);
+  const [initialFastSrc] = useState(() => `${fastUrl}${activePage}`);
+
   // Auto-fade race timers 5 seconds after race completes.
   // The synchronous setState on non-complete is intentional — it resets
   // overlay visibility when a new race starts (countdown/racing).
@@ -99,9 +107,6 @@ export default function ComparisonView({
     }
     setOverlayHidden(false); // eslint-disable-line react-hooks/set-state-in-effect
   }, [raceStatus]);
-
-  const slowSrc = `${slowUrl}${activePage}`;
-  const fastSrc = `${fastUrl}${activePage}`;
 
   return (
     <section id="comparison" className="px-4 pb-2 scroll-mt-14">
@@ -137,7 +142,7 @@ export default function ComparisonView({
             ) : (
               <iframe
                 ref={slowIframeRef}
-                src={slowSrc}
+                src={initialSlowSrc}
                 className="w-full h-full border-0"
                 title="Traditional WordPress site"
                 onError={() => setSlowError(true)}
@@ -160,7 +165,7 @@ export default function ComparisonView({
             ) : (
               <iframe
                 ref={fastIframeRef}
-                src={fastSrc}
+                src={initialFastSrc}
                 className="w-full h-full border-0"
                 title="Headless site"
                 onError={() => setFastError(true)}
