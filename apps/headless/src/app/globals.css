@@ -5,4 +5,5 @@
 /* Base styles */
 body {
   @apply antialiased;
+  margin: 0;
 }
