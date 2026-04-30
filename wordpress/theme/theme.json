@@ -137,6 +137,12 @@
       "background": "var(--wp--preset--color--white)",
       "text": "var(--wp--preset--color--gray-900)"
     },
+    "spacing": {
+      "padding": {
+        "left": "var:preset|spacing|50",
+        "right": "var:preset|spacing|50"
+      }
+    },
     "typography": {
       "fontFamily": "system-ui, -apple-system, sans-serif",
       "fontSize": "var:preset|font-size|base",

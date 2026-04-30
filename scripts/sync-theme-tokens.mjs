@@ -74,10 +74,15 @@ if (layout.wideSize) {
   wpVars += `  --wp--style--global--wide-size: ${layout.wideSize};\n`;
 }
 
-// Root padding (derived from spacing)
-const rootPaddingSlug = '50'; // "Regular" spacing used for root padding
-wpVars += `  --wp--style--root--padding-right: var(--wp--preset--spacing--${rootPaddingSlug});\n`;
-wpVars += `  --wp--style--root--padding-left: var(--wp--preset--spacing--${rootPaddingSlug});\n`;
+// Root padding — only emitted when theme.json defines styles.spacing.padding,
+// matching WP's behavior. .has-global-padding (auto-applied to alignfull blocks
+// by useRootPaddingAwareAlignments) reads these vars; if they're undefined, the
+// class resolves to 0 padding, which is what WP renders.
+const rootPadding = styles?.spacing?.padding;
+if (rootPadding?.top)    wpVars += `  --wp--style--root--padding-top: ${resolvePresetReference(rootPadding.top)};\n`;
+if (rootPadding?.right)  wpVars += `  --wp--style--root--padding-right: ${resolvePresetReference(rootPadding.right)};\n`;
+if (rootPadding?.bottom) wpVars += `  --wp--style--root--padding-bottom: ${resolvePresetReference(rootPadding.bottom)};\n`;
+if (rootPadding?.left)   wpVars += `  --wp--style--root--padding-left: ${resolvePresetReference(rootPadding.left)};\n`;
 
 // ============================================
 // Generate Tailwind @theme block
