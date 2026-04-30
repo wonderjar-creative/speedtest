@@ -89,9 +89,11 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   // editor-toggled attribute so the LCP candidate is explicit per page,
   // not guessed by render order. See BlockExtensionsFeature.php.
   const isPriority = Boolean((attributes as { priority?: boolean } | undefined)?.priority);
+  // q=70 on the LCP-flagged image: variant size drops ~10-15% vs the default
+  // q=75, and the cover's dim overlay hides any artifact difference.
   const imagePerfProps = {
     sizes: '100vw',
-    ...(isPriority && { priority: true as const }),
+    ...(isPriority && { priority: true as const, quality: 70 }),
   };
 
   const image = imageSrc ? (
