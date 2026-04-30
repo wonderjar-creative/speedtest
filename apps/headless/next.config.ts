@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         hostname: '**.denverheadless.com',
       },
     ],
+    // Next.js 16 silently ignores unlisted quality values and falls back to
+    // the default (75). 70 is what Cover/Image/PostFeaturedImage pass for
+    // priority-flagged LCP candidates, so it has to be allow-listed.
+    qualities: [70, 75],
   },
   output: 'standalone',
 };
