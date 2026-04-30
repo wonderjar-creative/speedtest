@@ -79,7 +79,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   // through public DNS to the slow WP origin. Slow.* is unaffected — it
   // still resolves the original URL. See public/hero.jpg.
   const imageSrc = rawImageSrc?.match(
-    /\/wp-content\/themes\/elevation\/assets\/hero\.jpg$/,
+    /\/wp-content\/themes\/[^/]+\/assets\/hero\.jpg$/,
   )
     ? '/hero.jpg'
     : rawImageSrc;
