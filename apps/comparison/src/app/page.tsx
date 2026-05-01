@@ -12,10 +12,10 @@ import { ALLOWED_ORIGINS, PAGES } from "@/config/constants";
 
 const SLOW_URL =
   process.env.NEXT_PUBLIC_SLOW_SITE_URL ??
-  "https://slow.speedtest.denverheadless.com";
+  "https://slow-speedtest.denverheadless.com";
 const FAST_URL =
   process.env.NEXT_PUBLIC_FAST_SITE_URL ??
-  "https://fast.speedtest.denverheadless.com";
+  "https://fast-speedtest.denverheadless.com";
 
 export default function Home() {
   const [activePage, setActivePage] = useState("/");

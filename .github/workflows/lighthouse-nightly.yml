@@ -24,8 +24,8 @@ jobs:
       - name: Run audits
         run: node .github/scripts/run-lighthouse.mjs
         env:
-          SLOW_URL: https://slow.speedtest.denverheadless.com
-          FAST_URL: https://fast.speedtest.denverheadless.com
+          SLOW_URL: https://slow-speedtest.denverheadless.com
+          FAST_URL: https://fast-speedtest.denverheadless.com
           OUTPUT_PATH: apps/comparison/public/metrics.json
 
       - name: Commit metrics

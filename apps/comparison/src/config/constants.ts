@@ -8,6 +8,6 @@ export const PAGES = [
 ] as const;
 
 export const ALLOWED_ORIGINS = [
-  process.env.NEXT_PUBLIC_SLOW_SITE_URL ?? "https://slow.speedtest.denverheadless.com",
-  process.env.NEXT_PUBLIC_FAST_SITE_URL ?? "https://fast.speedtest.denverheadless.com",
+  process.env.NEXT_PUBLIC_SLOW_SITE_URL ?? "https://slow-speedtest.denverheadless.com",
+  process.env.NEXT_PUBLIC_FAST_SITE_URL ?? "https://fast-speedtest.denverheadless.com",
 ];
