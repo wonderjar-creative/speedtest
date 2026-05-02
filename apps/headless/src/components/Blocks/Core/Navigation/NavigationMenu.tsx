@@ -101,12 +101,15 @@ export default function NavigationMenu({ links, title, className, style }: Navig
         aria-expanded={isOpen}
       >
         {isOpen ? (
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          // Matches WP core's responsive-container-close icon (filled X path).
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <path d="m13.06 12 6.47-6.47-1.06-1.06L12 10.94 5.53 4.47 4.47 5.53 10.94 12l-6.47 6.47 1.06 1.06L12 13.06l6.47 6.47 1.06-1.06L13.06 12Z" />
           </svg>
         ) : (
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          // Matches WP core's responsive-container-open icon (two filled rects).
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <rect x="4" y="7.5" width="16" height="1.5" />
+            <rect x="4" y="15" width="16" height="1.5" />
           </svg>
         )}
       </button>
@@ -116,9 +119,10 @@ export default function NavigationMenu({ links, title, className, style }: Navig
           <button
             className="wp-block-navigation__mobile-close"
             onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
           >
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+              <path d="m13.06 12 6.47-6.47-1.06-1.06L12 10.94 5.53 4.47 4.47 5.53 10.94 12l-6.47 6.47 1.06 1.06L12 13.06l6.47 6.47 1.06-1.06L13.06 12Z" />
             </svg>
           </button>
           <div className="wp-block-navigation__mobile-container">
