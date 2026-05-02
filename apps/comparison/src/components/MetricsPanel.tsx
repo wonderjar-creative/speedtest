@@ -106,6 +106,15 @@ export default function MetricsPanel() {
         <p className="text-center text-foreground/40 text-xs mt-4">
           Nightly Lighthouse audit · {formatDate(metricsData.generatedAt)}
         </p>
+        <p className="text-center text-foreground/40 text-xs mt-1">
+          Same Hetzner CX22 · Same WordPress backend · No CDN
+          <span
+            className="ml-1.5 cursor-help underline decoration-dotted underline-offset-2"
+            title="Both sites run on a single Hetzner CX22 (~€4.50/mo). Same WordPress 6.7 backend with WPGraphQL serving both sides. No edge cache, no CDN proxy in front — the gap reflects architecture only."
+          >
+            ⓘ
+          </span>
+        </p>
       </div>
     </section>
   );
