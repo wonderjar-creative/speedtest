@@ -3,8 +3,8 @@
 FSE block theme for **Elevation Design Studio** demo. Part of the Denver Headless Speed Test POC.
 
 **Purpose:** Provides content structure, blocks, and GraphQL schema for both:
-- Traditional WP frontend (`slow.speedtest.denverheadless.com`)
-- Headless Next.js frontend (`fast.speedtest.denverheadless.com`)
+- Traditional WP frontend (`slow-speedtest.denverheadless.com`)
+- Headless Next.js frontend (`fast-speedtest.denverheadless.com`)
 
 ## Commands
 

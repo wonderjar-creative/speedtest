@@ -238,7 +238,7 @@ All content can be AI-generated:
 - [ ] Create pages and content
 - [ ] Add images
 - [ ] Configure menus
-- [ ] Set up domain: slow.speedtest.denverheadless.com
+- [ ] Set up domain: slow-speedtest.denverheadless.com
 
 ### Phase 2: Headless Frontend (Days 3-4)
 - [ ] Create Next.js project
@@ -247,7 +247,7 @@ All content can be AI-generated:
 - [ ] Build all pages
 - [ ] Optimize images
 - [ ] Deploy to Vercel
-- [ ] Set up domain: fast.speedtest.denverheadless.com
+- [ ] Set up domain: fast-speedtest.denverheadless.com
 
 ### Phase 3: Comparison Interface (Days 5-6)
 - [ ] Create Next.js project
@@ -273,8 +273,8 @@ All content can be AI-generated:
 | Subdomain | Points to |
 |-----------|-----------|
 | speedtest.denverheadless.com | Vercel (comparison) |
-| slow.speedtest.denverheadless.com | Lightsail IP |
-| fast.speedtest.denverheadless.com | Vercel (headless) |
+| slow-speedtest.denverheadless.com | Lightsail IP |
+| fast-speedtest.denverheadless.com | Vercel (headless) |
 
 ---
 

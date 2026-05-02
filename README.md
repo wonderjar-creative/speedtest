@@ -7,8 +7,8 @@ Marketing demo proving the performance difference between traditional WordPress 
 | Site | Domain | Stack |
 |------|--------|-------|
 | **Comparison UI** | speedtest.denverheadless.com | Next.js 16 split-screen iframe view |
-| **Traditional WP** | slow.speedtest.denverheadless.com | WordPress + Elevation theme (FSE), monolithic rendering |
-| **Headless** | fast.speedtest.denverheadless.com | Next.js 16 + WPGraphQL, fully optimized |
+| **Traditional WP** | slow-speedtest.denverheadless.com | WordPress + Elevation theme (FSE), monolithic rendering |
+| **Headless** | fast-speedtest.denverheadless.com | Next.js 16 + WPGraphQL, fully optimized |
 
 All three run on **one Hetzner CX22**, deployed via **Coolify**, fronted by **Cloudflare**. The traditional and headless sites share the same WordPress instance — only the delivery architecture differs.
 

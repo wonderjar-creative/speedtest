@@ -31,8 +31,8 @@ speedtest.*              fast.speedtest.*         slow.speedtest.*
 | Domain | App | Coolify base directory | Build pack |
 |---|---|---|---|
 | `speedtest.denverheadless.com` | Comparison | `apps/comparison/` | Dockerfile |
-| `fast.speedtest.denverheadless.com` | Headless | `apps/headless/` | Dockerfile |
-| `slow.speedtest.denverheadless.com` | Traditional WP | `wordpress/` | Docker Compose |
+| `fast-speedtest.denverheadless.com` | Headless | `apps/headless/` | Dockerfile |
+| `slow-speedtest.denverheadless.com` | Traditional WP | `wordpress/` | Docker Compose |
 
 ## Trigger model
 
@@ -56,7 +56,7 @@ speedtest.*              fast.speedtest.*         slow.speedtest.*
 
 Simple Next.js app. No GraphQL codegen, no auth, no network calls at build time. Builds identically anywhere.
 
-### Headless (`fast.speedtest.denverheadless.com`)
+### Headless (`fast-speedtest.denverheadless.com`)
 
 | Setting | Value |
 |---|---|
@@ -70,8 +70,8 @@ Simple Next.js app. No GraphQL codegen, no auth, no network calls at build time.
 
 | Var | Production value | Notes |
 |---|---|---|
-| `NEXT_PUBLIC_BASE_URL` | `https://fast.speedtest.denverheadless.com` | The headless site's own canonical URL |
-| `NEXT_PUBLIC_WORDPRESS_API_URL` | `https://slow.speedtest.denverheadless.com` | Used in 7 places for GraphQL, REST, preview, RankMath, navigation |
+| `NEXT_PUBLIC_BASE_URL` | `https://fast-speedtest.denverheadless.com` | The headless site's own canonical URL |
+| `NEXT_PUBLIC_WORDPRESS_API_URL` | `https://slow-speedtest.denverheadless.com` | Used in 7 places for GraphQL, REST, preview, RankMath, navigation |
 | `NEXT_PUBLIC_WORDPRESS_API_HOSTNAME` | (currently `localhost`) | **Dead code** — declared in Dockerfile but no source reads it. Safe to remove. |
 | `HEADLESS_SECRET` | (secret) | Shared secret for ISR revalidation webhooks |
 | `WP_USER` | (WP app username) | Application Password user for codegen |
@@ -83,7 +83,7 @@ Simple Next.js app. No GraphQL codegen, no auth, no network calls at build time.
 
 **WordPress must be accessible during build.** Coolify's build runs on the Hetzner box; the API URL above goes Cloudflare → Hetzner → WP. Works, but optimization opportunity: since headless and WP run on the same box, a Docker network or `localhost` URL would skip the round trip. Not urgent.
 
-### Traditional WordPress (`slow.speedtest.denverheadless.com`)
+### Traditional WordPress (`slow-speedtest.denverheadless.com`)
 
 | Setting | Value |
 |---|---|
@@ -139,7 +139,7 @@ Cloudflare manages DNS for `denverheadless.com`. Three A records (or CNAMEs to a
 
 ### Skip the Cloudflare round-trip on internal WP fetches
 
-Today, headless's `NEXT_PUBLIC_WORDPRESS_API_URL` is `https://slow.speedtest.denverheadless.com`. Every server-side fetch from headless to WP traces:
+Today, headless's `NEXT_PUBLIC_WORDPRESS_API_URL` is `https://slow-speedtest.denverheadless.com`. Every server-side fetch from headless to WP traces:
 
 ```
 [headless container on Hetzner] → Cloudflare → [WP container on Hetzner]

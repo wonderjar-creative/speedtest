@@ -36,14 +36,14 @@ Three interfaces sharing one WordPress backend on one server:
    - Shows performance metrics (hardcoded for v1)
    - Page navigation syncs both sides
 
-2. **Traditional WordPress** (slow.speedtest.denverheadless.com)
+2. **Traditional WordPress** (slow-speedtest.denverheadless.com)
    - Same WordPress instance on Hetzner, rendered monolithically
    - Elevation Design Studio theme (FSE block theme)
    - Typical plugins (Rank Math, Contact Form 7, Smart Slider 3, WPGraphQL)
    - NOT aggressively optimized — represents typical small business site
    - Same server, same content — only the delivery architecture differs
 
-3. **Headless Frontend** (fast.speedtest.denverheadless.com)
+3. **Headless Frontend** (fast-speedtest.denverheadless.com)
    - Next.js 14+ deployed via Coolify on Hetzner
    - Connects to same WordPress via WPGraphQL
    - Fully optimized (ISR, next/image, standalone Docker output)

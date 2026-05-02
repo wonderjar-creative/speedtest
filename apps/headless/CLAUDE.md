@@ -4,7 +4,7 @@ Optimized Next.js frontend for **Elevation Design Studio** demo. Part of the Den
 
 **Purpose:** The "fast" side of the speed comparison demonstrating headless architecture benefits.
 - **Target:** Lighthouse 95-100, LCP < 1s
-- **Deploy:** Coolify on Hetzner at `fast.speedtest.denverheadless.com`
+- **Deploy:** Coolify on Hetzner at `fast-speedtest.denverheadless.com`
 
 ## Commands
 

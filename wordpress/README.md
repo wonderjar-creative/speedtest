@@ -208,7 +208,7 @@ WordPress runs on the same Hetzner CX22 as the headless Next.js frontend. GraphQ
 
 The traditional WordPress site runs on intentionally modest shared hosting to represent a typical small business setup.
 
-- **Domain:** slow.speedtest.denverheadless.com
+- **Domain:** slow-speedtest.denverheadless.com
 - **Purpose:** Slow baseline for comparison demo
 
 ---
