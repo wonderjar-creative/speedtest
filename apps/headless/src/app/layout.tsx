@@ -30,11 +30,9 @@ export default async function RootLayout({
             </a>
           </div>
         )}
-        <ScrollReveal>
-          <CounterAnimation>
-            <div className="wp-site-blocks">{children}</div>
-          </CounterAnimation>
-        </ScrollReveal>
+        <ScrollReveal />
+        <CounterAnimation />
+        <div className="wp-site-blocks">{children}</div>
       </body>
     </html>
   );

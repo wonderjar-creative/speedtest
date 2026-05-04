@@ -1,20 +1,19 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-interface CounterAnimationProps {
-  children: React.ReactNode;
-}
-
-export function CounterAnimation({ children }: CounterAnimationProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
+/**
+ * Animates `.elevation-counter` elements when scrolled into view.
+ *
+ * Like ScrollReveal, mounted at root as a sibling of content rather
+ * than wrapping it — wrapping captures children into the RSC stream
+ * and bloats the HTML.
+ */
+export function CounterAnimation() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const container = ref.current;
-    if (!container) return;
 
-    const counters = container.querySelectorAll<HTMLElement>('.elevation-counter');
+    const counters = document.querySelectorAll<HTMLElement>('.wp-site-blocks .elevation-counter');
     if (counters.length === 0) return;
 
     if (prefersReducedMotion) {
@@ -66,5 +65,5 @@ export function CounterAnimation({ children }: CounterAnimationProps) {
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={ref} style={{ display: 'contents' }}>{children}</div>;
+  return null;
 }
