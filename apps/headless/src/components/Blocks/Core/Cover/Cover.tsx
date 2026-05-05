@@ -89,11 +89,21 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   // editor-toggled attribute so the LCP candidate is explicit per page,
   // not guessed by render order. See BlockExtensionsFeature.php.
   const isPriority = Boolean((attributes as { priority?: boolean } | undefined)?.priority);
-  // q=70 on the LCP-flagged image: variant size drops ~10-15% vs the default
-  // q=75, and the cover's dim overlay hides any artifact difference.
+  // q=60 on the LCP-flagged image: variant size drops ~25% vs default q=75
+  // and the cover's dim overlay hides any artifact difference.
+  // For the locally-mirrored hero we also ship a tiny inline blur so the
+  // browser paints the LCP element immediately instead of waiting for the
+  // optimized variant. Generated once via:
+  //   magick public/hero.jpg -resize '16x9!' -quality 30 jpg:- | base64
+  const isLocalHero = imageSrc === '/hero.jpg';
   const imagePerfProps = {
     sizes: '100vw',
-    ...(isPriority && { priority: true as const, quality: 70 }),
+    ...(isPriority && { priority: true as const, quality: 60 }),
+    ...(isLocalHero && {
+      placeholder: 'blur' as const,
+      blurDataURL:
+        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAIBAAAgEDBAMAAAAAAAAAAAAAAQIDAAQREhMxgTIzkf/EABQBAQAAAAAAAAAAAAAAAAAAAAH/xAAXEQADAQAAAAAAAAAAAAAAAAAAAREh/9oADAMBAAIRAxEAPwASSLcFCzlWPJZhikXNzHBEBEkO5pzlTkD7WPF491Wb19UV0MP/2Q==',
+    }),
   };
 
   const image = imageSrc ? (

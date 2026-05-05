@@ -52,7 +52,7 @@ const ImageComponent: React.FC<CoreImageBlock> = ({ name, attributes, mediaItem,
         alt={alt || ''}
         {...(useFill ? { fill: true } : { width: imageWidth, height: imageHeight })}
         sizes={useFill ? '100vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
-        {...(isPriority && { priority: true as const, quality: 70 })}
+        {...(isPriority && { priority: true as const, quality: 60 })}
         className={imageClasses}
         style={{
           ...aspectRatio && { aspectRatio: `${aspectRatio}` },

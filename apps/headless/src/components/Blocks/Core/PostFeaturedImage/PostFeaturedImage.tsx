@@ -51,7 +51,7 @@ const PostFeaturedImage: React.FC<CorePostFeaturedImageBlock> = ({
       width={imgWidth}
       height={imgHeight}
       sizes="100vw"
-      {...(priority && { priority: true as const, quality: 70 })}
+      {...(priority && { priority: true as const, quality: 60 })}
       className="wp-block-post-featured-image__image"
       style={{
         width: '100%',
