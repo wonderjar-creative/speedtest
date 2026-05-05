@@ -91,10 +91,12 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   const isPriority = Boolean((attributes as { priority?: boolean } | undefined)?.priority);
   // q=60 on the LCP-flagged image: variant size drops ~25% vs default q=75
   // and the cover's dim overlay hides any artifact difference.
-  // For the locally-mirrored hero we also ship a tiny inline blur so the
+  // For the locally-mirrored hero we also ship an inline blur so the
   // browser paints the LCP element immediately instead of waiting for the
-  // optimized variant. Generated once via:
-  //   magick public/hero.jpg -resize '16x9!' -quality 30 jpg:- | base64
+  // optimized variant. Sized 64x36 (16:9) at q=50 — large enough that
+  // Chrome's 0.05 bpp entropy filter counts the blur as the LCP element.
+  // Generated once via:
+  //   magick public/hero.jpg -resize '64x36!' -quality 50 jpg:- | base64
   const isLocalHero = imageSrc === '/hero.jpg';
   const imagePerfProps = {
     sizes: '100vw',
@@ -102,7 +104,7 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
     ...(isLocalHero && {
       placeholder: 'blur' as const,
       blurDataURL:
-        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAIBAAAgEDBAMAAAAAAAAAAAAAAQIDAAQREhMxgTIzkf/EABQBAQAAAAAAAAAAAAAAAAAAAAH/xAAXEQADAQAAAAAAAAAAAAAAAAAAAREh/9oADAMBAAIRAxEAPwASSLcFCzlWPJZhikXNzHBEBEkO5pzlTkD7WPF491Wb19UV0MP/2Q==',
+        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAkAEADASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAwQFAAIGAf/EACwQAAIBAwMDAwIHAQAAAAAAAAECAwAEERIhMQUTQSJRYQZxFBUjMkKBsaH/xAAXAQEBAQEAAAAAAAAAAAAAAAACAwEA/8QAGxEBAQEBAAMBAAAAAAAAAAAAAQARAhIiQSH/2gAMAwEAAhEDEQA/AOOpda7E5ggXScYJdSCDnx7ik7u7a+t/1WWJ4xtk4MhzuMUHp80dxELeVA8ki6Edhlgc7DJ8f5TV10eeBlDElkwcqAQFJxtn5PmqPS08kF7qlFXKkjOM5z7nFES04ZRhdLZccHbOK66jZ9y6WIPo7cOxPq/maDDDdRdxdLTRxkAopI155/rG1Hcclk0vT+48nbileJPQsqLz7kE45NMrZWoaNHebXz6k8/2P+1V6b9R9MuTHayxNay5CLHIMrngAGqt5axkO808cQ20FiF0mmJZeaXpVzI7BHGiQfuzvt8+RVGSyhs45LhsaUBIB4FcdZ6hBBYqllcqA4K95MNkj+PxzXmuuX1ybWK2nYkkZJL5LDO3Hj2rfLLMpqTawFAACnYY5+9VXv7/EcSBlZlXSo9WpeRz8jNQY3CEFjgEjeq17NHJNG0Eh0xxqgO+dvNQXKgEYt1WRxcCBv24aQxnGNXJ8cmrkXTrvMiwyQemURyMync5OCB7V5hLmVRpNxLoOxXUcEe2M1WtOu9tpy0ZcySBgHO2B4NB6cZevyo2n08tzcyia5mLRESelQmDk7jk+K11YWFvOon1SswLa5S7k/wCUp+dSr3CkTjuDBMU+Pf3HzSk/VtULCT8T3ghCNJhgDQHpJesFCrepoYjGxYYwRn1Y96lXqgXUoVcBWIH2FGtLiRpXV3JBOrcec0C71iSRi2xOeaubn7Bz5JneMfemYWJiU58Vq1YxYgJr6pINatRjFDEcGid19OCcj5rVqLdBY4DBfTnnG1JXA35JrVqXMi//2Q==',
     }),
   };
 
