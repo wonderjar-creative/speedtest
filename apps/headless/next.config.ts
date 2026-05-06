@@ -1,4 +1,11 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzerImport from '@next/bundle-analyzer';
+
+// Webpack-only plugin: enable with ANALYZE=true via `npm run build:analyze`.
+// Next 16's `next build` defaults to Turbopack; analyzer needs --webpack.
+const withBundleAnalyzer = withBundleAnalyzerImport({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
   images: {
@@ -29,4 +36,4 @@ const nextConfig: NextConfig = {
   output: 'standalone',
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
