@@ -1,9 +1,0 @@
-.summary::marker {
-  padding: 0 0.5rem;
-  font-size: var(--wp--preset--font-size--lg);
-  color: var(--wp--preset--color--gray-500);
-}
-
-[open] .summary::marker {
-  color: var(--wp--preset--color--accent);
-}

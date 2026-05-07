@@ -3,7 +3,6 @@
 import { FrontendBlock } from "@/types/coreBlockTypes";
 import { CoreDetailsBlockAttributes } from "@/gql/graphql";
 import { getBlockBaseClass, getBlockClasses, getBlockStyleAttr } from "@/utils/blockStyles";
-import styles from "./Details.module.css";
 
 export interface CoreDetailsBlock extends FrontendBlock {
   attributes?: CoreDetailsBlockAttributes;
@@ -26,7 +25,6 @@ const Details: React.FC<CoreDetailsBlock> = ({ name, attributes, innerBlocks, sa
   };
 
   const summaryHtml = getSummaryContent();
-  const summaryClasses = [styles.summary, 'cursor-pointer'].join(' ');
 
   return (
     <details
@@ -36,7 +34,7 @@ const Details: React.FC<CoreDetailsBlock> = ({ name, attributes, innerBlocks, sa
       {...(showContent ? { open: true } : {})}
     >
       <summary
-        className={summaryClasses}
+        className="cursor-pointer"
         dangerouslySetInnerHTML={{ __html: summaryHtml }} />
       {innerBlocks}
     </details>
