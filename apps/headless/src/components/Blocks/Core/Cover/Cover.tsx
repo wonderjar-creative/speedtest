@@ -101,7 +101,10 @@ const Cover: React.FC<CoreCoverBlock> = ({ name, attributes, featuredImage, medi
   // Lighthouse mobile picks the 480w variant instead of the 750w default.
   const imagePerfProps = {
     sizes: '(max-width: 480px) 240px, (max-width: 1024px) 720px, 100vw',
-    ...(isPriority && { priority: true as const, quality: 60 }),
+    // Next 16 made fetchPriority a passthrough prop — `priority: true` only
+    // emits <link rel=preload> + disables lazy. fetchpriority="high" on the
+    // <img> still has to be set explicitly.
+    ...(isPriority && { priority: true as const, fetchPriority: 'high' as const, quality: 60 }),
     ...(isLocalHero && {
       placeholder: 'blur' as const,
       blurDataURL:
