@@ -292,24 +292,7 @@ done
 echo ""
 
 # -------------------------------------------------------------------
-# 7. Gravity Forms contact form
-# -------------------------------------------------------------------
-echo "→ Creating Gravity Forms contact form..."
-GF_ACTIVE=$($WP gf version 2>/dev/null && echo "yes" || echo "no")
-if [ "$GF_ACTIVE" = "no" ]; then
-  echo "  Gravity Forms not active — skipping form import."
-  echo "  Install GF, then re-run: make seed"
-elif $WP gf form list 2>/dev/null | grep -q "Contact Form"; then
-  echo "  Contact Form already exists, skipping."
-else
-  $WP gf form import "$DATA/contact-form.json" 2>/dev/null
-  echo "  Imported Contact Form."
-fi
-
-echo ""
-
-# -------------------------------------------------------------------
-# 8. Navigation (from data/navigation.json)
+# 7. Navigation (from data/navigation.json)
 # -------------------------------------------------------------------
 echo "→ Creating block navigation..."
 
@@ -367,9 +350,8 @@ echo "  - 6 projects with meta fields and featured images"
 echo "  - 4 team members with meta fields and featured images"
 echo "  - 3 testimonials with meta fields and featured images"
 echo "  - 4 blog posts with featured images"
-echo "  - 1 Gravity Forms contact form (if GF active)"
 echo "  - Block navigation with submenus"
 echo ""
 echo "Next steps:"
-echo "  1. Install required plugins (WPGraphQL, Gravity Forms, Rank Math)"
+echo "  1. Install required plugins (WPGraphQL, Rank Math)"
 echo "  2. Visit http://localhost:8080 to verify"

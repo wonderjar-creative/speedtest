@@ -61,7 +61,14 @@ Inspect Lighthouse's render-blocking-resources audit on `fast-speedtest.*`. Two 
 ### 6. JS bundle audit
 If hydration is delaying LCP measurement, splitting / `next/dynamic`-ing non-critical components could help. Check `next build` output for first-load JS sizes.
 
-### 7. Edge deployment for real users
+### 7. Real form on contact page (CF7 + Turnstile)
+The contact page currently ships a static HTML `<form action="#">` (no backend) — placeholder so the page looks complete. Real form would benefit the demo, not hurt it:
+- **Hurts slow honestly.** CF7 enqueues ~30KB JS + a few KB CSS on every page; Turnstile adds ~120KB of third-party challenge JS. Both make slow heavier in a way that reflects what real small-business sites carry.
+- **Free for fast.** Render an equivalent form in the headless app and POST to CF7's REST endpoint (`/wp-json/contact-form-7/v1/contact-forms/{id}/feedback`, exposed via the `contact-form-7-rest-api` companion plugin). Use Turnstile's invisible mode via `fetch` instead of bundling their SDK. Zero JS shipped to the headless side.
+
+WP-side: install Contact Form 7, install a CF7-Turnstile addon (e.g. `cf7-cf-turnstile`), wire Cloudflare Turnstile site/secret keys, configure SMTP for delivery. Headless-side: small custom form component that submits with a Turnstile token. ~half a day total.
+
+### 8. Edge deployment for real users
 Skipped Cloudflare for the synthetic test (see Done section). For real production traffic from distributed users, a CDN in front would help — but that's beyond demo scope. Revisit if the demo finds a real audience and we want to show "production headless deploy" rather than "raw architectural advantage."
 
 ## How to update this doc

@@ -42,7 +42,30 @@
 <p class="has-gray-500-color has-text-color">Fill out the form below and we'll get back to you within 24 hours.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:gravityforms/form {"formId":"1","title":false,"description":false} /-->
+<!-- wp:html -->
+<style>
+.contact-form{display:flex;flex-direction:column;gap:1rem;margin-top:var(--wp--preset--spacing--40)}
+.contact-form label{display:flex;flex-direction:column;gap:.25rem;font-weight:600;color:var(--wp--preset--color--gray-900)}
+.contact-form input,.contact-form select,.contact-form textarea{padding:.625rem .75rem;border:1px solid var(--wp--preset--color--gray-300);border-radius:6px;font:inherit;font-weight:400;background:#fff;color:var(--wp--preset--color--gray-900)}
+.contact-form textarea{resize:vertical}
+.contact-form button{align-self:flex-start;background:var(--wp--preset--color--primary);color:#fff;padding:.75rem 1.5rem;border:0;border-radius:6px;font:inherit;font-weight:600;cursor:pointer}
+.contact-form button:hover{filter:brightness(.92)}
+</style>
+<form action="#" method="post" class="contact-form">
+  <label>Name<input name="name" type="text" required /></label>
+  <label>Email<input name="email" type="email" required /></label>
+  <label>Project type
+    <select name="project">
+      <option>Residential design</option>
+      <option>Commercial spaces</option>
+      <option>Renovation &amp; remodeling</option>
+      <option>Design consultation</option>
+    </select>
+  </label>
+  <label>Message<textarea name="message" rows="5" required></textarea></label>
+  <button type="submit">Send message</button>
+</form>
+<!-- /wp:html -->
 </div>
 <!-- /wp:column -->
 
