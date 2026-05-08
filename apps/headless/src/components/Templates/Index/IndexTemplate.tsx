@@ -15,16 +15,24 @@ interface TemplateProps {
 const IndexTemplate = async ({ node }: TemplateProps) => {
   const stylesCollector: string[] = [];
 
-  // Always use the 'index' template for the posts page
-  let template = await fetchTemplateWithISR('index');
+  // Mirror WP's template hierarchy: posts page uses 'home', falling back to 'index'
+  let template = await fetchTemplateWithISR('home');
 
   if (!template) {
+    template = getTemplate('home');
+  }
+
+  if (!template?.blocksJSON) {
+    template = await fetchTemplateWithISR('index');
+  }
+
+  if (!template?.blocksJSON) {
     template = getTemplate('index');
   }
 
   if (!template?.blocksJSON) {
-    console.error('Index template not found');
-    return <div>Index template not found</div>;
+    console.error('Posts page template not found (home or index)');
+    return <div>Posts page template not found</div>;
   }
 
   // Parse template blocks

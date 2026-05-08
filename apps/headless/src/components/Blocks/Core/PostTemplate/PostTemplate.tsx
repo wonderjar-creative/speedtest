@@ -21,8 +21,21 @@ export interface PostTemplateBlockProps extends FrontendBlock {
 
 const PostTemplate: React.FC<PostTemplateBlockProps> = ({ name, attributes, innerBlocks, posts }) => {
   const { style, layout } = attributes || {};
-  const blockClasses = getBlockClasses(attributes || {}, getBlockBaseClass(name));
-  const blockStyleAttr = getBlockStyleAttr(style || {});
+  const baseClasses = getBlockClasses(attributes || {}, getBlockBaseClass(name));
+  const blockStyleAttr: React.CSSProperties = { ...getBlockStyleAttr(style || {}) };
+
+  const isGrid = layout?.type === 'grid' && !!layout?.columnCount;
+  if (isGrid) {
+    blockStyleAttr.gridTemplateColumns = `repeat(${layout!.columnCount}, 1fr)`;
+  }
+  const blockGap = style?.spacing?.blockGap;
+  if (blockGap) {
+    blockStyleAttr.gap = typeof blockGap === 'string' && blockGap.startsWith('var:')
+      ? `var(--wp--${blockGap.slice(4).replace(/\|/g, '--')})`
+      : blockGap;
+  }
+
+  const blockClasses = [baseClasses, isGrid && 'is-layout-grid'].filter(Boolean).join(' ');
 
   if (!posts || posts.length === 0) {
     return null;
@@ -31,7 +44,7 @@ const PostTemplate: React.FC<PostTemplateBlockProps> = ({ name, attributes, inne
   return (
     <ul
       className={blockClasses}
-      {...(style && { style: blockStyleAttr })}
+      {...(Object.keys(blockStyleAttr).length > 0 && { style: blockStyleAttr })}
     >
       {posts.map((post) => (
         <li key={post.id}>
