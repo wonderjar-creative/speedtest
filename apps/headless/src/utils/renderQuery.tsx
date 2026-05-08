@@ -532,9 +532,9 @@ const renderQuery = async (
   const templateLayout = postTemplateBlock?.attributes?.layout;
   const templateStyle = postTemplateBlock?.attributes?.style;
   const templateStyleObj: Record<string, string> = {};
-  if (templateLayout?.type === 'grid' && templateLayout?.columnCount) {
-    templateStyleObj.display = 'grid';
-    templateStyleObj.gridTemplateColumns = `repeat(${templateLayout.columnCount}, 1fr)`;
+  const isGridLayout = templateLayout?.type === 'grid' && !!templateLayout?.columnCount;
+  if (isGridLayout) {
+    templateStyleObj.gridTemplateColumns = `repeat(${templateLayout!.columnCount}, 1fr)`;
   }
   if (templateStyle?.spacing?.blockGap) {
     const gap = templateStyle.spacing.blockGap;
@@ -553,7 +553,7 @@ const renderQuery = async (
     >
       {posts.length > 0 && (
         <ul
-          className={`wp-block-post-template ${postTemplateClasses}`.trim()}
+          className={['wp-block-post-template', isGridLayout && 'is-layout-grid', postTemplateClasses].filter(Boolean).join(' ')}
           style={Object.keys(templateStyleObj).length > 0 ? templateStyleObj : undefined}
         >
           {renderedPosts}
