@@ -9,12 +9,12 @@ Optimized Next.js frontend for **Elevation Design Studio** demo. Part of the Den
 ## Commands
 
 ```bash
-pnpm dev              # Fetch templates -> codegen -> next dev
-pnpm build            # Production build (requires WordPress)
-pnpm codegen          # Regenerate GraphQL types
-pnpm sync-templates  # Update template/pattern cache
-pnpm lint             # ESLint
-pnpm clean            # Remove .next, data, node_modules, src/gql
+npm run dev              # Fetch templates -> codegen -> next dev
+npm run build            # Production build (requires WordPress)
+npm run codegen          # Regenerate GraphQL types
+npm run sync-templates   # Update template/pattern cache
+npm run lint             # ESLint
+npm run clean            # Remove .next, data, node_modules, src/gql
 ```
 
 ## Key Files
@@ -90,5 +90,5 @@ WP_APP_PASS=xxxx xxxx xxxx xxxx      # WordPress app password
 
 - **Build fails with GraphQL errors**: Check WordPress is accessible
 - **Preview not working**: Verify JWT credentials
-- **Template parts missing**: Run `pnpm sync-templates`
+- **Template parts missing**: Run `npm run sync-templates`
 - **Styles missing**: Ensure `theme.json` matches Tailwind config
