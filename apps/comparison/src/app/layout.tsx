@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Speed Test — Denver Headless",
   description:
-    "Same server. Same content. Same backend. 5x faster. See the difference headless architecture makes.",
+    "Same server. Same content. Same backend. Half the load time, near-perfect Lighthouse — see the difference headless makes.",
 };
 
 export default function RootLayout({
