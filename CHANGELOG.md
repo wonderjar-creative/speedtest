@@ -6,12 +6,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-05-07
+
 ### Changed
 
 - [comparison] Updated with brand palette similar to `wonderjarcreative`.
 - [comparison] Bumped Next.js from pinned 16.1.1 to ^16.2.4 (caret range), resolving open Next.js high-severity advisories.
 - [headless] Upgraded to Next.js 16 / React 19. Renamed `middleware.ts` to `proxy.ts` (Next 16 deprecation), updated `revalidateTag` to the new two-argument signature, and added explicit `JSX` type imports in eight files where React 19 dropped the global namespace.
 - [headless] Migrated from webpack to Turbopack (Next 16 default). The SVGR webpack rule was unused (no `.svg` imports in the project), so the `webpack(...)` block in `next.config.ts` and the `@svgr/webpack` dependency were both removed.
+- [headless] Portfolio and blog post grids now collapse to 2 cols on tablet and 1 col on mobile, matching the traditional WP rendering. (`renderQuery` was not adding `is-layout-grid` to the `<ul>`, so the existing responsive rules didn't apply.)
 
 ### Fixed
 
