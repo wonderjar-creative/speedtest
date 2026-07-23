@@ -240,6 +240,13 @@ class RestFeature {
 	/**
 	 * Emit REST CORS headers for allowed origins only.
 	 *
+	 * The methods, headers, and max-age match what this site sent before the
+	 * allowlist was introduced. The vulnerability was which ORIGINS were trusted,
+	 * not which verbs or headers were permitted, so narrowing those would break
+	 * live browser calls (X-Requested-With is sent by jQuery by default) and cost
+	 * a preflight round trip on every request. X-WP-Nonce and the exposed
+	 * pagination headers are the only additions.
+	 *
 	 * @param bool $served Whether the request has already been served.
 	 * @return bool Unmodified, so the REST server continues as normal.
 	 */
@@ -250,9 +257,10 @@ class RestFeature {
 
 		if ( $origin ) {
 			header( 'Access-Control-Allow-Origin: ' . $origin );
-			header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS' );
-			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce' );
+			header( 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS' );
+			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-WP-Nonce' );
 			header( 'Access-Control-Allow-Credentials: true' );
+			header( 'Access-Control-Max-Age: 86400' );
 			header( 'Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link' );
 		}
 
