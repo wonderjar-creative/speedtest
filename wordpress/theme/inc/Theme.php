@@ -13,6 +13,7 @@ use ElevationTheme\Inc\Features\BlockExtensionsFeature;
 use ElevationTheme\Inc\Features\GraphQLFeature;
 use ElevationTheme\Inc\Features\PostTypesFeature;
 use ElevationTheme\Inc\Features\RestFeature;
+use ElevationTheme\Inc\Features\SecurityFeature;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -78,6 +79,7 @@ class Theme {
 			new GraphQLFeature(),
 			new BlockBindingsFeature(),
 			new BlockExtensionsFeature(),
+			new SecurityFeature(),
 		);
 	}
 
