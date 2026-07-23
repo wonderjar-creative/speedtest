@@ -39,9 +39,14 @@ down:
 build:
 	cd wordpress/ && docker-compose build
 
+# Dev dependencies install to a container-only vendor dir. The theme's own
+# vendor/ is tracked and required at runtime by functions.php for PSR-4
+# autoloading, so a plain `composer install` here would rewrite that autoloader
+# to reference dev packages that never get deployed.
 lint-php:
-	docker run --rm -v "$(CURDIR)/wordpress/theme":/app -w /app composer:2 \
-		sh -c 'composer install --no-interaction --quiet && ./vendor/bin/phpcs'
+	docker run --rm -v "$(CURDIR)/wordpress/theme":/app -w /app \
+		-e COMPOSER_VENDOR_DIR=/tmp/lint-vendor composer:2 \
+		sh -c 'composer install --no-interaction --quiet && /tmp/lint-vendor/bin/phpcs'
 
 logs:
 	cd wordpress/ && docker-compose logs -f
