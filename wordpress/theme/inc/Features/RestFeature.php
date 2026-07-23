@@ -32,6 +32,8 @@ class RestFeature {
 			array( 'filter', 'rest_prepare_post', 'set_headless_rest_preview_link', 10, 2 ),
 			array( 'action', 'transition_post_status', 'headless_revalidate', 10, 3 ),
 			array( 'action', 'rest_api_init', 'register_api_routes' ),
+			array( 'filter', 'graphql_response_headers_to_send', 'filter_graphql_cors_headers' ),
+			array( 'action', 'rest_api_init', 'replace_rest_cors_handling', 15 ),
 		);
 	}
 
@@ -143,51 +145,118 @@ class RestFeature {
 	}
 
 	/**
-	 * Add CORS headers for headless frontend requests.
-	 *
-	 * @return void
-	 */
-	public function add_cors_headers(): void {
-		$allowed_origins = array(
-			'http://localhost:3000',
-		);
-
-		if ( defined( 'HEADLESS_URL' ) ) {
-			$allowed_origins[] = HEADLESS_URL;
-
-			// Also allow www variant.
-			if ( false !== strpos( HEADLESS_URL, 'staging.' ) ) {
-				$allowed_origins[] = str_replace( 'staging.', '', HEADLESS_URL );
-				$allowed_origins[] = str_replace( 'staging.', 'www.', HEADLESS_URL );
-			} else {
-				$allowed_origins[] = str_replace( 'https://', 'https://www.', HEADLESS_URL );
-			}
-		}
-
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Checking existence.
-		$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) ) : '';
-		if ( empty( $origin ) ) {
-			return;
-		}
-
-		if ( in_array( $origin, $allowed_origins, true ) ) {
-			header( 'Access-Control-Allow-Origin: ' . $origin );
-			header( 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS' );
-			header( 'Access-Control-Allow-Credentials: true' );
-			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With' );
-			header( 'Access-Control-Max-Age: 86400' );
-		}
-	}
-
-	/**
 	 * Register all REST API routes.
 	 *
 	 * @return void
 	 */
 	public function register_api_routes(): void {
-		$this->add_cors_headers();
 		$this->register_template_structure_routes();
 		$this->register_block_routes();
+	}
+
+	/**
+	 * Allowed frontend origins.
+	 *
+	 * Derived from the HEADLESS_URL constant, with localhost allowed for local
+	 * dev. Preserves the site's existing derivation (staging URLs also allow the
+	 * production and www variants).
+	 *
+	 * @return string[]
+	 */
+	public function allowed_origins(): array {
+		$origins = array( 'http://localhost:3000' );
+
+		if ( defined( 'HEADLESS_URL' ) && HEADLESS_URL ) {
+			$headless  = untrailingslashit( HEADLESS_URL );
+			$origins[] = $headless;
+
+			if ( false !== strpos( $headless, 'staging.' ) ) {
+				$origins[] = str_replace( 'staging.', '', $headless );
+				$origins[] = str_replace( 'staging.', 'www.', $headless );
+			} else {
+				$origins[] = str_replace( 'https://', 'https://www.', $headless );
+			}
+		}
+
+		return array_unique( $origins );
+	}
+
+	/**
+	 * The request's Origin, if it is on the allowlist.
+	 *
+	 * @return string|null The allowed origin, or null when absent or disallowed.
+	 */
+	private function resolve_allowed_origin(): ?string {
+		$origin = isset( $_SERVER['HTTP_ORIGIN'] )
+			? esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) )
+			: '';
+
+		if ( ! $origin ) {
+			return null;
+		}
+
+		$origin = untrailingslashit( $origin );
+
+		return in_array( $origin, $this->allowed_origins(), true ) ? $origin : null;
+	}
+
+	/**
+	 * Replace WPGraphQL's wildcard CORS headers with the allowlist.
+	 *
+	 * @param array $headers Headers WPGraphQL intends to send.
+	 * @return array
+	 */
+	public function filter_graphql_cors_headers( array $headers ): array {
+		unset( $headers['Access-Control-Allow-Origin'] );
+		unset( $headers['Access-Control-Allow-Credentials'] );
+
+		$headers['Vary'] = 'Origin';
+
+		$origin = $this->resolve_allowed_origin();
+
+		if ( ! $origin ) {
+			return $headers;
+		}
+
+		$headers['Access-Control-Allow-Origin']      = $origin;
+		$headers['Access-Control-Allow-Credentials'] = 'true';
+
+		return $headers;
+	}
+
+	/**
+	 * Swap core's origin-reflecting CORS handler for the allowlist.
+	 *
+	 * Core registers rest_send_cors_headers on rest_pre_serve_request from
+	 * rest_api_init at priority 10. This runs at 15 so the filter exists to remove.
+	 *
+	 * @return void
+	 */
+	public function replace_rest_cors_handling(): void {
+		remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+		add_filter( 'rest_pre_serve_request', array( $this, 'send_rest_cors_headers' ) );
+	}
+
+	/**
+	 * Emit REST CORS headers for allowed origins only.
+	 *
+	 * @param bool $served Whether the request has already been served.
+	 * @return bool Unmodified, so the REST server continues as normal.
+	 */
+	public function send_rest_cors_headers( $served ) {
+		header( 'Vary: Origin', false );
+
+		$origin = $this->resolve_allowed_origin();
+
+		if ( $origin ) {
+			header( 'Access-Control-Allow-Origin: ' . $origin );
+			header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS' );
+			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce' );
+			header( 'Access-Control-Allow-Credentials: true' );
+			header( 'Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link' );
+		}
+
+		return $served;
 	}
 
 	/**
@@ -564,7 +633,7 @@ class RestFeature {
 	/**
 	 * Normalize WordPress block keys to frontend-compatible format.
 	 *
-	 * blockName -> name, attrs -> attributes, innerHTML -> saveContent.
+	 * BlockName -> name, attrs -> attributes, innerHTML -> saveContent.
 	 *
 	 * @param array $blocks Blocks to normalize.
 	 * @return array Normalized blocks.
