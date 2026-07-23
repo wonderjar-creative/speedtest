@@ -1,4 +1,4 @@
-.PHONY: help up down build logs dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates sync-assets seed seed-reset seed-dump seed-import docker-build-comparison docker-build-headless docker-build-apps
+.PHONY: help up down build logs lint-php dev-comparison dev-headless install-comparison install-headless sync-tokens sync-templates sync-assets seed seed-reset seed-dump seed-import docker-build-comparison docker-build-headless docker-build-apps
 
 help:
 	@echo "Usage: make [target]"
@@ -38,6 +38,10 @@ down:
 
 build:
 	cd wordpress/ && docker-compose build
+
+lint-php:
+	docker run --rm -v "$(CURDIR)/wordpress/theme":/app -w /app composer:2 \
+		sh -c 'composer install --no-interaction --quiet && ./vendor/bin/phpcs'
 
 logs:
 	cd wordpress/ && docker-compose logs -f
