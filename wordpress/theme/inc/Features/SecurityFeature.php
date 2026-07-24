@@ -102,6 +102,13 @@ class SecurityFeature {
 	 * custom role that holds list_users the ability to create, edit, or delete
 	 * accounts over REST, which is a privilege escalation rather than hardening.
 	 *
+	 * At the rest_endpoints filter, $endpoint['methods'] is still the raw
+	 * registered form, a comma separated string such as 'POST, PUT, PATCH',
+	 * not the POST => true keyed array core builds later inside
+	 * WP_REST_Server::get_routes(). A keyed lookup here never matches, so the
+	 * string is parsed into a flat verb list instead (an array form is
+	 * tolerated defensively in case core's normalization ever moves earlier).
+	 *
 	 * @param array $endpoints The REST API endpoints.
 	 * @return array
 	 */
@@ -119,12 +126,15 @@ class SecurityFeature {
 					continue;
 				}
 
-				$methods = isset( $endpoint['methods'] ) ? (array) $endpoint['methods'] : array();
+				$allowed = array();
+				$raw     = isset( $endpoint['methods'] ) ? $endpoint['methods'] : '';
+				foreach ( (array) $raw as $mkey => $mval ) {
+					$token   = is_string( $mkey ) ? $mkey : (string) $mval;
+					$allowed = array_merge( $allowed, preg_split( '/[\s,]+/', strtoupper( $token ), -1, PREG_SPLIT_NO_EMPTY ) );
+				}
 
-				foreach ( $writes as $method ) {
-					if ( ! empty( $methods[ $method ] ) ) {
-						continue 2;
-					}
+				if ( array_intersect( $writes, $allowed ) ) {
+					continue; // Leave core's create_users, edit_user, delete_user checks in place.
 				}
 
 				$endpoints[ $route ][ $key ]['permission_callback'] = function () {
