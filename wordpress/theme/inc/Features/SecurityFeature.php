@@ -57,9 +57,37 @@ class SecurityFeature {
 		}
 
 		header( 'X-Content-Type-Options: nosniff' );
-		header( 'X-Frame-Options: SAMEORIGIN' );
 		header( 'Referrer-Policy: strict-origin-when-cross-origin' );
 		header( 'Permissions-Policy: geolocation=(), microphone=(), camera=()' );
+
+		// The comparison app frames this WordPress site from a different origin
+		// (the split-screen iframe view), which X-Frame-Options: SAMEORIGIN would
+		// block. CSP frame-ancestors gives the same clickjacking protection but
+		// can name the origins allowed to frame, so every other site is still
+		// refused. The comparison origin defaults to production and is overridable
+		// via the COMPARISON_URL constant or the elevation_frame_ancestors filter.
+		$frame_ancestors = array( "'self'" );
+
+		$comparison = defined( 'COMPARISON_URL' ) && COMPARISON_URL
+			? untrailingslashit( COMPARISON_URL )
+			: 'https://speedtest.denverheadless.com';
+
+		$frame_ancestors[] = $comparison;
+
+		if ( false !== strpos( home_url(), 'localhost' ) ) {
+			$frame_ancestors[] = 'http://localhost:3000';
+			$frame_ancestors[] = 'http://localhost:3001';
+			$frame_ancestors[] = 'http://localhost:3002';
+		}
+
+		/**
+		 * Filter the origins permitted to frame this site.
+		 *
+		 * @param string[] $frame_ancestors CSP frame-ancestors source list.
+		 */
+		$frame_ancestors = apply_filters( 'elevation_frame_ancestors', $frame_ancestors );
+
+		header( 'Content-Security-Policy: frame-ancestors ' . implode( ' ', $frame_ancestors ) );
 	}
 
 	/**
