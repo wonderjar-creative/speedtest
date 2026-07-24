@@ -1,5 +1,5 @@
 # Docker Compose for WordPress
-# Local dev: docker-compose up -d (auto-merges override for port 8080 + wpcli)
+# Local dev: docker-compose up -d (auto-merges override for the local port, default 8082, + wpcli)
 # Production: Coolify deploys this directly — Traefik handles routing
 
 services:
@@ -13,8 +13,8 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
-        define('WP_SITEURL', '${SERVICE_URL_WORDPRESS:-http://localhost:8080}');
+        define('WP_HOME', '${SERVICE_URL_WORDPRESS:-http://localhost:8082}');
+        define('WP_SITEURL', '${SERVICE_URL_WORDPRESS:-http://localhost:8082}');
         define('GRAPHQL_JWT_AUTH_SECRET_KEY', '${GRAPHQL_JWT_AUTH_SECRET_KEY:-speedtest-jwt-dev-secret}');
         define('HEADLESS_URL', '${HEADLESS_URL:-http://localhost:3000}');
         define('HEADLESS_SECRET', '${HEADLESS_SECRET:-speedtest-dev-secret}');
