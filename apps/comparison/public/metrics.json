@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-07-30T10:58:02.128Z",
+  "generatedAt": "2026-07-31T11:19:25.906Z",
   "runs": {
     "slow": {
       "url": "https://slow-speedtest.denverheadless.com",
       "mobile": {
-        "performance": 78,
+        "performance": 79,
         "accessibility": 95,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 5438,
-        "fcp": 1747,
+        "lcp": 5421,
+        "fcp": 1707,
         "tbt": 0,
         "cls": 0,
-        "si": 3329
+        "si": 1820
       },
       "desktop": {
         "performance": 98,
         "accessibility": 96,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 1135,
-        "fcp": 535,
+        "lcp": 1119,
+        "fcp": 485,
         "tbt": 0,
         "cls": 0,
-        "si": 651
+        "si": 570
       }
     },
     "fast": {
@@ -33,22 +33,22 @@
         "accessibility": 92,
         "bestPractices": 96,
         "seo": 100,
-        "lcp": 1943,
-        "fcp": 1079,
-        "tbt": 38,
+        "lcp": 1969,
+        "fcp": 1089,
+        "tbt": 74,
         "cls": 0,
-        "si": 2768
+        "si": 1113
       },
       "desktop": {
-        "performance": 99,
+        "performance": 98,
         "accessibility": 91,
         "bestPractices": 96,
         "seo": 100,
-        "lcp": 942,
-        "fcp": 368,
-        "tbt": 51,
+        "lcp": 950,
+        "fcp": 339,
+        "tbt": 75,
         "cls": 0,
-        "si": 649
+        "si": 522
       }
     }
   }
