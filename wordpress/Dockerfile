@@ -1,4 +1,4 @@
-FROM wordpress:6.7-php8.2-apache
+FROM wordpress:7.1-php8.3-apache
 
 # PHP config
 RUN printf 'upload_max_filesize = 64M\npost_max_size = 64M\n' > /usr/local/etc/php/conf.d/uploads.ini
